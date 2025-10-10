@@ -1,8 +1,0 @@
-{
-  "accounts": {
-    "user1": {
-      "closing_day": 31,
-      "standard_hours_per_day": 8
-    }
-  }
-}
