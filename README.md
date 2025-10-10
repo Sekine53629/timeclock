@@ -7,8 +7,10 @@
 - ✅ プロジェクト別の作業時間管理
 - ✅ 複数アカウント対応
 - ✅ 休憩時間の記録
-- ✅ 日別・プロジェクト別レポート
-- ✅ 残業時間の自動計算
+- ✅ 日別・プロジェクト別・月次レポート
+- ✅ プロジェクト別残業時間の自動計算
+- ✅ 15日締め・月末締め対応
+- ✅ HTML形式での印刷可能なレポート出力
 - ✅ シンプルなCLIインターフェース
 
 ## インストール
@@ -130,6 +132,75 @@ $ python cli.py report project user1 project-alpha
 $ python cli.py report project user1 project-alpha --start-date 2025-10-01 --end-date 2025-10-31
 ```
 
+#### 月次レポート（NEW!）
+
+```bash
+# 今月の月次レポート（プロジェクト別残業時間含む）
+$ python cli.py report monthly user1
+
+============================================================
+【月次レポート - 2025年10月】(月末締め)
+============================================================
+アカウント: user1
+集計期間: 2025-10-01 ～ 2025-10-31
+稼働日数: 22日
+
+総作業時間: 185時間30分 (185.50時間)
+標準労働時間: 176時間00分 (176.00時間)
+総残業時間: 9時間30分 (9.50時間) ⚠️
+
+============================================================
+【プロジェクト別内訳】
+============================================================
+
+■ project-alpha
+  稼働日数: 15日
+  作業時間: 105時間30分 (105.50時間)
+  残業時間: 5時間45分 (5.75時間) ⚠️
+
+■ project-beta
+  稼働日数: 12日
+  作業時間: 80時間00分 (80.00時間)
+  残業時間: 3時間45分 (3.75時間) ⚠️
+
+============================================================
+
+# 特定月のレポート
+$ python cli.py report monthly user1 2025-09
+
+# 詳細表示（日別・プロジェクト別内訳付き）
+$ python cli.py report monthly user1 -v
+
+# HTMLファイルに出力（印刷可能）
+$ python cli.py report monthly user1 -o report_2025-10.html
+✓ HTMLレポートを出力しました: report_2025-10.html
+  ブラウザで開く、または印刷してご利用ください
+```
+
+### アカウント設定（締め日・標準労働時間）
+
+```bash
+# 設定を表示
+$ python cli.py config show user1
+
+user1 の設定:
+  締め日: 31日 (月末締め)
+  標準労働時間: 8時間/日
+
+# 締め日を15日に設定
+$ python cli.py config set user1 --closing-day 15 --standard-hours 8
+✓ user1 の設定を更新しました:
+  締め日: 15日 (15日締め)
+  標準労働時間: 8時間/日
+
+# 締め日を月末に設定
+$ python cli.py config set user1 --closing-day 31 --standard-hours 7.5
+```
+
+**締め日について:**
+- **月末締め (31)**: 毎月1日～月末で集計
+- **15日締め (15)**: 前月16日～当月15日で集計
+
 ### 一覧表示
 
 ```bash
@@ -166,6 +237,17 @@ user1 のプロジェクト:
 | `report daily <account>` | 日別レポート | `python cli.py report daily user1` |
 | `report daily <account> --date <date>` | 特定日のレポート | `python cli.py report daily user1 --date 2025-10-10` |
 | `report project <account> <project>` | プロジェクト別レポート | `python cli.py report project user1 myproject` |
+| `report monthly <account>` | 月次レポート | `python cli.py report monthly user1` |
+| `report monthly <account> <YYYY-MM>` | 特定月のレポート | `python cli.py report monthly user1 2025-09` |
+| `report monthly <account> -v` | 詳細表示 | `python cli.py report monthly user1 -v` |
+| `report monthly <account> -o <file>` | HTML出力 | `python cli.py report monthly user1 -o report.html` |
+
+### 設定コマンド
+
+| コマンド | 説明 | 例 |
+|---------|------|-----|
+| `config show <account>` | 設定を表示 | `python cli.py config show user1` |
+| `config set <account> --closing-day <15\|31>` | 締め日設定 | `python cli.py config set user1 --closing-day 15` |
 
 ### 一覧コマンド
 
@@ -176,10 +258,14 @@ user1 のプロジェクト:
 
 ## データの保存場所
 
-打刻データは以下の場所に JSON 形式で保存されます：
+データは以下の場所に JSON 形式で保存されます：
 
-- Windows: `C:\Users\<ユーザー名>\.timeclock\timeclock_data.json`
-- macOS/Linux: `~/.timeclock/timeclock_data.json`
+- Windows: `C:\Users\<ユーザー名>\.timeclock\`
+- macOS/Linux: `~/.timeclock/`
+
+保存されるファイル:
+- `timeclock_data.json`: 打刻データ（作業記録）
+- `config.json`: アカウント設定（締め日、標準労働時間）
 
 ## エイリアスの設定（推奨）
 
@@ -259,11 +345,16 @@ tc end
 tc report daily user1
 ```
 
-### 月次レポート
+### 月次レポート作成と印刷
 
 ```bash
-# プロジェクトごとの月間作業時間を確認
-tc report project user1 project-alpha --start-date 2025-10-01 --end-date 2025-10-31
+# 月次レポートをHTML出力
+tc report monthly user1 -o monthly_report.html
+
+# ブラウザで開いて印刷
+# Windows: start monthly_report.html
+# macOS: open monthly_report.html
+# Linux: xdg-open monthly_report.html
 ```
 
 ## トラブルシューティング

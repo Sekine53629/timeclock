@@ -251,3 +251,168 @@ class TimeClock:
     def list_projects(self, account: str) -> List[str]:
         """指定アカウントの全プロジェクトのリストを取得"""
         return self.storage.list_projects(account)
+
+    def get_monthly_summary(self, account: str, year: int, month: int,
+                           standard_hours_per_day: Optional[int] = None) -> Dict:
+        """
+        月次サマリーを取得（プロジェクト別の残業時間含む）
+        締め日設定に基づいて集計期間を計算
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月）
+            standard_hours_per_day: 1日の標準労働時間（未指定時は設定値を使用）
+
+        Returns:
+            月次サマリー情報
+        """
+        # アカウント設定を取得
+        account_config = self.storage.get_account_config(account)
+        closing_day = account_config['closing_day']
+
+        if standard_hours_per_day is None:
+            standard_hours_per_day = account_config['standard_hours_per_day']
+
+        # 締め日に基づいて集計期間を計算
+        if closing_day == 31:
+            # 月末締め: 1日～月末
+            start_date = f"{year:04d}-{month:02d}-01"
+            if month == 12:
+                end_year = year + 1
+                end_month = 1
+            else:
+                end_year = year
+                end_month = month + 1
+            end_date_obj = datetime(end_year, end_month, 1) - timedelta(days=1)
+            end_date = end_date_obj.strftime('%Y-%m-%d')
+        else:
+            # 15日締め: 前月16日～当月15日
+            start_date = f"{year:04d}-{month:02d}-16"
+            if month == 12:
+                end_year = year + 1
+                end_month = 1
+            else:
+                end_year = year
+                end_month = month + 1
+            end_date = f"{end_year:04d}-{end_month:02d}-15"
+
+            # 15日締めの場合、開始日を前月に調整
+            if month == 1:
+                prev_year = year - 1
+                prev_month = 12
+            else:
+                prev_year = year
+                prev_month = month - 1
+            start_date = f"{prev_year:04d}-{prev_month:02d}-16"
+
+        # 月内の全レコードを取得
+        all_records = self.storage.get_records(account)
+        records = [r for r in all_records
+                  if start_date <= r.get('date', '') <= end_date]
+
+        # プロジェクト別・日別の集計
+        project_stats = {}
+        daily_stats = {}
+
+        for record in records:
+            project = record.get('project', 'unknown')
+            date = record.get('date', 'unknown')
+            minutes = record.get('total_minutes', 0)
+
+            # プロジェクト別統計
+            if project not in project_stats:
+                project_stats[project] = {
+                    'total_minutes': 0,
+                    'days_worked': set(),
+                    'daily_breakdown': {}
+                }
+
+            project_stats[project]['total_minutes'] += minutes
+            project_stats[project]['days_worked'].add(date)
+
+            if date not in project_stats[project]['daily_breakdown']:
+                project_stats[project]['daily_breakdown'][date] = 0
+            project_stats[project]['daily_breakdown'][date] += minutes
+
+            # 日別統計
+            if date not in daily_stats:
+                daily_stats[date] = {
+                    'total_minutes': 0,
+                    'projects': {}
+                }
+            daily_stats[date]['total_minutes'] += minutes
+            if project not in daily_stats[date]['projects']:
+                daily_stats[date]['projects'][project] = 0
+            daily_stats[date]['projects'][project] += minutes
+
+        # プロジェクト別の残業時間を計算
+        standard_minutes_per_day = standard_hours_per_day * 60
+
+        for project, stats in project_stats.items():
+            stats['days_worked_count'] = len(stats['days_worked'])
+            stats['total_hours'] = stats['total_minutes'] / 60
+
+            # 各プロジェクトの日別残業時間を計算
+            stats['overtime_minutes'] = 0
+            stats['overtime_by_day'] = {}
+
+            for date, minutes in stats['daily_breakdown'].items():
+                # その日の総作業時間を取得
+                day_total = daily_stats[date]['total_minutes']
+                # その日の残業時間
+                day_overtime = max(0, day_total - standard_minutes_per_day)
+
+                # プロジェクトごとの割合で残業時間を按分
+                if day_total > 0:
+                    project_ratio = minutes / day_total
+                    project_overtime = int(day_overtime * project_ratio)
+                else:
+                    project_overtime = 0
+
+                stats['overtime_by_day'][date] = project_overtime
+                stats['overtime_minutes'] += project_overtime
+
+            stats['overtime_hours'] = stats['overtime_minutes'] / 60
+
+        # 月全体の統計
+        total_minutes = sum(r.get('total_minutes', 0) for r in records)
+        working_days = len(daily_stats)
+        standard_total_minutes = working_days * standard_minutes_per_day
+        total_overtime_minutes = max(0, total_minutes - standard_total_minutes)
+
+        return {
+            'account': account,
+            'year': year,
+            'month': month,
+            'closing_day': closing_day,
+            'start_date': start_date,
+            'end_date': end_date,
+            'working_days': working_days,
+            'total_minutes': total_minutes,
+            'total_hours': total_minutes / 60,
+            'standard_hours_per_day': standard_hours_per_day,
+            'standard_total_minutes': standard_total_minutes,
+            'standard_total_hours': standard_total_minutes / 60,
+            'total_overtime_minutes': total_overtime_minutes,
+            'total_overtime_hours': total_overtime_minutes / 60,
+            'project_stats': project_stats,
+            'daily_stats': daily_stats,
+            'record_count': len(records)
+        }
+
+    def set_account_config(self, account: str, closing_day: int,
+                          standard_hours_per_day: int = 8):
+        """
+        アカウントの設定を保存
+
+        Args:
+            account: アカウント名
+            closing_day: 締め日（15 or 31）
+            standard_hours_per_day: 1日の標準労働時間
+        """
+        self.storage.set_account_config(account, closing_day, standard_hours_per_day)
+
+    def get_account_config(self, account: str) -> Dict:
+        """アカウントの設定を取得"""
+        return self.storage.get_account_config(account)

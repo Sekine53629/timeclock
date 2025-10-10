@@ -21,6 +21,7 @@ class Storage:
 
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.data_file = self.data_dir / 'timeclock_data.json'
+        self.config_file = self.data_dir / 'config.json'
 
     def load_data(self) -> Dict:
         """全データを読み込み"""
@@ -105,3 +106,58 @@ class Storage:
             if 'project' in record:
                 projects.add(record['project'])
         return sorted(list(projects))
+
+    def load_config(self) -> Dict:
+        """設定を読み込み"""
+        if not self.config_file.exists():
+            return {
+                'accounts': {}  # アカウントごとの設定
+            }
+
+        try:
+            with open(self.config_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            return {'accounts': {}}
+
+    def save_config(self, config: Dict):
+        """設定を保存"""
+        with open(self.config_file, 'w', encoding='utf-8') as f:
+            json.dump(config, f, ensure_ascii=False, indent=2)
+
+    def get_account_config(self, account: str) -> Dict:
+        """
+        アカウントの設定を取得
+
+        Returns:
+            設定辞書（closing_day: 締め日 15 or 31）
+        """
+        config = self.load_config()
+        if account not in config['accounts']:
+            # デフォルトは月末締め
+            config['accounts'][account] = {
+                'closing_day': 31,
+                'standard_hours_per_day': 8
+            }
+            self.save_config(config)
+        return config['accounts'][account]
+
+    def set_account_config(self, account: str, closing_day: int,
+                          standard_hours_per_day: int = 8):
+        """
+        アカウントの設定を保存
+
+        Args:
+            account: アカウント名
+            closing_day: 締め日（15 or 31）
+            standard_hours_per_day: 1日の標準労働時間
+        """
+        if closing_day not in [15, 31]:
+            raise ValueError("締め日は15日または31日のみ指定可能です")
+
+        config = self.load_config()
+        config['accounts'][account] = {
+            'closing_day': closing_day,
+            'standard_hours_per_day': standard_hours_per_day
+        }
+        self.save_config(config)
