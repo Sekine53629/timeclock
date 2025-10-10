@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
+from file_lock import FileLock, FileBackup
 
 class Storage:
     def __init__(self, data_dir: Optional[str] = None):
@@ -22,6 +23,7 @@ class Storage:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.data_file = self.data_dir / 'timeclock_data.json'
         self.config_file = self.data_dir / 'config.json'
+        self.lock_file = self.data_dir / '.timeclock.lock'
 
     def load_data(self) -> Dict:
         """全データを読み込み"""
@@ -38,9 +40,14 @@ class Storage:
             return {'accounts': {}, 'current_session': None}
 
     def save_data(self, data: Dict):
-        """データを保存"""
-        with open(self.data_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        """データを保存（ロック・バックアップ付き）"""
+        # バックアップを作成
+        FileBackup.create_backup(self.data_file)
+
+        # ロックを取得して保存
+        with FileLock(str(self.lock_file)):
+            with open(self.data_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
 
     def get_account_data(self, account: str) -> Dict:
         """指定アカウントのデータを取得"""
@@ -121,9 +128,14 @@ class Storage:
             return {'accounts': {}}
 
     def save_config(self, config: Dict):
-        """設定を保存"""
-        with open(self.config_file, 'w', encoding='utf-8') as f:
-            json.dump(config, f, ensure_ascii=False, indent=2)
+        """設定を保存（ロック・バックアップ付き）"""
+        # バックアップを作成
+        FileBackup.create_backup(self.config_file)
+
+        # ロックを取得して保存
+        with FileLock(str(self.lock_file)):
+            with open(self.config_file, 'w', encoding='utf-8') as f:
+                json.dump(config, f, ensure_ascii=False, indent=2)
 
     def get_account_config(self, account: str) -> Dict:
         """

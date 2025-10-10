@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打刻システム - コマンドリスト</title>
+    <style>
+        @media print {
+            body {
+                font-size: 10pt;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #34495e;
+            background-color: #ecf0f1;
+            padding: 8px 12px;
+            border-left: 4px solid #3498db;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #e8f4f8;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9em;
+            color: #e74c3c;
+        }
+
+        .note {
+            background-color: #fff9e6;
+            border-left: 4px solid #f39c12;
+            padding: 12px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        .print-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .print-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="print-btn no-print" onclick="window.print()">🖨️ このページを印刷</button>
+
+        <h1>⏱️ 打刻システム - コマンドリスト</h1>
+
+        <div class="note">
+            <strong>📌 エイリアス設定推奨：</strong><br>
+            <code>alias tc='python /path/to/timeclock/cli.py'</code> を設定すると、<br>
+            <code>python cli.py</code> の代わりに <code>tc</code> で使えます。
+        </div>
+
+        <h2>🔵 打刻コマンド</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 35%">コマンド</th>
+                    <th style="width: 30%">説明</th>
+                    <th style="width: 35%">使用例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>start &lt;account&gt; &lt;project&gt;</code></td>
+                    <td>作業開始</td>
+                    <td><code>python cli.py start user1 myproject</code></td>
+                </tr>
+                <tr>
+                    <td><code>break</code></td>
+                    <td>休憩開始</td>
+                    <td><code>python cli.py break</code></td>
+                </tr>
+                <tr>
+                    <td><code>resume</code></td>
+                    <td>休憩終了・作業再開</td>
+                    <td><code>python cli.py resume</code></td>
+                </tr>
+                <tr>
+                    <td><code>end</code></td>
+                    <td>作業終了</td>
+                    <td><code>python cli.py end</code></td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>現在の状態表示</td>
+                    <td><code>python cli.py status</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📊 レポートコマンド</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 45%">コマンド</th>
+                    <th style="width: 20%">説明</th>
+                    <th style="width: 35%">使用例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>report daily &lt;account&gt;</code></td>
+                    <td>日別レポート</td>
+                    <td><code>python cli.py report daily user1</code></td>
+                </tr>
+                <tr>
+                    <td><code>report daily &lt;account&gt; --date &lt;date&gt;</code></td>
+                    <td>特定日のレポート</td>
+                    <td><code>python cli.py report daily user1 --date 2025-10-10</code></td>
+                </tr>
+                <tr>
+                    <td><code>report daily &lt;account&gt; -v</code></td>
+                    <td>詳細表示</td>
+                    <td><code>python cli.py report daily user1 -v</code></td>
+                </tr>
+                <tr>
+                    <td><code>report project &lt;account&gt; &lt;project&gt;</code></td>
+                    <td>プロジェクト別レポート</td>
+                    <td><code>python cli.py report project user1 myproject</code></td>
+                </tr>
+                <tr>
+                    <td><code>report project &lt;account&gt; &lt;project&gt; --start-date &lt;date&gt; --end-date &lt;date&gt;</code></td>
+                    <td>期間指定レポート</td>
+                    <td><code>python cli.py report project user1 myproject --start-date 2025-10-01 --end-date 2025-10-31</code></td>
+                </tr>
+                <tr>
+                    <td><code>report monthly &lt;account&gt;</code></td>
+                    <td>月次レポート（今月）</td>
+                    <td><code>python cli.py report monthly user1</code></td>
+                </tr>
+                <tr>
+                    <td><code>report monthly &lt;account&gt; &lt;YYYY-MM&gt;</code></td>
+                    <td>特定月のレポート</td>
+                    <td><code>python cli.py report monthly user1 2025-09</code></td>
+                </tr>
+                <tr>
+                    <td><code>report monthly &lt;account&gt; -v</code></td>
+                    <td>詳細表示（日別内訳）</td>
+                    <td><code>python cli.py report monthly user1 -v</code></td>
+                </tr>
+                <tr>
+                    <td><code>report monthly &lt;account&gt; -o &lt;file&gt;</code></td>
+                    <td>HTML出力（印刷可能）</td>
+                    <td><code>python cli.py report monthly user1 -o report.html</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>⚙️ 設定コマンド</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 45%">コマンド</th>
+                    <th style="width: 20%">説明</th>
+                    <th style="width: 35%">使用例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>setup</code></td>
+                    <td>初期セットアップ<br>（Google Driveパス設定）</td>
+                    <td><code>python cli.py setup</code></td>
+                </tr>
+                <tr>
+                    <td><code>config show &lt;account&gt;</code></td>
+                    <td>設定を表示</td>
+                    <td><code>python cli.py config show user1</code></td>
+                </tr>
+                <tr>
+                    <td><code>config set &lt;account&gt; --closing-day &lt;15|31&gt;</code></td>
+                    <td>締め日設定</td>
+                    <td><code>python cli.py config set user1 --closing-day 15</code></td>
+                </tr>
+                <tr>
+                    <td><code>config set &lt;account&gt; --standard-hours &lt;hours&gt;</code></td>
+                    <td>標準労働時間設定</td>
+                    <td><code>python cli.py config set user1 --standard-hours 8</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📋 一覧コマンド</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 35%">コマンド</th>
+                    <th style="width: 30%">説明</th>
+                    <th style="width: 35%">使用例</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>list accounts</code></td>
+                    <td>アカウント一覧</td>
+                    <td><code>python cli.py list accounts</code></td>
+                </tr>
+                <tr>
+                    <td><code>list projects &lt;account&gt;</code></td>
+                    <td>プロジェクト一覧</td>
+                    <td><code>python cli.py list projects user1</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>💡 よく使うコマンド例</h2>
+
+        <h3>基本的な1日の流れ</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 20%">タイミング</th>
+                    <th style="width: 40%">コマンド</th>
+                    <th style="width: 40%">説明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>朝（9:00）</td>
+                    <td><code>python cli.py start user1 project-alpha</code></td>
+                    <td>作業開始</td>
+                </tr>
+                <tr>
+                    <td>昼（12:00）</td>
+                    <td><code>python cli.py break</code></td>
+                    <td>休憩開始</td>
+                </tr>
+                <tr>
+                    <td>昼（13:00）</td>
+                    <td><code>python cli.py resume</code></td>
+                    <td>休憩終了・作業再開</td>
+                </tr>
+                <tr>
+                    <td>午後（15:00）</td>
+                    <td><code>python cli.py end</code><br>
+                        <code>python cli.py start user1 project-beta</code></td>
+                    <td>別プロジェクトに切替</td>
+                </tr>
+                <tr>
+                    <td>夕方（18:00）</td>
+                    <td><code>python cli.py end</code></td>
+                    <td>作業終了</td>
+                </tr>
+                <tr>
+                    <td>終業後</td>
+                    <td><code>python cli.py report daily user1</code></td>
+                    <td>今日の作業時間確認</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>月次レポート作成と印刷</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 60%">コマンド</th>
+                    <th style="width: 40%">説明</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>python cli.py report monthly user1 -o monthly_report.html</code></td>
+                    <td>月次レポートをHTML出力</td>
+                </tr>
+                <tr>
+                    <td><code>open monthly_report.html</code> (macOS)<br>
+                        <code>start monthly_report.html</code> (Windows)</td>
+                    <td>ブラウザで開いて印刷</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>🔧 トラブルシューティング：</strong><br>
+            • 作業を開始できない → <code>python cli.py status</code> で状態確認<br>
+            • 既に作業中の場合 → <code>python cli.py end</code> で終了してから再開<br>
+            • 休憩を開始できない → 先に <code>start</code> で作業を開始する必要があります
+        </div>
+
+        <div class="footer">
+            <p>打刻システム (TimeClock) - プロジェクト別作業時間管理CLI</p>
+            <p>生成日: 2025-10-10</p>
+        </div>
+    </div>
+</body>
+</html>

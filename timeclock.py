@@ -5,10 +5,23 @@
 from datetime import datetime, timedelta
 from typing import Optional, Dict, List
 from storage import Storage
+from config_manager import ConfigManager
 
 class TimeClock:
-    def __init__(self, storage: Optional[Storage] = None):
-        self.storage = storage or Storage()
+    def __init__(self, storage: Optional[Storage] = None, config_manager: Optional[ConfigManager] = None):
+        """
+        Args:
+            storage: Storageインスタンス（指定なしの場合は設定ファイルから自動取得）
+            config_manager: ConfigManagerインスタンス
+        """
+        self.config_manager = config_manager or ConfigManager()
+
+        if storage is None:
+            # 設定ファイルからDB保存先を取得
+            db_path = self.config_manager.get_db_path()
+            storage = Storage(data_dir=db_path)
+
+        self.storage = storage
 
     def start_work(self, account: str, project: str) -> Dict:
         """

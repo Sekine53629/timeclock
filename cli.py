@@ -9,6 +9,7 @@ from pathlib import Path
 from timeclock import TimeClock
 from storage import Storage
 from export import save_html_report
+from config_manager import ConfigManager
 
 def format_time(minutes: int) -> str:
     """分を時間:分形式に変換"""
@@ -288,6 +289,11 @@ def cmd_config(args):
             print(f"エラー: {e}", file=sys.stderr)
             sys.exit(1)
 
+def cmd_setup(args):
+    """初期セットアップ"""
+    config_mgr = ConfigManager()
+    config_mgr.setup_interactive()
+
 def main():
     parser = argparse.ArgumentParser(
         description='打刻システム - プロジェクト別作業時間管理',
@@ -361,6 +367,10 @@ def main():
     parser_list_projects = list_subparsers.add_parser('projects', help='プロジェクト一覧')
     parser_list_projects.add_argument('account', help='アカウント名')
     parser_list_projects.set_defaults(func=cmd_list_projects)
+
+    # setup コマンド
+    parser_setup = subparsers.add_parser('setup', help='初期セットアップ（Google Driveパス設定）')
+    parser_setup.set_defaults(func=cmd_setup)
 
     # config コマンド
     parser_config = subparsers.add_parser('config', help='アカウント設定')
