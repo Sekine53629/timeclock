@@ -5,28 +5,185 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
 from datetime import datetime
+from pathlib import Path
 from timeclock import TimeClock
 from config_manager import ConfigManager
+from idle_monitor import IdleMonitor
+from logger import get_logger, log_exception
 import sys
+
+# ロガーの初期化
+logger = get_logger(__name__)
 
 
 class TimeClockGUI:
     def __init__(self, root):
-        self.root = root
-        self.root.title("打刻システム")
-        self.root.geometry("800x600")
+        try:
+            logger.info("GUI初期化開始")
+            self.root = root
+            self.root.title("打刻システム")
+            self.root.geometry("900x650")  # コンパクトなサイズ
 
-        self.tc = TimeClock()
-        self.config_manager = ConfigManager()
+            # 最小サイズを設定
+            self.root.minsize(800, 600)
 
-        # メインフレームの作成
-        self.create_widgets()
+            # ダークモードの色設定
+            self.setup_dark_theme()
 
-        # 初期状態の更新
-        self.update_status()
+            self.tc = TimeClock()
+            self.config_manager = ConfigManager()
 
-        # 定期的にステータスを更新（30秒ごと）
-        self.schedule_status_update()
+            # 設定の読み込み
+            self.load_auto_break_config()
+
+            # アイドル監視機能の初期化
+            self.idle_monitor = IdleMonitor(
+                idle_threshold_minutes=self.auto_break_threshold,
+                check_interval_seconds=30
+            )
+
+            # メインフレームの作成
+            self.create_widgets()
+
+            # 初期状態の更新
+            self.update_status()
+
+            # 定期的にステータスを更新（30秒ごと）
+            self.schedule_status_update()
+
+            # ウィンドウクローズ時のクリーンアップ
+            self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+            logger.info("GUI初期化完了")
+
+        except Exception as e:
+            log_exception(logger, "GUI初期化エラー", e)
+            messagebox.showerror(
+                "起動エラー",
+                f"アプリケーションの初期化に失敗しました。\n\n"
+                f"エラー: {str(e)}\n\n"
+                f"ログファイル: {Path.home() / '.timeclock' / 'timeclock.log'}"
+            )
+            raise
+
+    def setup_dark_theme(self):
+        """ダークモードのテーマを設定"""
+        # ダークモードの色定義
+        self.colors = {
+            'bg': '#1e1e1e',           # 背景色（濃いグレー）
+            'fg': '#e0e0e0',           # 文字色（明るいグレー）
+            'bg_light': '#2d2d2d',     # 少し明るい背景
+            'bg_dark': '#181818',      # より暗い背景
+            'accent': '#007acc',       # アクセントカラー（青）
+            'accent_hover': '#005a9e', # ホバー時のアクセント
+            'success': '#4ec9b0',      # 成功（緑がかった青）
+            'warning': '#ce9178',      # 警告（オレンジ）
+            'error': '#f48771',        # エラー（赤）
+            'border': '#3e3e3e',       # ボーダー色
+        }
+
+        # tkinterのスタイル設定
+        self.root.configure(bg=self.colors['bg'])
+
+        # ttkスタイルの設定
+        style = ttk.Style()
+        style.theme_use('clam')  # clamテーマをベースに
+
+        # 全体の背景色とフォント
+        style.configure('.',
+                       background=self.colors['bg'],
+                       foreground=self.colors['fg'],
+                       fieldbackground=self.colors['bg_light'],
+                       bordercolor=self.colors['border'],
+                       darkcolor=self.colors['bg_dark'],
+                       lightcolor=self.colors['bg_light'])
+
+        # Notebookのスタイル
+        style.configure('TNotebook',
+                       background=self.colors['bg'],
+                       borderwidth=0)
+        style.configure('TNotebook.Tab',
+                       background=self.colors['bg_light'],
+                       foreground=self.colors['fg'],
+                       padding=[20, 10])
+        style.map('TNotebook.Tab',
+                 background=[('selected', self.colors['accent'])],
+                 foreground=[('selected', '#ffffff')])
+
+        # Frameのスタイル
+        style.configure('TFrame', background=self.colors['bg'])
+
+        # LabelFrameのスタイル
+        style.configure('TLabelframe',
+                       background=self.colors['bg'],
+                       foreground=self.colors['fg'],
+                       bordercolor=self.colors['border'])
+        style.configure('TLabelframe.Label',
+                       background=self.colors['bg'],
+                       foreground=self.colors['accent'])
+
+        # Labelのスタイル
+        style.configure('TLabel',
+                       background=self.colors['bg'],
+                       foreground=self.colors['fg'])
+
+        # Buttonのスタイル
+        style.configure('TButton',
+                       background=self.colors['accent'],
+                       foreground='#ffffff',
+                       borderwidth=1,
+                       focuscolor=self.colors['accent'],
+                       padding=[10, 5])
+        style.map('TButton',
+                 background=[('active', self.colors['accent_hover']),
+                           ('pressed', self.colors['bg_dark'])])
+
+        # Entryのスタイル
+        style.configure('TEntry',
+                       fieldbackground=self.colors['bg_light'],
+                       foreground=self.colors['fg'],
+                       insertcolor=self.colors['fg'],
+                       bordercolor=self.colors['border'])
+
+        # Comboboxのスタイル
+        style.configure('TCombobox',
+                       fieldbackground=self.colors['bg_light'],
+                       background=self.colors['bg_light'],
+                       foreground=self.colors['fg'],
+                       arrowcolor=self.colors['fg'],
+                       bordercolor=self.colors['border'])
+
+        # Checkbuttonのスタイル
+        style.configure('TCheckbutton',
+                       background=self.colors['bg'],
+                       foreground=self.colors['fg'])
+
+        # Radiobuttonのスタイル
+        style.configure('TRadiobutton',
+                       background=self.colors['bg'],
+                       foreground=self.colors['fg'])
+
+        # Treeviewのスタイル
+        style.configure('Treeview',
+                       background=self.colors['bg_light'],
+                       foreground=self.colors['fg'],
+                       fieldbackground=self.colors['bg_light'],
+                       bordercolor=self.colors['border'])
+        style.configure('Treeview.Heading',
+                       background=self.colors['bg_dark'],
+                       foreground=self.colors['accent'],
+                       borderwidth=1)
+        style.map('Treeview',
+                 background=[('selected', self.colors['accent'])])
+
+        # Scrollbarのスタイル
+        style.configure('Vertical.TScrollbar',
+                       background=self.colors['bg_light'],
+                       troughcolor=self.colors['bg_dark'],
+                       bordercolor=self.colors['border'],
+                       arrowcolor=self.colors['fg'])
+
+        logger.info("ダークモードを適用しました")
 
     def create_widgets(self):
         """ウィジェットの作成"""
@@ -153,9 +310,17 @@ class TimeClockGUI:
         config_frame = ttk.Frame(self.notebook)
         self.notebook.add(config_frame, text="設定")
 
+        # 左側：ユーザー管理
+        left_frame = ttk.Frame(config_frame)
+        left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        # 右側：設定
+        right_frame = ttk.Frame(config_frame)
+        right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, padx=5, pady=5)
+
         # ユーザー管理グループ
-        user_mgmt_group = ttk.LabelFrame(config_frame, text="ユーザー管理", padding=10)
-        user_mgmt_group.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        user_mgmt_group = ttk.LabelFrame(left_frame, text="ユーザー管理", padding=10)
+        user_mgmt_group.pack(fill=tk.BOTH, expand=True)
 
         # 上部：ユーザー追加
         add_frame = ttk.Frame(user_mgmt_group)
@@ -174,7 +339,7 @@ class TimeClockGUI:
 
         # ユーザーリストのツリービュー
         columns = ('username', 'status', 'projects', 'records', 'closing_day', 'hours')
-        self.user_tree = ttk.Treeview(list_frame, columns=columns, show='headings', height=8)
+        self.user_tree = ttk.Treeview(list_frame, columns=columns, show='headings', height=12)
 
         self.user_tree.heading('username', text='ユーザー名')
         self.user_tree.heading('status', text='状態')
@@ -242,9 +407,9 @@ class TimeClockGUI:
         button_frame.grid(row=6, column=0, columnspan=3, pady=15)
         ttk.Button(button_frame, text="設定を保存", command=self.save_user_config, width=20).pack()
 
-        # データベース設定
-        db_group = ttk.LabelFrame(config_frame, text="データベース設定", padding=10)
-        db_group.pack(fill=tk.X, padx=10, pady=10)
+        # データベース設定（右側）
+        db_group = ttk.LabelFrame(right_frame, text="データベース設定", padding=10)
+        db_group.pack(fill=tk.X, pady=(0, 10))
 
         ttk.Label(db_group, text="保存先パス:").grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
         self.db_path_var = tk.StringVar(value=self.config_manager.get_db_path())
@@ -252,8 +417,52 @@ class TimeClockGUI:
 
         ttk.Button(db_group, text="パスを保存", command=self.save_db_path).grid(row=1, column=0, columnspan=2, pady=10)
 
+        # 自動休憩設定（右側）
+        auto_break_group = ttk.LabelFrame(right_frame, text="自動休憩設定", padding=10)
+        auto_break_group.pack(fill=tk.X)
+
+        # 説明ラベル
+        desc_label = ttk.Label(auto_break_group,
+                              text="PCの未操作時間を監視し、一定時間経過後に自動的に休憩打刻します。\n"
+                                   "作業中のアカウントが自動的に休憩状態になります。",
+                              foreground='gray', font=('', 9))
+        desc_label.grid(row=0, column=0, columnspan=3, sticky=tk.W, padx=5, pady=(0, 10))
+
+        # 有効/無効チェックボックス（設定から初期値を読み込み）
+        self.auto_break_var = tk.BooleanVar(value=self.auto_break_enabled)
+        auto_break_check = ttk.Checkbutton(auto_break_group,
+                                          text="自動休憩機能を有効にする",
+                                          variable=self.auto_break_var,
+                                          command=self.toggle_auto_break)
+        auto_break_check.grid(row=1, column=0, columnspan=3, sticky=tk.W, padx=5, pady=5)
+
+        # アイドル時間閾値設定（設定から初期値を読み込み）
+        threshold_frame = ttk.Frame(auto_break_group)
+        threshold_frame.grid(row=2, column=0, columnspan=3, sticky=tk.W, padx=20, pady=5)
+
+        ttk.Label(threshold_frame, text="未操作時間の閾値:").pack(side=tk.LEFT, padx=(0, 5))
+        self.idle_threshold_var = tk.IntVar(value=self.auto_break_threshold)
+        ttk.Spinbox(threshold_frame, from_=5, to=60, textvariable=self.idle_threshold_var,
+                   width=10, command=self.update_idle_threshold).pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Label(threshold_frame, text="分").pack(side=tk.LEFT)
+
+        # 状態表示
+        self.auto_break_status_label = ttk.Label(auto_break_group,
+                                                 text="状態: 無効",
+                                                 foreground='gray', font=('', 9))
+        self.auto_break_status_label.grid(row=3, column=0, columnspan=3, sticky=tk.W, padx=5, pady=(10, 0))
+
         # 初期化
         self.refresh_user_list()
+
+        # 自動休憩の初期状態を設定
+        if self.auto_break_enabled:
+            self.idle_monitor.start_monitoring(self.on_idle_detected)
+            self.auto_break_status_label.config(
+                text=f"状態: 有効 (閾値: {self.auto_break_threshold}分)",
+                foreground='green'
+            )
+            logger.info(f"自動休憩機能が有効で起動: 閾値={self.auto_break_threshold}分")
 
     def refresh_accounts(self):
         """アカウント一覧を更新"""
@@ -751,6 +960,194 @@ class TimeClockGUI:
         self.update_status()
         # 30秒後に再度実行
         self.root.after(30000, self.schedule_status_update)
+
+    def toggle_auto_break(self):
+        """自動休憩機能のオン/オフを切り替え"""
+        try:
+            if self.auto_break_var.get():
+                # 機能を有効化
+                self.auto_break_enabled = True
+                self.auto_break_threshold = self.idle_threshold_var.get()
+                self.idle_monitor.set_idle_threshold(self.auto_break_threshold)
+                self.idle_monitor.start_monitoring(self.on_idle_detected)
+                self.auto_break_status_label.config(
+                    text=f"状態: 有効 (閾値: {self.auto_break_threshold}分)",
+                    foreground='green'
+                )
+                logger.info(f"自動休憩機能を有効化: 閾値={self.auto_break_threshold}分")
+            else:
+                # 機能を無効化
+                self.auto_break_enabled = False
+                self.idle_monitor.stop_monitoring()
+                self.auto_break_status_label.config(
+                    text="状態: 無効",
+                    foreground='gray'
+                )
+                logger.info("自動休憩機能を無効化")
+
+            # 設定を保存
+            self.save_auto_break_config()
+
+        except Exception as e:
+            log_exception(logger, "自動休憩切り替えエラー", e)
+            messagebox.showerror("エラー", f"自動休憩機能の切り替えに失敗しました: {str(e)}")
+
+    def update_idle_threshold(self):
+        """アイドル閾値の更新"""
+        try:
+            new_threshold = self.idle_threshold_var.get()
+            self.auto_break_threshold = new_threshold
+
+            if self.auto_break_enabled:
+                self.idle_monitor.set_idle_threshold(new_threshold)
+                self.auto_break_status_label.config(
+                    text=f"状態: 有効 (閾値: {new_threshold}分)"
+                )
+                logger.info(f"アイドル閾値を更新: {new_threshold}分")
+
+            # 設定を保存
+            self.save_auto_break_config()
+
+        except Exception as e:
+            log_exception(logger, "閾値更新エラー", e)
+
+    def on_idle_detected(self, idle_minutes: float):
+        """
+        アイドル状態検出時のコールバック
+
+        Args:
+            idle_minutes: アイドル時間（分）
+        """
+        try:
+            logger.info(f"アイドル検出: {idle_minutes:.1f}分")
+
+            # 現在作業中のアカウントを取得
+            all_sessions = self.tc.storage.get_all_current_sessions()
+
+            if not all_sessions:
+                logger.info("作業中のアカウントがありません（自動休憩スキップ）")
+                return
+
+            # 作業中の全アカウントに対して休憩打刻
+            for account, session in all_sessions.items():
+                # 既に休憩中の場合はスキップ
+                if session.get('status') == 'on_break':
+                    logger.info(f"{account} は既に休憩中です（スキップ）")
+                    continue
+
+                try:
+                    # 休憩開始
+                    self.tc.start_break(account)
+                    logger.info(f"{account} の自動休憩を開始しました")
+
+                    # GUIに通知（メインスレッドで実行）
+                    self.root.after(0, lambda a=account, m=idle_minutes: self.show_auto_break_notification(a, m))
+
+                except Exception as e:
+                    log_exception(logger, f"自動休憩エラー ({account})", e)
+
+            # ステータスを更新
+            self.root.after(0, self.update_status)
+
+        except Exception as e:
+            log_exception(logger, "アイドル検出処理エラー", e)
+
+    def show_auto_break_notification(self, account: str, idle_minutes: float):
+        """
+        自動休憩の通知を表示
+
+        Args:
+            account: アカウント名
+            idle_minutes: アイドル時間（分）
+        """
+        # 打刻タブに切り替え
+        self.notebook.select(0)
+
+        # 通知を表示
+        result = messagebox.showinfo(
+            "自動休憩",
+            f"{account} のアカウントが自動的に休憩状態になりました。\n\n"
+            f"PCの未操作時間: {idle_minutes:.1f}分\n"
+            f"閾値: {self.idle_threshold_var.get()}分\n\n"
+            f"作業を再開する場合は「打刻」タブで\n"
+            f"対象アカウントを選択し「作業再開」ボタンを押してください。",
+            icon='info'
+        )
+
+        # 通知を閉じたら作業再開ボタンを強調
+        self.highlight_resume_button()
+
+    def highlight_resume_button(self):
+        """作業再開ボタンを一時的に強調表示"""
+        try:
+            if hasattr(self, 'resume_button'):
+                # 元のスタイルを保存
+                original_style = self.resume_button.cget('style') if self.resume_button.cget('style') else ''
+
+                # 強調スタイルを適用（点滅効果）
+                def blink(count=0):
+                    if count < 6:  # 3回点滅
+                        if count % 2 == 0:
+                            # ボタンを目立たせる（背景色を変更）
+                            try:
+                                self.resume_button.state(['!disabled'])
+                            except:
+                                pass
+                        self.root.after(500, lambda: blink(count + 1))
+
+                blink()
+        except Exception as e:
+            logger.warning(f"作業再開ボタン強調エラー: {e}")
+
+    def load_auto_break_config(self):
+        """自動休憩設定を読み込み"""
+        try:
+            config = self.tc.storage.load_config()
+            auto_break_config = config.get('auto_break', {})
+
+            self.auto_break_enabled = auto_break_config.get('enabled', False)
+            self.auto_break_threshold = auto_break_config.get('threshold_minutes', 15)
+
+            logger.info(f"自動休憩設定を読み込み: enabled={self.auto_break_enabled}, threshold={self.auto_break_threshold}分")
+        except Exception as e:
+            log_exception(logger, "自動休憩設定の読み込みエラー", e)
+            # デフォルト値を使用
+            self.auto_break_enabled = False
+            self.auto_break_threshold = 15
+
+    def save_auto_break_config(self):
+        """自動休憩設定を保存"""
+        try:
+            config = self.tc.storage.load_config()
+            config['auto_break'] = {
+                'enabled': self.auto_break_enabled,
+                'threshold_minutes': self.auto_break_threshold
+            }
+            self.tc.storage.save_config(config)
+            logger.info(f"自動休憩設定を保存: enabled={self.auto_break_enabled}, threshold={self.auto_break_threshold}分")
+        except Exception as e:
+            log_exception(logger, "自動休憩設定の保存エラー", e)
+            messagebox.showerror("エラー", f"設定の保存に失敗しました: {str(e)}")
+
+    def on_closing(self):
+        """ウィンドウクローズ時の処理"""
+        try:
+            logger.info("アプリケーション終了処理開始")
+
+            # 自動休憩設定を保存
+            self.save_auto_break_config()
+
+            # アイドル監視を停止
+            if self.auto_break_enabled:
+                self.idle_monitor.stop_monitoring()
+                logger.info("アイドル監視を停止しました")
+
+            logger.info("アプリケーション正常終了")
+        except Exception as e:
+            log_exception(logger, "終了処理エラー", e)
+        finally:
+            # ウィンドウを閉じる
+            self.root.destroy()
 
 
 def main():
