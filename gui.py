@@ -101,14 +101,37 @@ class TimeClockGUI:
         # Notebookのスタイル
         style.configure('TNotebook',
                        background=self.colors['bg'],
-                       borderwidth=0)
+                       borderwidth=0,
+                       tabmargins=0)
+
+        # タブのレイアウトを設定して、選択時のサイズ変更を防ぐ
+        style.layout('TNotebook.Tab', [
+            ('Notebook.tab', {
+                'sticky': 'nswe',
+                'children': [
+                    ('Notebook.padding', {
+                        'side': 'top',
+                        'sticky': 'nswe',
+                        'children': [
+                            ('Notebook.label', {'side': 'top', 'sticky': ''})
+                        ]
+                    })
+                ]
+            })
+        ])
+
+        # タブのスタイル（自然なバランスのサイズに固定）
         style.configure('TNotebook.Tab',
                        background=self.colors['bg_light'],
                        foreground=self.colors['fg'],
-                       padding=[20, 10])
+                       padding=[20, 6],  # 横20、縦6で自然なバランス
+                       borderwidth=0)
+
+        # 選択状態でも同じパディングを維持（色だけ変更）
         style.map('TNotebook.Tab',
-                 background=[('selected', self.colors['accent'])],
-                 foreground=[('selected', '#ffffff')])
+                 background=[('selected', self.colors['accent']), ('!selected', self.colors['bg_light'])],
+                 foreground=[('selected', '#ffffff'), ('!selected', self.colors['fg'])],
+                 padding=[('selected', [20, 6]), ('!selected', [20, 6])])
 
         # Frameのスタイル
         style.configure('TFrame', background=self.colors['bg'])
