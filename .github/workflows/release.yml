@@ -1,0 +1,76 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0.0, v1.1.0 などのタグでトリガー
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build executable
+        run: |
+          pyinstaller --onefile --windowed --name TimeClock gui.py
+
+      - name: Get tag name
+        id: get_version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/TimeClock.exe
+          body: |
+            ## TimeClock ${{ steps.get_version.outputs.VERSION }}
+
+            ### 🎉 主な機能
+            - ✅ **ダークモードGUI** - 目に優しいデザイン
+            - ✅ **自動休憩機能** - PC無操作検知（5-60分設定可能）
+            - ✅ **リアルタイム作業時間表示** - 現在の作業時間をライブ更新
+            - ✅ **月次レポート表示** - プロジェクト別の残業時間も表示
+            - ✅ **複数アカウント同時作業対応** - 複数ユーザーの独立管理
+            - ✅ **包括的なロギング** - 全操作を記録
+
+            ### 📥 インストール方法
+            1. `TimeClock.exe`をダウンロード
+            2. ダブルクリックで起動（**Pythonインストール不要**）
+            3. すぐに使える！
+
+            ### ⚙️ システム要件
+            - **OS**: Windows 10/11
+            - **注意**: 初回起動時にWindows Defenderの警告が出る場合があります
+              - 「詳細情報」→「実行」で起動できます
+
+            ### 📚 使い方
+            詳しい使い方は [README.md](https://github.com/Sekine53629/timeclock/blob/main/README.md) をご覧ください。
+
+            ### 🐛 バグ報告
+            問題が発生した場合は [Issues](https://github.com/Sekine53629/timeclock/issues) で報告してください。
+
+            ---
+
+            **ダウンロード**: 下の「Assets」から `TimeClock.exe` をダウンロードしてください。
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: TimeClock-${{ steps.get_version.outputs.VERSION }}
+          path: dist/TimeClock.exe
