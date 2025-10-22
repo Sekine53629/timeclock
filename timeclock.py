@@ -34,7 +34,8 @@ class TimeClock:
         Returns:
             開始したセッション情報
         """
-        current = self.storage.get_current_session()
+        # 指定アカウントのセッションのみチェック
+        current = self.storage.get_current_session(account)
         if current and not current.get('end_time'):
             raise ValueError(
                 f"既に作業中です: {current['account']} - {current['project']}\n"
@@ -52,17 +53,20 @@ class TimeClock:
             'status': 'working'
         }
 
-        self.storage.set_current_session(session)
+        self.storage.set_current_session(session, account)
         return session
 
-    def start_break(self) -> Dict:
+    def start_break(self, account: Optional[str] = None) -> Dict:
         """
         休憩開始
+
+        Args:
+            account: アカウント名（指定しない場合は互換性のため最初のセッション）
 
         Returns:
             更新されたセッション情報
         """
-        session = self.storage.get_current_session()
+        session = self.storage.get_current_session(account)
         if not session:
             raise ValueError("作業セッションが開始されていません")
 
@@ -76,17 +80,20 @@ class TimeClock:
         })
         session['status'] = 'on_break'
 
-        self.storage.set_current_session(session)
+        self.storage.set_current_session(session, session['account'])
         return session
 
-    def end_break(self) -> Dict:
+    def end_break(self, account: Optional[str] = None) -> Dict:
         """
         休憩終了
+
+        Args:
+            account: アカウント名（指定しない場合は互換性のため最初のセッション）
 
         Returns:
             更新されたセッション情報
         """
-        session = self.storage.get_current_session()
+        session = self.storage.get_current_session(account)
         if not session:
             raise ValueError("作業セッションが開始されていません")
 
@@ -98,17 +105,20 @@ class TimeClock:
         session['breaks'][-1]['end'] = now.isoformat()
         session['status'] = 'working'
 
-        self.storage.set_current_session(session)
+        self.storage.set_current_session(session, session['account'])
         return session
 
-    def end_work(self) -> Dict:
+    def end_work(self, account: Optional[str] = None) -> Dict:
         """
         作業終了
+
+        Args:
+            account: アカウント名（指定しない場合は互換性のため最初のセッション）
 
         Returns:
             完了したセッション情報
         """
-        session = self.storage.get_current_session()
+        session = self.storage.get_current_session(account)
         if not session:
             raise ValueError("作業セッションが開始されていません")
 
@@ -126,14 +136,22 @@ class TimeClock:
         # レコードとして保存
         self.storage.add_record(session['account'], session)
 
-        # 現在のセッションをクリア
-        self.storage.set_current_session(None)
+        # 現在のセッションをクリア（そのアカウントのみ）
+        self.storage.set_current_session(None, session['account'])
 
         return session
 
-    def get_current_status(self) -> Optional[Dict]:
-        """現在の作業状況を取得"""
-        session = self.storage.get_current_session()
+    def get_current_status(self, account: Optional[str] = None) -> Optional[Dict]:
+        """
+        現在の作業状況を取得
+
+        Args:
+            account: アカウント名（指定しない場合は互換性のため最初のセッション）
+
+        Returns:
+            セッション情報
+        """
+        session = self.storage.get_current_session(account)
         if not session:
             return None
 
@@ -142,6 +160,19 @@ class TimeClock:
         session['current_work_minutes'] = work_duration
 
         return session
+
+    def get_all_current_statuses(self) -> Dict[str, Dict]:
+        """全アカウントの現在の作業状況を取得"""
+        all_sessions = self.storage.get_all_current_sessions()
+        result = {}
+
+        for account, session in all_sessions.items():
+            # 現在までの作業時間を計算
+            work_duration = self._calculate_work_duration(session, up_to_now=True)
+            session['current_work_minutes'] = work_duration
+            result[account] = session
+
+        return result
 
     def _calculate_work_duration(self, session: Dict, up_to_now: bool = False) -> int:
         """
