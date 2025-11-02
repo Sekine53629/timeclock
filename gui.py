@@ -3,7 +3,7 @@
 打刻システム GUI アプリケーション
 """
 import tkinter as tk
-from tkinter import ttk, messagebox, scrolledtext
+from tkinter import ttk, messagebox, scrolledtext, simpledialog
 from datetime import datetime
 from pathlib import Path
 from timeclock import TimeClock
@@ -217,6 +217,7 @@ class TimeClockGUI:
         # タブの作成
         self.create_main_tab()
         self.create_report_tab()
+        self.create_edit_tab()
         self.create_config_tab()
 
     def create_main_tab(self):
@@ -249,6 +250,13 @@ class TimeClockGUI:
         self.project_combo = ttk.Combobox(start_group, textvariable=self.project_var, width=30)
         self.project_combo.grid(row=1, column=1, padx=5, pady=5)
         self.project_combo.bind('<<ComboboxSelected>>', self.on_project_selected)
+
+        # 作業内容コメント入力
+        ttk.Label(start_group, text="作業内容:").grid(row=2, column=0, sticky=tk.W, padx=5, pady=5)
+        self.comment_var = tk.StringVar()
+        comment_entry = ttk.Entry(start_group, textvariable=self.comment_var, width=32)
+        comment_entry.grid(row=2, column=1, padx=5, pady=5)
+        ttk.Label(start_group, text="(20字以内)").grid(row=2, column=2, sticky=tk.W, padx=5)
 
         # リフレッシュボタン
         ttk.Button(start_group, text="更新", command=self.refresh_accounts).grid(row=0, column=2, padx=5)
@@ -327,6 +335,66 @@ class TimeClockGUI:
         # 初期化
         self.refresh_report_accounts()
         self.on_report_type_changed()
+
+    def create_edit_tab(self):
+        """編集・申請タブの作成"""
+        edit_frame = ttk.Frame(self.notebook)
+        self.notebook.add(edit_frame, text="編集・申請")
+
+        # アカウント選択
+        account_group = ttk.LabelFrame(edit_frame, text="アカウント選択", padding=10)
+        account_group.pack(fill=tk.X, padx=10, pady=10)
+
+        ttk.Label(account_group, text="アカウント:").grid(row=0, column=0, sticky=tk.W, padx=5, pady=5)
+        self.edit_account_var = tk.StringVar()
+        self.edit_account_combo = ttk.Combobox(account_group, textvariable=self.edit_account_var, width=30)
+        self.edit_account_combo.grid(row=0, column=1, padx=5, pady=5)
+        self.edit_account_combo.bind('<<ComboboxSelected>>', self.on_edit_account_selected)
+
+        ttk.Button(account_group, text="レコード取得", command=self.load_records).grid(row=0, column=2, padx=5)
+
+        # レコード一覧
+        records_group = ttk.LabelFrame(edit_frame, text="打刻レコード一覧", padding=10)
+        records_group.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        # ツリービュー
+        columns = ('date', 'project', 'start', 'end', 'minutes', 'comment', 'status')
+        self.records_tree = ttk.Treeview(records_group, columns=columns, show='headings', height=10)
+
+        self.records_tree.heading('date', text='日付')
+        self.records_tree.heading('project', text='プロジェクト')
+        self.records_tree.heading('start', text='開始')
+        self.records_tree.heading('end', text='終了')
+        self.records_tree.heading('minutes', text='時間(分)')
+        self.records_tree.heading('comment', text='作業内容')
+        self.records_tree.heading('status', text='申請状態')
+
+        self.records_tree.column('date', width=100)
+        self.records_tree.column('project', width=120)
+        self.records_tree.column('start', width=80)
+        self.records_tree.column('end', width=80)
+        self.records_tree.column('minutes', width=80)
+        self.records_tree.column('comment', width=150)
+        self.records_tree.column('status', width=80)
+
+        # スクロールバー
+        scrollbar = ttk.Scrollbar(records_group, orient=tk.VERTICAL, command=self.records_tree.yview)
+        self.records_tree.configure(yscroll=scrollbar.set)
+
+        self.records_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # 操作ボタン
+        button_group = ttk.LabelFrame(edit_frame, text="操作", padding=10)
+        button_group.pack(fill=tk.X, padx=10, pady=10)
+
+        ttk.Button(button_group, text="選択レコードを編集", command=self.edit_selected_record).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_group, text="選択レコードを削除", command=self.delete_selected_record).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_group, text="期間指定で申請", command=self.submit_records_dialog).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_group, text="編集ログ表示", command=self.show_edit_logs).pack(side=tk.LEFT, padx=5)
+
+        # 初期化
+        self.refresh_edit_accounts()
 
     def create_config_tab(self):
         """設定タブの作成"""
@@ -706,14 +774,16 @@ class TimeClockGUI:
         """作業開始"""
         account = self.account_var.get()
         project = self.project_var.get()
+        comment = self.comment_var.get()
 
         if not account or not project:
             messagebox.showerror("エラー", "アカウントとプロジェクトを選択してください")
             return
 
         try:
-            session = self.tc.start_work(account, project)
+            session = self.tc.start_work(account, project, comment)
             messagebox.showinfo("作業開始", f"作業を開始しました\n{account} - {project}")
+            self.comment_var.set("")  # コメントをクリア
             self.update_status()
             self.refresh_accounts()  # アカウント一覧を更新
         except ValueError as e:
@@ -1151,6 +1221,309 @@ class TimeClockGUI:
         except Exception as e:
             log_exception(logger, "自動休憩設定の保存エラー", e)
             messagebox.showerror("エラー", f"設定の保存に失敗しました: {str(e)}")
+
+    def refresh_edit_accounts(self):
+        """編集タブのアカウント一覧を更新"""
+        accounts = self.tc.list_accounts()
+        self.edit_account_combo['values'] = accounts
+        if accounts and not self.edit_account_var.get():
+            self.edit_account_combo.current(0)
+
+    def on_edit_account_selected(self, event=None):
+        """編集タブでアカウント選択時の処理"""
+        pass
+
+    def load_records(self):
+        """レコードを読み込んで表示"""
+        account = self.edit_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # ツリービューをクリア
+        for item in self.records_tree.get_children():
+            self.records_tree.delete(item)
+
+        # レコードを取得
+        records = self.tc.storage.get_records(account)
+        self.current_records = records  # 編集用に保存
+
+        # ツリービューに追加
+        for record in records:
+            date = record.get('date', '')
+            project = record.get('project', '')
+            start = record.get('start_time', '')[:16] if record.get('start_time') else ''
+            end = record.get('end_time', '')[:16] if record.get('end_time') else ''
+            minutes = record.get('total_minutes', 0)
+            comment = record.get('comment', '')
+            status = record.get('submission_status', 'none')
+
+            self.records_tree.insert('', 'end', values=(date, project, start, end, minutes, comment, status))
+
+        messagebox.showinfo("完了", f"{len(records)}件のレコードを読み込みました")
+
+    def edit_selected_record(self):
+        """選択したレコードを編集"""
+        selection = self.records_tree.selection()
+        if not selection:
+            messagebox.showerror("エラー", "レコードを選択してください")
+            return
+
+        # 選択されたレコードのインデックスを取得
+        item = selection[0]
+        index = self.records_tree.index(item)
+        record = self.current_records[index]
+
+        # 編集ダイアログを表示
+        self.show_edit_dialog(record, index)
+
+    def show_edit_dialog(self, record, index):
+        """レコード編集ダイアログ"""
+        dialog = tk.Toplevel(self.root)
+        dialog.title("レコード編集")
+        dialog.geometry("500x500")
+
+        # 現在の休憩時間を計算
+        current_break_minutes = 0
+        for brk in record.get('breaks', []):
+            if brk.get('end'):
+                from datetime import datetime
+                break_start = datetime.fromisoformat(brk['start'])
+                break_end = datetime.fromisoformat(brk['end'])
+                current_break_minutes += int((break_end - break_start).total_seconds() / 60)
+
+        # 日付
+        ttk.Label(dialog, text="日付:").grid(row=0, column=0, sticky=tk.W, padx=10, pady=5)
+        date_var = tk.StringVar(value=record.get('date', ''))
+        ttk.Entry(dialog, textvariable=date_var, width=30).grid(row=0, column=1, padx=10, pady=5)
+
+        # プロジェクト
+        ttk.Label(dialog, text="プロジェクト:").grid(row=1, column=0, sticky=tk.W, padx=10, pady=5)
+        project_var = tk.StringVar(value=record.get('project', ''))
+        ttk.Entry(dialog, textvariable=project_var, width=30).grid(row=1, column=1, padx=10, pady=5)
+
+        # 開始時刻
+        ttk.Label(dialog, text="開始時刻:").grid(row=2, column=0, sticky=tk.W, padx=10, pady=5)
+        start_var = tk.StringVar(value=record.get('start_time', ''))
+        ttk.Entry(dialog, textvariable=start_var, width=30).grid(row=2, column=1, padx=10, pady=5)
+
+        # 終了時刻
+        ttk.Label(dialog, text="終了時刻:").grid(row=3, column=0, sticky=tk.W, padx=10, pady=5)
+        end_var = tk.StringVar(value=record.get('end_time', ''))
+        ttk.Entry(dialog, textvariable=end_var, width=30).grid(row=3, column=1, padx=10, pady=5)
+
+        # 合計休憩時間（分）
+        ttk.Label(dialog, text="合計休憩時間(分):").grid(row=4, column=0, sticky=tk.W, padx=10, pady=5)
+        break_minutes_var = tk.IntVar(value=current_break_minutes)
+        break_entry = ttk.Entry(dialog, textvariable=break_minutes_var, width=30)
+        break_entry.grid(row=4, column=1, padx=10, pady=5)
+        ttk.Label(dialog, text="※直接編集可能", font=('', 8), foreground='gray').grid(row=4, column=2, sticky=tk.W)
+
+        # 作業内容
+        ttk.Label(dialog, text="作業内容:").grid(row=5, column=0, sticky=tk.W, padx=10, pady=5)
+        comment_var = tk.StringVar(value=record.get('comment', ''))
+        ttk.Entry(dialog, textvariable=comment_var, width=30).grid(row=5, column=1, padx=10, pady=5)
+
+        # 変更理由
+        ttk.Label(dialog, text="変更理由:").grid(row=6, column=0, sticky=tk.W, padx=10, pady=5)
+        reason_var = tk.StringVar()
+        ttk.Entry(dialog, textvariable=reason_var, width=30).grid(row=6, column=1, padx=10, pady=5)
+
+        # 計算結果表示
+        calc_frame = ttk.LabelFrame(dialog, text="計算結果", padding=10)
+        calc_frame.grid(row=7, column=0, columnspan=3, padx=10, pady=10, sticky='ew')
+
+        calc_label = ttk.Label(calc_frame, text="", font=('', 9))
+        calc_label.pack()
+
+        def update_calculation(*args):
+            """作業時間の計算結果を更新"""
+            try:
+                from datetime import datetime
+                start_dt = datetime.fromisoformat(start_var.get())
+                end_dt = datetime.fromisoformat(end_var.get())
+                total_minutes = int((end_dt - start_dt).total_seconds() / 60)
+                break_mins = break_minutes_var.get()
+                work_minutes = total_minutes - break_mins
+
+                calc_text = f"総時間: {total_minutes}分 - 休憩: {break_mins}分 = 作業時間: {work_minutes}分 ({work_minutes/60:.2f}時間)"
+                calc_label.config(text=calc_text, foreground='green')
+            except:
+                calc_label.config(text="時刻形式が正しくありません", foreground='red')
+
+        # 変更時に計算を更新
+        start_var.trace('w', update_calculation)
+        end_var.trace('w', update_calculation)
+        break_minutes_var.trace('w', update_calculation)
+
+        # 初期表示
+        update_calculation()
+
+        def save_changes():
+            # 更新されたレコードを作成
+            updated_record = record.copy()
+            updated_record['date'] = date_var.get()
+            updated_record['project'] = project_var.get()
+            updated_record['start_time'] = start_var.get()
+            updated_record['end_time'] = end_var.get()
+            updated_record['comment'] = comment_var.get()
+
+            # 作業時間を再計算
+            from datetime import datetime
+            try:
+                start_dt = datetime.fromisoformat(updated_record['start_time'])
+                end_dt = datetime.fromisoformat(updated_record['end_time'])
+                total_minutes = int((end_dt - start_dt).total_seconds() / 60)
+
+                # ユーザーが入力した休憩時間を使用
+                break_mins = break_minutes_var.get()
+                work_minutes = total_minutes - break_mins
+
+                if work_minutes < 0:
+                    messagebox.showerror("エラー", "休憩時間が総時間を超えています")
+                    return
+
+                updated_record['total_minutes'] = work_minutes
+
+                # 休憩時間の情報を更新（元のbreaksデータは保持しつつ、編集した休憩時間を記録）
+                # 注: 既存のbreaksデータは保持し、total_break_minutesフィールドを追加
+                updated_record['total_break_minutes'] = break_mins
+
+            except Exception as e:
+                messagebox.showerror("エラー", f"時刻の形式が正しくありません: {e}")
+                return
+
+            # レコードを更新
+            account = self.edit_account_var.get()
+            success = self.tc.update_record(account, index, updated_record, reason_var.get())
+
+            if success:
+                messagebox.showinfo("成功", "レコードを更新しました")
+                dialog.destroy()
+                self.load_records()
+            else:
+                messagebox.showerror("エラー", "レコードの更新に失敗しました")
+
+        # ボタン
+        button_frame = ttk.Frame(dialog)
+        button_frame.grid(row=8, column=0, columnspan=3, pady=20)
+        ttk.Button(button_frame, text="保存", command=save_changes).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="キャンセル", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+
+    def delete_selected_record(self):
+        """選択したレコードを削除"""
+        selection = self.records_tree.selection()
+        if not selection:
+            messagebox.showerror("エラー", "レコードを選択してください")
+            return
+
+        # 確認ダイアログ
+        if not messagebox.askyesno("確認", "選択したレコードを削除しますか?"):
+            return
+
+        # 削除理由を入力
+        reason = tk.simpledialog.askstring("削除理由", "削除理由を入力してください:")
+        if reason is None:
+            return
+
+        # 選択されたレコードのインデックスを取得
+        item = selection[0]
+        index = self.records_tree.index(item)
+
+        # レコードを削除
+        account = self.edit_account_var.get()
+        success = self.tc.delete_record(account, index, reason)
+
+        if success:
+            messagebox.showinfo("成功", "レコードを削除しました")
+            self.load_records()
+        else:
+            messagebox.showerror("エラー", "レコードの削除に失敗しました")
+
+    def submit_records_dialog(self):
+        """期間指定で申請ダイアログ"""
+        dialog = tk.Toplevel(self.root)
+        dialog.title("期間指定で申請")
+        dialog.geometry("400x200")
+
+        # 開始日
+        ttk.Label(dialog, text="開始日 (YYYY-MM-DD):").grid(row=0, column=0, sticky=tk.W, padx=10, pady=10)
+        start_var = tk.StringVar()
+        ttk.Entry(dialog, textvariable=start_var, width=20).grid(row=0, column=1, padx=10, pady=10)
+
+        # 終了日
+        ttk.Label(dialog, text="終了日 (YYYY-MM-DD):").grid(row=1, column=0, sticky=tk.W, padx=10, pady=10)
+        end_var = tk.StringVar()
+        ttk.Entry(dialog, textvariable=end_var, width=20).grid(row=1, column=1, padx=10, pady=10)
+
+        # 申請理由
+        ttk.Label(dialog, text="申請理由:").grid(row=2, column=0, sticky=tk.W, padx=10, pady=10)
+        reason_var = tk.StringVar()
+        ttk.Entry(dialog, textvariable=reason_var, width=20).grid(row=2, column=1, padx=10, pady=10)
+
+        def submit():
+            account = self.edit_account_var.get()
+            if not account:
+                messagebox.showerror("エラー", "アカウントを選択してください")
+                return
+
+            count = self.tc.submit_records(account, start_var.get(), end_var.get(), reason_var.get())
+            messagebox.showinfo("完了", f"{count}件のレコードを申請しました")
+            dialog.destroy()
+            self.load_records()
+
+        # ボタン
+        button_frame = ttk.Frame(dialog)
+        button_frame.grid(row=3, column=0, columnspan=2, pady=20)
+        ttk.Button(button_frame, text="申請", command=submit).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="キャンセル", command=dialog.destroy).pack(side=tk.LEFT, padx=5)
+
+    def show_edit_logs(self):
+        """編集ログを表示"""
+        account = self.edit_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # ログを取得
+        logs = self.tc.get_edit_logs(account=account, limit=100)
+
+        # ダイアログを作成
+        dialog = tk.Toplevel(self.root)
+        dialog.title(f"編集ログ - {account}")
+        dialog.geometry("800x500")
+
+        # ツリービュー
+        columns = ('timestamp', 'action', 'record_id', 'editor', 'reason')
+        tree = ttk.Treeview(dialog, columns=columns, show='headings')
+
+        tree.heading('timestamp', text='日時')
+        tree.heading('action', text='操作')
+        tree.heading('record_id', text='レコードID')
+        tree.heading('editor', text='編集者')
+        tree.heading('reason', text='理由')
+
+        tree.column('timestamp', width=150)
+        tree.column('action', width=80)
+        tree.column('record_id', width=200)
+        tree.column('editor', width=100)
+        tree.column('reason', width=250)
+
+        scrollbar = ttk.Scrollbar(dialog, orient=tk.VERTICAL, command=tree.yview)
+        tree.configure(yscroll=scrollbar.set)
+
+        tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y, pady=10)
+
+        # ログを追加
+        for log in logs:
+            timestamp = log.get('timestamp', '')[:19]
+            action = log.get('action', '')
+            record_id = log.get('record_id', '')
+            editor = log.get('editor', '')
+            reason = log.get('reason', '')
+
+            tree.insert('', 'end', values=(timestamp, action, record_id, editor, reason))
 
     def on_closing(self):
         """ウィンドウクローズ時の処理"""

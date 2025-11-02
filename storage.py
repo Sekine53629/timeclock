@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
 from file_lock import FileLock, FileBackup
+from edit_log import EditLog
 
 class Storage:
     def __init__(self, data_dir: Optional[str] = None):
@@ -24,6 +25,7 @@ class Storage:
         self.data_file = self.data_dir / 'timeclock_data.json'
         self.config_file = self.data_dir / 'config.json'
         self.lock_file = self.data_dir / '.timeclock.lock'
+        self.edit_log = EditLog(data_dir)
 
     def load_data(self) -> Dict:
         """全データを読み込み"""
@@ -331,3 +333,168 @@ class Storage:
             'closing_day': account_config.get('closing_day', 31),
             'standard_hours_per_day': account_config.get('standard_hours_per_day', 8)
         }
+
+    def update_record(self, account: str, record_index: int, updated_record: Dict,
+                     reason: str = "", editor: Optional[str] = None) -> bool:
+        """
+        レコードを更新
+
+        Args:
+            account: アカウント名
+            record_index: レコードのインデックス
+            updated_record: 更新後のレコード
+            reason: 変更理由
+            editor: 編集者（未指定時はaccount）
+
+        Returns:
+            成功した場合True
+        """
+        data = self.load_data()
+        if account not in data['accounts']:
+            return False
+
+        records = data['accounts'][account]['records']
+        if record_index < 0 or record_index >= len(records):
+            return False
+
+        # 変更前のレコードを保存
+        before = records[record_index].copy()
+
+        # レコードIDを生成
+        record_id = self.edit_log.generate_record_id(before)
+
+        # レコードを更新
+        records[record_index] = updated_record
+
+        # 申請状態を「編集済み」に設定
+        if 'submission_status' not in updated_record:
+            records[record_index]['submission_status'] = 'edited'
+
+        self.save_data(data)
+
+        # 編集ログを記録
+        self.edit_log.add_edit_log(
+            account=account,
+            record_id=record_id,
+            action='edit',
+            before=before,
+            after=updated_record,
+            reason=reason,
+            editor=editor
+        )
+
+        return True
+
+    def delete_record(self, account: str, record_index: int,
+                     reason: str = "", editor: Optional[str] = None) -> bool:
+        """
+        レコードを削除
+
+        Args:
+            account: アカウント名
+            record_index: レコードのインデックス
+            reason: 削除理由
+            editor: 編集者（未指定時はaccount）
+
+        Returns:
+            成功した場合True
+        """
+        data = self.load_data()
+        if account not in data['accounts']:
+            return False
+
+        records = data['accounts'][account]['records']
+        if record_index < 0 or record_index >= len(records):
+            return False
+
+        # 削除前のレコードを保存
+        deleted_record = records[record_index].copy()
+
+        # レコードIDを生成
+        record_id = self.edit_log.generate_record_id(deleted_record)
+
+        # レコードを削除
+        del records[record_index]
+        self.save_data(data)
+
+        # 編集ログを記録
+        self.edit_log.add_edit_log(
+            account=account,
+            record_id=record_id,
+            action='delete',
+            before=deleted_record,
+            after=None,
+            reason=reason,
+            editor=editor
+        )
+
+        return True
+
+    def submit_records(self, account: str, start_date: str, end_date: str,
+                      reason: str = "", editor: Optional[str] = None) -> int:
+        """
+        指定期間のレコードを申請状態にする
+
+        Args:
+            account: アカウント名
+            start_date: 開始日（YYYY-MM-DD形式）
+            end_date: 終了日（YYYY-MM-DD形式）
+            reason: 申請理由
+            editor: 申請者（未指定時はaccount）
+
+        Returns:
+            申請したレコード数
+        """
+        data = self.load_data()
+        if account not in data['accounts']:
+            return 0
+
+        records = data['accounts'][account]['records']
+        submitted_count = 0
+
+        for record in records:
+            record_date = record.get('date', '')
+            if start_date <= record_date <= end_date:
+                # 申請状態を更新
+                old_status = record.get('submission_status', 'none')
+                record['submission_status'] = 'submitted'
+                record['submission_date'] = datetime.now().isoformat()
+
+                # 編集ログを記録
+                record_id = self.edit_log.generate_record_id(record)
+                self.edit_log.add_edit_log(
+                    account=account,
+                    record_id=record_id,
+                    action='submit',
+                    before={'submission_status': old_status},
+                    after={'submission_status': 'submitted'},
+                    reason=reason,
+                    editor=editor
+                )
+
+                submitted_count += 1
+
+        self.save_data(data)
+        return submitted_count
+
+    def get_edit_logs(self, account: Optional[str] = None,
+                     record_id: Optional[str] = None,
+                     limit: int = 50) -> List[Dict]:
+        """
+        編集ログを取得
+
+        Args:
+            account: アカウント名（指定時はそのアカウントのログのみ）
+            record_id: レコードID（指定時はそのレコードのログのみ）
+            limit: 取得件数
+
+        Returns:
+            編集ログのリスト
+        """
+        if record_id:
+            return self.edit_log.get_logs_by_record(record_id)
+        elif account:
+            logs = self.edit_log.get_logs_by_account(account)
+            return logs[-limit:]  # 最新のN件
+        else:
+            return self.edit_log.get_recent_logs(limit)

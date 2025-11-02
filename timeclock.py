@@ -23,13 +23,14 @@ class TimeClock:
 
         self.storage = storage
 
-    def start_work(self, account: str, project: str) -> Dict:
+    def start_work(self, account: str, project: str, comment: str = "") -> Dict:
         """
         作業開始
 
         Args:
             account: アカウント名
             project: プロジェクト名
+            comment: 作業内容コメント（20字以内）
 
         Returns:
             開始したセッション情報
@@ -42,6 +43,10 @@ class TimeClock:
                 f"先に作業を終了してください (timeclock end)"
             )
 
+        # コメントは20字以内に制限
+        if len(comment) > 20:
+            comment = comment[:20]
+
         now = datetime.now()
         session = {
             'account': account,
@@ -50,7 +55,8 @@ class TimeClock:
             'start_time': now.isoformat(),
             'breaks': [],
             'end_time': None,
-            'status': 'working'
+            'status': 'working',
+            'comment': comment
         }
 
         self.storage.set_current_session(session, account)
@@ -460,3 +466,73 @@ class TimeClock:
     def get_account_config(self, account: str) -> Dict:
         """アカウントの設定を取得"""
         return self.storage.get_account_config(account)
+
+    def update_record(self, account: str, record_index: int, updated_record: Dict,
+                     reason: str = "", editor: Optional[str] = None) -> bool:
+        """
+        レコードを更新
+
+        Args:
+            account: アカウント名
+            record_index: レコードのインデックス
+            updated_record: 更新後のレコード
+            reason: 変更理由
+            editor: 編集者
+
+        Returns:
+            成功した場合True
+        """
+        # コメントは20字以内に制限
+        if 'comment' in updated_record and len(updated_record['comment']) > 20:
+            updated_record['comment'] = updated_record['comment'][:20]
+
+        return self.storage.update_record(account, record_index, updated_record, reason, editor)
+
+    def delete_record(self, account: str, record_index: int,
+                     reason: str = "", editor: Optional[str] = None) -> bool:
+        """
+        レコードを削除
+
+        Args:
+            account: アカウント名
+            record_index: レコードのインデックス
+            reason: 削除理由
+            editor: 編集者
+
+        Returns:
+            成功した場合True
+        """
+        return self.storage.delete_record(account, record_index, reason, editor)
+
+    def submit_records(self, account: str, start_date: str, end_date: str,
+                      reason: str = "", editor: Optional[str] = None) -> int:
+        """
+        指定期間のレコードを申請
+
+        Args:
+            account: アカウント名
+            start_date: 開始日（YYYY-MM-DD形式）
+            end_date: 終了日（YYYY-MM-DD形式）
+            reason: 申請理由
+            editor: 申請者
+
+        Returns:
+            申請したレコード数
+        """
+        return self.storage.submit_records(account, start_date, end_date, reason, editor)
+
+    def get_edit_logs(self, account: Optional[str] = None,
+                     record_id: Optional[str] = None,
+                     limit: int = 50) -> List[Dict]:
+        """
+        編集ログを取得
+
+        Args:
+            account: アカウント名
+            record_id: レコードID
+            limit: 取得件数
+
+        Returns:
+            編集ログのリスト
+        """
+        return self.storage.get_edit_logs(account, record_id, limit)
