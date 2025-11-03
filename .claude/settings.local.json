@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python gui.py:*)",
+      "Bash(python test_edit_features.py:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
