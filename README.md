@@ -638,6 +638,91 @@ cp ~/.timeclock/timeclock_data.json.backup_<timestamp> ~/.timeclock/timeclock_da
 - 作業終了後、数秒待ってから別PCで操作してください
 - Google Driveの同期状態を確認してください
 
+## エグゼ化（配布用実行ファイルの作成）
+
+### PyInstallerを使用したエグゼ化手順
+
+#### 1. PyInstallerのインストール
+
+```bash
+pip install pyinstaller
+```
+
+#### 2. **重要: ユーザーデータの除外**
+
+エグゼ化する前に、**必ず実際のユーザーデータを含むフォルダを削除または移動してください**。
+
+```bash
+# Google Driveなど、実データが含まれるフォルダをバックアップ
+# 例: ~/Google Drive/timeclock → ~/Google Drive/timeclock_backup
+
+# または、~/.timeclockrc を一時的に削除してデフォルト設定に戻す
+rm ~/.timeclockrc  # Mac/Linux
+del %USERPROFILE%\.timeclockrc  # Windows
+```
+
+#### 3. GUIをエグゼ化
+
+```bash
+# Windowsの場合
+pyinstaller --onefile --windowed --name=TimeClock gui.py
+
+# macOSの場合
+pyinstaller --onefile --windowed --name=TimeClock gui.py
+```
+
+#### 4. エグゼファイルの場所
+
+エグゼファイルは `dist` フォルダ内に生成されます:
+
+- Windows: `dist\TimeClock.exe`
+- macOS: `dist/TimeClock.app`
+
+#### 5. 配布とデータ管理
+
+**重要**: エグゼ化されたアプリケーションは、初回起動時に以下の動作をします:
+
+1. **実行ファイルと同じフォルダに `db` フォルダを自動作成**
+2. **`db` フォルダ内にデフォルトのテスト用データを配置**
+   - デフォルトアカウント: `testUser`
+   - デフォルト設定: 月末締め、8時間/日
+
+**配布時の注意点**:
+
+- `dist` フォルダ内のエグゼファイルのみを配布してください
+- `db` フォルダは配布しないでください（自動生成されます）
+- ユーザーごとに独自の `db` フォルダが作成されます
+
+#### 6. ユーザーがGoogle Driveを使用する場合
+
+配布先のユーザーがGoogle Driveなどのクラウドストレージを使用したい場合:
+
+```bash
+# GUIの「設定」タブから「データベース設定」で保存先を変更
+# または、CLIで設定
+python cli.py setup
+```
+
+### エグゼ化時のトラブルシューティング
+
+#### 実データが含まれてしまった場合
+
+1. `~/.timeclockrc` を削除してデフォルト設定に戻す
+2. Google Driveなどの実データフォルダを移動
+3. 再度エグゼ化を実行
+
+#### エグゼファイルが大きすぎる
+
+PyInstallerは全依存関係を含めるため、ファイルサイズが大きくなります。
+
+```bash
+# ファイルサイズを確認
+ls -lh dist/  # Mac/Linux
+dir dist\  # Windows
+```
+
+通常、10-50MBのサイズになります。
+
 ## ライセンス
 
 MIT License

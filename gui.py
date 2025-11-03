@@ -2,6 +2,18 @@
 """
 打刻システム GUI アプリケーション
 """
+import os
+import platform
+# macOS の Tk 非推奨警告を抑制
+os.environ['TK_SILENCE_DEPRECATION'] = '1'
+# macOS でダークモードの自動適用を無効化
+if platform.system() == 'Darwin':
+    try:
+        from tkinter import _tkinter
+        _tkinter.setappearance('aqua')
+    except:
+        pass
+
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
 from datetime import datetime
@@ -23,30 +35,47 @@ class TimeClockGUI:
             self.root = root
             self.root.title("打刻システム")
             self.root.geometry("900x650")  # コンパクトなサイズ
+            logger.info("ウィンドウ設定完了")
 
             # 最小サイズを設定
             self.root.minsize(800, 600)
+            logger.info("最小サイズ設定完了")
 
-            # ダークモードの色設定
-            self.setup_dark_theme()
+            # ライトモードの色設定（macOS互換性のため最小限の設定）
+            logger.info("カラー設定開始")
+            self.setup_colors_only()
+            logger.info("カラー設定完了")
 
+            logger.info("TimeClock初期化開始")
             self.tc = TimeClock()
+            logger.info("TimeClock初期化完了")
+
+            logger.info("ConfigManager初期化開始")
             self.config_manager = ConfigManager()
+            logger.info("ConfigManager初期化完了")
 
             # 設定の読み込み
+            logger.info("自動休憩設定読み込み開始")
             self.load_auto_break_config()
+            logger.info("自動休憩設定読み込み完了")
 
             # アイドル監視機能の初期化
+            logger.info("IdleMonitor初期化開始")
             self.idle_monitor = IdleMonitor(
                 idle_threshold_minutes=self.auto_break_threshold,
                 check_interval_seconds=30
             )
+            logger.info("IdleMonitor初期化完了")
 
             # メインフレームの作成
+            logger.info("ウィジェット作成開始")
             self.create_widgets()
+            logger.info("ウィジェット作成完了")
 
             # 初期状態の更新
+            logger.info("ステータス更新開始")
             self.update_status()
+            logger.info("ステータス更新完了")
 
             # 定期的にステータスを更新（30秒ごと）
             self.schedule_status_update()
@@ -66,147 +95,26 @@ class TimeClockGUI:
             )
             raise
 
-    def setup_dark_theme(self):
-        """ダークモードのテーマを設定"""
-        # ダークモードの色定義
+    def setup_colors_only(self):
+        """色定義のみ設定（macOS互換性のため、ttkスタイル設定を削除）"""
+        # ライトモードの色定義
         self.colors = {
-            'bg': '#1e1e1e',           # 背景色（濃いグレー）
-            'fg': '#e0e0e0',           # 文字色（明るいグレー）
-            'bg_light': '#2d2d2d',     # 少し明るい背景
-            'bg_dark': '#181818',      # より暗い背景
+            'bg': '#f0f0f0',           # 背景色（明るいグレー）
+            'fg': '#000000',           # 文字色（黒）
+            'bg_light': '#ffffff',     # より明るい背景（白）
+            'bg_dark': '#e0e0e0',      # 少し暗い背景
             'accent': '#007acc',       # アクセントカラー（青）
             'accent_hover': '#005a9e', # ホバー時のアクセント
-            'success': '#4ec9b0',      # 成功（緑がかった青）
-            'warning': '#ce9178',      # 警告（オレンジ）
-            'error': '#f48771',        # エラー（赤）
-            'border': '#3e3e3e',       # ボーダー色
+            'success': '#00a000',      # 成功（緑）
+            'warning': '#ff8c00',      # 警告（オレンジ）
+            'error': '#d00000',        # エラー（赤）
+            'border': '#c0c0c0',       # ボーダー色
         }
 
-        # tkinterのスタイル設定
+        # 最小限のスタイル設定
         self.root.configure(bg=self.colors['bg'])
+        logger.info("色設定を適用しました（ttkスタイルは未適用）")
 
-        # ttkスタイルの設定
-        style = ttk.Style()
-        style.theme_use('clam')  # clamテーマをベースに
-
-        # 全体の背景色とフォント
-        style.configure('.',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'],
-                       fieldbackground=self.colors['bg_light'],
-                       bordercolor=self.colors['border'],
-                       darkcolor=self.colors['bg_dark'],
-                       lightcolor=self.colors['bg_light'])
-
-        # Notebookのスタイル
-        style.configure('TNotebook',
-                       background=self.colors['bg'],
-                       borderwidth=0,
-                       tabmargins=0)
-
-        # タブのレイアウトを設定して、選択時のサイズ変更を防ぐ
-        style.layout('TNotebook.Tab', [
-            ('Notebook.tab', {
-                'sticky': 'nswe',
-                'children': [
-                    ('Notebook.padding', {
-                        'side': 'top',
-                        'sticky': 'nswe',
-                        'children': [
-                            ('Notebook.label', {'side': 'top', 'sticky': ''})
-                        ]
-                    })
-                ]
-            })
-        ])
-
-        # タブのスタイル（自然なバランスのサイズに固定）
-        style.configure('TNotebook.Tab',
-                       background=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       padding=[20, 6],  # 横20、縦6で自然なバランス
-                       borderwidth=0)
-
-        # 選択状態でも同じパディングを維持（色だけ変更）
-        style.map('TNotebook.Tab',
-                 background=[('selected', self.colors['accent']), ('!selected', self.colors['bg_light'])],
-                 foreground=[('selected', '#ffffff'), ('!selected', self.colors['fg'])],
-                 padding=[('selected', [20, 6]), ('!selected', [20, 6])])
-
-        # Frameのスタイル
-        style.configure('TFrame', background=self.colors['bg'])
-
-        # LabelFrameのスタイル
-        style.configure('TLabelframe',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'],
-                       bordercolor=self.colors['border'])
-        style.configure('TLabelframe.Label',
-                       background=self.colors['bg'],
-                       foreground=self.colors['accent'])
-
-        # Labelのスタイル
-        style.configure('TLabel',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'])
-
-        # Buttonのスタイル
-        style.configure('TButton',
-                       background=self.colors['accent'],
-                       foreground='#ffffff',
-                       borderwidth=1,
-                       focuscolor=self.colors['accent'],
-                       padding=[10, 5])
-        style.map('TButton',
-                 background=[('active', self.colors['accent_hover']),
-                           ('pressed', self.colors['bg_dark'])])
-
-        # Entryのスタイル
-        style.configure('TEntry',
-                       fieldbackground=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       insertcolor=self.colors['fg'],
-                       bordercolor=self.colors['border'])
-
-        # Comboboxのスタイル
-        style.configure('TCombobox',
-                       fieldbackground=self.colors['bg_light'],
-                       background=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       arrowcolor=self.colors['fg'],
-                       bordercolor=self.colors['border'])
-
-        # Checkbuttonのスタイル
-        style.configure('TCheckbutton',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'])
-
-        # Radiobuttonのスタイル
-        style.configure('TRadiobutton',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'])
-
-        # Treeviewのスタイル
-        style.configure('Treeview',
-                       background=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       fieldbackground=self.colors['bg_light'],
-                       bordercolor=self.colors['border'])
-        style.configure('Treeview.Heading',
-                       background=self.colors['bg_dark'],
-                       foreground=self.colors['accent'],
-                       borderwidth=1)
-        style.map('Treeview',
-                 background=[('selected', self.colors['accent'])])
-
-        # Scrollbarのスタイル
-        style.configure('Vertical.TScrollbar',
-                       background=self.colors['bg_light'],
-                       troughcolor=self.colors['bg_dark'],
-                       bordercolor=self.colors['border'],
-                       arrowcolor=self.colors['fg'])
-
-        logger.info("ダークモードを適用しました")
 
     def create_widgets(self):
         """ウィジェットの作成"""
@@ -221,14 +129,21 @@ class TimeClockGUI:
 
     def create_main_tab(self):
         """メインタブ（作業開始/終了）の作成"""
-        main_frame = ttk.Frame(self.notebook)
+        # macOS互換性のため、通常のtkフレームを使用
+        main_frame = tk.Frame(self.notebook, bg=self.colors['bg'])
         self.notebook.add(main_frame, text="打刻")
 
         # 現在の状態表示エリア
-        status_group = ttk.LabelFrame(main_frame, text="現在の状態", padding=10)
+        status_group = tk.LabelFrame(main_frame, text="現在の状態",
+                                     bg=self.colors['bg'], fg=self.colors['fg'],
+                                     padx=10, pady=10)
         status_group.pack(fill=tk.X, padx=10, pady=10)
 
-        self.status_text = scrolledtext.ScrolledText(status_group, height=8, width=70)
+        self.status_text = scrolledtext.ScrolledText(
+            status_group, height=8, width=70,
+            bg=self.colors['bg_light'],
+            fg=self.colors['fg']
+        )
         self.status_text.pack(fill=tk.BOTH, expand=True)
         self.status_text.config(state=tk.DISABLED)
 
@@ -320,7 +235,11 @@ class TimeClockGUI:
         result_group = ttk.LabelFrame(report_frame, text="レポート結果", padding=10)
         result_group.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.report_text = scrolledtext.ScrolledText(result_group, height=15, width=70)
+        self.report_text = scrolledtext.ScrolledText(
+            result_group, height=15, width=70,
+            bg=self.colors['bg_light'],
+            fg=self.colors['fg']
+        )
         self.report_text.pack(fill=tk.BOTH, expand=True)
         self.report_text.config(state=tk.DISABLED)
 
@@ -1174,8 +1093,10 @@ class TimeClockGUI:
 
 
 def main():
+    logger.info("main() 関数開始")
     root = tk.Tk()
     app = TimeClockGUI(root)
+    logger.info("mainloop() 開始")
     root.mainloop()
 
 
