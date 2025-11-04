@@ -86,39 +86,5 @@
     "after": null,
     "reason": "jsonファイルを統合",
     "editor": "stady"
-  },
-  {
-    "timestamp": "2025-11-04T22:19:23.454984",
-    "account": "0053629",
-    "record_id": "0053629_2025-10-11_20251011_070453.202396",
-    "action": "edit",
-    "before": {
-      "account": "0053629",
-      "project": "tsuruha",
-      "date": "2025-10-11",
-      "start_time": "2025-10-11T07:04:53.202396",
-      "breaks": [],
-      "end_time": "2025-10-11T07:57:04.533359",
-      "status": "completed",
-      "total_minutes": 52,
-      "comment": "",
-      "total_break_minutes": 0,
-      "submission_status": "edited"
-    },
-    "after": {
-      "account": "0053629",
-      "project": "tsuruha",
-      "date": "2025-10-11",
-      "start_time": "2025-10-11T07:04:53.202396",
-      "breaks": [],
-      "end_time": "2025-10-11T07:57:04.533359",
-      "status": "completed",
-      "total_minutes": 52,
-      "comment": "",
-      "total_break_minutes": 0,
-      "submission_status": "edited"
-    },
-    "reason": "打刻実績をGithubに統合",
-    "editor": "0053629"
   }
 ]
