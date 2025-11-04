@@ -49,5 +49,16 @@
       "records": []
     }
   },
-  "current_sessions": {}
+  "current_sessions": {
+    "0053629": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-11-04",
+      "start_time": "2025-11-04T21:53:40.426905",
+      "breaks": [],
+      "end_time": null,
+      "status": "working",
+      "comment": "打刻実績管理"
+    }
+  }
 }
