@@ -1,0 +1,15 @@
+{
+  "repo_paths": [
+    "C:/Users/あなたのユーザー名/Documents/GitHub/project1",
+    "C:/Users/あなたのユーザー名/Documents/GitHub/project2",
+    "C:/Users/あなたのユーザー名/Documents/GitHub/project3"
+  ],
+  "author_names": [
+    "あなたのGit設定名1",
+    "あなたのGit設定名2"
+  ],
+  "hourly_rate": 2000,
+  "overtime_rate": 1.25,
+  "weekend_rate": 1.35,
+  "late_night_rate": 1.5
+}

@@ -1,0 +1,574 @@
+{
+  "hourly_rate": 2637,
+  "calculation_date": "2025-11-11 11:46:55",
+  "monthly_details": {
+    "2024-06": {
+      "period_start": "2024-06-16",
+      "period_end": "2024-07-15",
+      "total_commits": 5,
+      "total_work_hours": 0.16,
+      "breakdown": {
+        "weekday_hours": 0.16,
+        "weekend_only_hours": 0.0,
+        "late_night_only_hours": 0.16,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 0.42,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 0.16,
+          "rate": 1.25,
+          "weighted_hours": 0.2,
+          "amount": 527.0
+        },
+        "weekend_only": {
+          "hours": 0.0,
+          "rate": 1.5,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "late_night_only": {
+          "hours": 0.16,
+          "rate": 1.35,
+          "weighted_hours": 0.22,
+          "amount": 570.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 1097.0,
+      "projects": [
+        "samurai-terakoya"
+      ]
+    },
+    "2024-07": {
+      "period_start": null,
+      "period_end": null,
+      "total_commits": 0,
+      "total_work_hours": 0.0,
+      "breakdown": {
+        "weekday_hours": 0.0,
+        "weekend_only_hours": 0.0,
+        "late_night_only_hours": 0.0,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 0.0,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 0.0,
+          "rate": 1.25,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "weekend_only": {
+          "hours": 0.0,
+          "rate": 1.5,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "late_night_only": {
+          "hours": 0.0,
+          "rate": 1.35,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 0.0,
+      "projects": []
+    },
+    "2024-08": {
+      "period_start": "2024-08-16",
+      "period_end": "2024-09-15",
+      "total_commits": 2,
+      "total_work_hours": 1.57,
+      "breakdown": {
+        "weekday_hours": 1.57,
+        "weekend_only_hours": 0.0,
+        "late_night_only_hours": 1.21,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 3.59,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 1.57,
+          "rate": 1.25,
+          "weighted_hours": 1.96,
+          "amount": 5159.0
+        },
+        "weekend_only": {
+          "hours": 0.0,
+          "rate": 1.5,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "late_night_only": {
+          "hours": 1.21,
+          "rate": 1.35,
+          "weighted_hours": 1.64,
+          "amount": 4319.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 9478.0,
+      "projects": [
+        "cocofolia-support-tool",
+        "permitPharmacist-VBA"
+      ]
+    },
+    "2024-10": {
+      "period_start": "2024-10-16",
+      "period_end": "2024-11-15",
+      "total_commits": 1,
+      "total_work_hours": 0.03,
+      "breakdown": {
+        "weekday_hours": 0.0,
+        "weekend_only_hours": 0.03,
+        "late_night_only_hours": 0.0,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 0.04,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 0.0,
+          "rate": 1.25,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "weekend_only": {
+          "hours": 0.03,
+          "rate": 1.5,
+          "weighted_hours": 0.04,
+          "amount": 99.0
+        },
+        "late_night_only": {
+          "hours": 0.0,
+          "rate": 1.35,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 99.0,
+      "projects": [
+        "samurai-terakoya"
+      ]
+    },
+    "2025-01": {
+      "period_start": "2025-01-16",
+      "period_end": "2025-02-15",
+      "total_commits": 8,
+      "total_work_hours": 0.23,
+      "breakdown": {
+        "weekday_hours": 0.12,
+        "weekend_only_hours": 0.1,
+        "late_night_only_hours": 0.0,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 0.31,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 0.12,
+          "rate": 1.25,
+          "weighted_hours": 0.16,
+          "amount": 412.0
+        },
+        "weekend_only": {
+          "hours": 0.1,
+          "rate": 1.5,
+          "weighted_hours": 0.15,
+          "amount": 396.0
+        },
+        "late_night_only": {
+          "hours": 0.0,
+          "rate": 1.35,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 808.0,
+      "projects": [
+        "shimatsusyo"
+      ]
+    },
+    "2025-02": {
+      "period_start": "2025-02-16",
+      "period_end": "2025-03-15",
+      "total_commits": 208,
+      "total_work_hours": 20.57,
+      "breakdown": {
+        "weekday_hours": 20.57,
+        "weekend_only_hours": 0.0,
+        "late_night_only_hours": 4.1,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 31.26,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 20.57,
+          "rate": 1.25,
+          "weighted_hours": 25.72,
+          "amount": 67815.0
+        },
+        "weekend_only": {
+          "hours": 0.0,
+          "rate": 1.5,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "late_night_only": {
+          "hours": 4.1,
+          "rate": 1.35,
+          "weighted_hours": 5.54,
+          "amount": 14608.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 82423.0,
+      "projects": [
+        "Excel-VBA",
+        "shimatsusyo"
+      ]
+    },
+    "2025-03": {
+      "period_start": "2025-03-16",
+      "period_end": "2025-04-15",
+      "total_commits": 14,
+      "total_work_hours": 8.51,
+      "breakdown": {
+        "weekday_hours": 1.24,
+        "weekend_only_hours": 6.47,
+        "late_night_only_hours": 1.86,
+        "weekend_and_late_night_hours": 0.8
+      },
+      "weighted_work_hours": 15.04,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 1.24,
+          "rate": 1.25,
+          "weighted_hours": 1.55,
+          "amount": 4087.0
+        },
+        "weekend_only": {
+          "hours": 6.47,
+          "rate": 1.5,
+          "weighted_hours": 9.7,
+          "amount": 25587.0
+        },
+        "late_night_only": {
+          "hours": 1.86,
+          "rate": 1.35,
+          "weighted_hours": 2.51,
+          "amount": 6629.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.8,
+          "rate": 1.6,
+          "weighted_hours": 1.28,
+          "amount": 3367.0
+        }
+      },
+      "total_wage": 39670.0,
+      "projects": [
+        "pharmacy_inventory_manager_complete",
+        "DrugAdministrationGuidanceSupportSystem"
+      ]
+    },
+    "2025-04": {
+      "period_start": "2025-04-16",
+      "period_end": "2025-05-15",
+      "total_commits": 2,
+      "total_work_hours": 0.06,
+      "breakdown": {
+        "weekday_hours": 0.06,
+        "weekend_only_hours": 0.0,
+        "late_night_only_hours": 0.0,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 0.08,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 0.06,
+          "rate": 1.25,
+          "weighted_hours": 0.08,
+          "amount": 209.0
+        },
+        "weekend_only": {
+          "hours": 0.0,
+          "rate": 1.5,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "late_night_only": {
+          "hours": 0.0,
+          "rate": 1.35,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 209.0,
+      "projects": [
+        "Excel-VBA"
+      ]
+    },
+    "2025-07": {
+      "period_start": "2025-07-16",
+      "period_end": "2025-08-15",
+      "total_commits": 69,
+      "total_work_hours": 58.93,
+      "breakdown": {
+        "weekday_hours": 50.38,
+        "weekend_only_hours": 2.25,
+        "late_night_only_hours": 14.72,
+        "weekend_and_late_night_hours": 6.31
+      },
+      "weighted_work_hours": 96.31,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 50.38,
+          "rate": 1.25,
+          "weighted_hours": 62.97,
+          "amount": 166054.0
+        },
+        "weekend_only": {
+          "hours": 2.25,
+          "rate": 1.5,
+          "weighted_hours": 3.37,
+          "amount": 8895.0
+        },
+        "late_night_only": {
+          "hours": 14.72,
+          "rate": 1.35,
+          "weighted_hours": 19.87,
+          "amount": 52398.0
+        },
+        "weekend_and_late_night": {
+          "hours": 6.31,
+          "rate": 1.6,
+          "weighted_hours": 10.09,
+          "amount": 26615.0
+        }
+      },
+      "total_wage": 253961.0,
+      "projects": [
+        "TsuruhaHD",
+        ".claude"
+      ]
+    },
+    "2025-08": {
+      "period_start": "2025-08-16",
+      "period_end": "2025-09-15",
+      "total_commits": 72,
+      "total_work_hours": 49.79,
+      "breakdown": {
+        "weekday_hours": 24.06,
+        "weekend_only_hours": 16.69,
+        "late_night_only_hours": 21.09,
+        "weekend_and_late_night_hours": 9.04
+      },
+      "weighted_work_hours": 98.04,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 24.06,
+          "rate": 1.25,
+          "weighted_hours": 30.07,
+          "amount": 79297.0
+        },
+        "weekend_only": {
+          "hours": 16.69,
+          "rate": 1.5,
+          "weighted_hours": 25.04,
+          "amount": 66032.0
+        },
+        "late_night_only": {
+          "hours": 21.09,
+          "rate": 1.35,
+          "weighted_hours": 28.47,
+          "amount": 75075.0
+        },
+        "weekend_and_late_night": {
+          "hours": 9.04,
+          "rate": 1.6,
+          "weighted_hours": 14.46,
+          "amount": 38133.0
+        }
+      },
+      "total_wage": 258536.0,
+      "projects": [
+        "Parallel_Vibe_Coding_Protocol",
+        "InternalExamPreparationApp",
+        "PermitChangeDocumentsGenerator",
+        "OfficerChangeMacro",
+        "MonthlyReportGenerator",
+        "TsuruhaHD",
+        "Redmine",
+        "AutoShiftProductor",
+        "PharmacyBrowser",
+        "ROI-Calculator-App",
+        "InsuranceBillingReportGenerator-CSV",
+        "SubsetSumSearchLibrary",
+        "GoogleFormSenseAnalytics",
+        ".claude"
+      ]
+    },
+    "2025-09": {
+      "period_start": "2025-09-16",
+      "period_end": "2025-10-15",
+      "total_commits": 6,
+      "total_work_hours": 2.45,
+      "breakdown": {
+        "weekday_hours": 1.24,
+        "weekend_only_hours": 0.98,
+        "late_night_only_hours": 0.55,
+        "weekend_and_late_night_hours": 0.24
+      },
+      "weighted_work_hours": 4.14,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 1.24,
+          "rate": 1.25,
+          "weighted_hours": 1.55,
+          "amount": 4076.0
+        },
+        "weekend_only": {
+          "hours": 0.98,
+          "rate": 1.5,
+          "weighted_hours": 1.46,
+          "amount": 3860.0
+        },
+        "late_night_only": {
+          "hours": 0.55,
+          "rate": 1.35,
+          "weighted_hours": 0.75,
+          "amount": 1973.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.24,
+          "rate": 1.6,
+          "weighted_hours": 0.38,
+          "amount": 1002.0
+        }
+      },
+      "total_wage": 10911.0,
+      "projects": [
+        "git_challenge",
+        "timeclock",
+        "PermitChangeDocumentGenerator"
+      ]
+    },
+    "2025-10": {
+      "period_start": "2025-10-16",
+      "period_end": "2025-11-15",
+      "total_commits": 2,
+      "total_work_hours": 1.62,
+      "breakdown": {
+        "weekday_hours": 1.62,
+        "weekend_only_hours": 0.0,
+        "late_night_only_hours": 0.91,
+        "weekend_and_late_night_hours": 0.0
+      },
+      "weighted_work_hours": 3.25,
+      "wage_calculation": {
+        "weekday": {
+          "hours": 1.62,
+          "rate": 1.25,
+          "weighted_hours": 2.02,
+          "amount": 5329.0
+        },
+        "weekend_only": {
+          "hours": 0.0,
+          "rate": 1.5,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        },
+        "late_night_only": {
+          "hours": 0.91,
+          "rate": 1.35,
+          "weighted_hours": 1.23,
+          "amount": 3240.0
+        },
+        "weekend_and_late_night": {
+          "hours": 0.0,
+          "rate": 1.6,
+          "weighted_hours": 0.0,
+          "amount": 0.0
+        }
+      },
+      "total_wage": 8568.0,
+      "projects": [
+        "timeclock"
+      ]
+    }
+  },
+  "yearly_summary": {
+    "2024": {
+      "total_work_hours": 1.76,
+      "weighted_work_hours": 4.05,
+      "total_wage": 10674.0,
+      "months_count": 4,
+      "months": [
+        "2024-06",
+        "2024-07",
+        "2024-08",
+        "2024-10"
+      ]
+    },
+    "2025": {
+      "total_work_hours": 142.16,
+      "weighted_work_hours": 248.42,
+      "total_wage": 655086.0,
+      "months_count": 8,
+      "months": [
+        "2025-01",
+        "2025-02",
+        "2025-03",
+        "2025-04",
+        "2025-07",
+        "2025-08",
+        "2025-09",
+        "2025-10"
+      ]
+    }
+  },
+  "grand_total": {
+    "total_work_hours": 143.92,
+    "weighted_work_hours": 252.47,
+    "total_wage": 665760.0
+  }
+}

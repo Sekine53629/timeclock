@@ -491,7 +491,7 @@ class TimeClockGUI:
         self.standard_hours_var = tk.IntVar(value=8)
         ttk.Spinbox(hours_frame, from_=1, to=12, textvariable=self.standard_hours_var, width=10).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Label(hours_frame, text="時間/日").pack(side=tk.LEFT)
-        ttk.Label(hours_frame, text="（残業時間計算の基準）", font=('', 8), foreground='gray').pack(side=tk.LEFT, padx=(10, 0))
+        ttk.Label(hours_frame, text="（時間外労働時間計算の基準）", font=('', 8), foreground='gray').pack(side=tk.LEFT, padx=(10, 0))
 
         # 保存ボタン
         button_frame = ttk.Frame(config_group)
@@ -1008,9 +1008,9 @@ class TimeClockGUI:
         lines.append(f"標準労働時間: {self.format_time(summary['standard_total_minutes'])} ({summary['standard_total_hours']:.2f}時間)")
 
         if summary['total_overtime_minutes'] > 0:
-            lines.append(f"総残業時間: {self.format_time(summary['total_overtime_minutes'])} ({summary['total_overtime_hours']:.2f}時間)")
+            lines.append(f"総時間外労働時間: {self.format_time(summary['total_overtime_minutes'])} ({summary['total_overtime_hours']:.2f}時間)")
         else:
-            lines.append("総残業時間: なし")
+            lines.append("総時間外労働時間: なし")
 
         if summary['project_stats']:
             lines.append("\n【プロジェクト別内訳】")
@@ -1018,7 +1018,7 @@ class TimeClockGUI:
                 lines.append(f"\n■ {project}")
                 lines.append(f"  稼働日数: {stats['days_worked_count']}日")
                 lines.append(f"  作業時間: {self.format_time(stats['total_minutes'])} ({stats['total_hours']:.2f}時間)")
-                lines.append(f"  残業時間: {self.format_time(stats['overtime_minutes'])} ({stats['overtime_hours']:.2f}時間)")
+                lines.append(f"  時間外労働時間: {self.format_time(stats['overtime_minutes'])} ({stats['overtime_hours']:.2f}時間)")
 
         return '\n'.join(lines)
 

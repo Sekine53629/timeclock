@@ -8,6 +8,6 @@
   "users": [],
   "auto_break": {
     "enabled": true,
-    "threshold_minutes": 17
+    "threshold_minutes": 50
   }
 }

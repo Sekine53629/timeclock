@@ -45,3 +45,13 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Git Analyzer - Sensitive Configuration
+git_analyzer/github_config.json
+git_analyzer/git_repos_config.json
+git_analyzer/*_evidence.csv
+git_analyzer/*_evidence.json
+git_analyzer/*_summary.json
+git_analyzer/*_summary.txt
+git_analyzer/*_data.json
+git_import_statistics.json

@@ -1,8 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python gui.py:*)",
-      "Bash(python test_edit_features.py:*)"
+      "Bash(cat:*)",
+      "Bash(python git_import.py:*)",
+      "Bash(awk:*)",
+      "Bash(python:*)",
+      "Read(//c/Users/imao3/Documents/GitHub/**)",
+      "Bash(where:*)",
+      "Bash(pip install:*)"
     ],
     "deny": [],
     "ask": []

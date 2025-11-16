@@ -1,0 +1,223 @@
+{
+  "2024-06": {
+    "period_start": "2024-06-16",
+    "period_end": "2024-07-15",
+    "total_commits": 5,
+    "overtime_commits": 5,
+    "weekend_commits": 0,
+    "late_night_commits": 5,
+    "total_work_minutes": 9.600000000000001,
+    "overtime_work_minutes": 9.600000000000001,
+    "weekend_work_minutes": 0,
+    "late_night_work_minutes": 9.600000000000001,
+    "total_work_hours": 0.16,
+    "overtime_work_hours": 0.16,
+    "projects": [
+      "samurai-terakoya"
+    ]
+  },
+  "2024-07": {
+    "period_start": null,
+    "period_end": null,
+    "total_commits": 0,
+    "overtime_commits": 0,
+    "weekend_commits": 0,
+    "late_night_commits": 0,
+    "total_work_minutes": 0,
+    "overtime_work_minutes": 0,
+    "weekend_work_minutes": 0,
+    "late_night_work_minutes": 0,
+    "total_work_hours": 0.0,
+    "overtime_work_hours": 0.0,
+    "projects": []
+  },
+  "2024-08": {
+    "period_start": "2024-08-16",
+    "period_end": "2024-09-15",
+    "total_commits": 2,
+    "overtime_commits": 2,
+    "weekend_commits": 0,
+    "late_night_commits": 1,
+    "total_work_minutes": 93.9,
+    "overtime_work_minutes": 93.9,
+    "weekend_work_minutes": 0,
+    "late_night_work_minutes": 72.8,
+    "total_work_hours": 1.57,
+    "overtime_work_hours": 1.57,
+    "projects": [
+      "cocofolia-support-tool",
+      "permitPharmacist-VBA"
+    ]
+  },
+  "2024-10": {
+    "period_start": "2024-10-16",
+    "period_end": "2024-11-15",
+    "total_commits": 1,
+    "overtime_commits": 1,
+    "weekend_commits": 1,
+    "late_night_commits": 0,
+    "total_work_minutes": 1.5,
+    "overtime_work_minutes": 1.5,
+    "weekend_work_minutes": 1.5,
+    "late_night_work_minutes": 0,
+    "total_work_hours": 0.03,
+    "overtime_work_hours": 0.03,
+    "projects": [
+      "samurai-terakoya"
+    ]
+  },
+  "2025-01": {
+    "period_start": "2025-01-16",
+    "period_end": "2025-02-15",
+    "total_commits": 8,
+    "overtime_commits": 8,
+    "weekend_commits": 3,
+    "late_night_commits": 0,
+    "total_work_minutes": 13.5,
+    "overtime_work_minutes": 13.5,
+    "weekend_work_minutes": 6.0,
+    "late_night_work_minutes": 0,
+    "total_work_hours": 0.23,
+    "overtime_work_hours": 0.23,
+    "projects": [
+      "shimatsusyo"
+    ]
+  },
+  "2025-02": {
+    "period_start": "2025-02-16",
+    "period_end": "2025-03-15",
+    "total_commits": 208,
+    "overtime_commits": 208,
+    "weekend_commits": 0,
+    "late_night_commits": 21,
+    "total_work_minutes": 1234.3999999999994,
+    "overtime_work_minutes": 1234.3999999999994,
+    "weekend_work_minutes": 0,
+    "late_night_work_minutes": 246.2,
+    "total_work_hours": 20.57,
+    "overtime_work_hours": 20.57,
+    "projects": [
+      "Excel-VBA",
+      "shimatsusyo"
+    ]
+  },
+  "2025-03": {
+    "period_start": "2025-03-16",
+    "period_end": "2025-04-15",
+    "total_commits": 14,
+    "overtime_commits": 14,
+    "weekend_commits": 12,
+    "late_night_commits": 6,
+    "total_work_minutes": 510.40000000000003,
+    "overtime_work_minutes": 510.40000000000003,
+    "weekend_work_minutes": 436.0,
+    "late_night_work_minutes": 159.59999999999997,
+    "total_work_hours": 8.51,
+    "overtime_work_hours": 8.51,
+    "projects": [
+      "pharmacy_inventory_manager_complete",
+      "DrugAdministrationGuidanceSupportSystem"
+    ]
+  },
+  "2025-04": {
+    "period_start": "2025-04-16",
+    "period_end": "2025-05-15",
+    "total_commits": 2,
+    "overtime_commits": 2,
+    "weekend_commits": 0,
+    "late_night_commits": 0,
+    "total_work_minutes": 3.8,
+    "overtime_work_minutes": 3.8,
+    "weekend_work_minutes": 0,
+    "late_night_work_minutes": 0,
+    "total_work_hours": 0.06,
+    "overtime_work_hours": 0.06,
+    "projects": [
+      "Excel-VBA"
+    ]
+  },
+  "2025-07": {
+    "period_start": "2025-07-16",
+    "period_end": "2025-08-15",
+    "total_commits": 69,
+    "overtime_commits": 69,
+    "weekend_commits": 9,
+    "late_night_commits": 29,
+    "total_work_minutes": 3536.000000000001,
+    "overtime_work_minutes": 3536.000000000001,
+    "weekend_work_minutes": 513.4,
+    "late_night_work_minutes": 1261.6,
+    "total_work_hours": 58.93,
+    "overtime_work_hours": 58.93,
+    "projects": [
+      "TsuruhaHD",
+      ".claude"
+    ]
+  },
+  "2025-08": {
+    "period_start": "2025-08-16",
+    "period_end": "2025-09-15",
+    "total_commits": 72,
+    "overtime_commits": 72,
+    "weekend_commits": 34,
+    "late_night_commits": 45,
+    "total_work_minutes": 2987.3,
+    "overtime_work_minutes": 2987.3,
+    "weekend_work_minutes": 1543.8999999999996,
+    "late_night_work_minutes": 1807.5999999999997,
+    "total_work_hours": 49.79,
+    "overtime_work_hours": 49.79,
+    "projects": [
+      "Parallel_Vibe_Coding_Protocol",
+      "InternalExamPreparationApp",
+      "PermitChangeDocumentsGenerator",
+      "OfficerChangeMacro",
+      "MonthlyReportGenerator",
+      "TsuruhaHD",
+      "Redmine",
+      "AutoShiftProductor",
+      "PharmacyBrowser",
+      "ROI-Calculator-App",
+      "InsuranceBillingReportGenerator-CSV",
+      "SubsetSumSearchLibrary",
+      "GoogleFormSenseAnalytics",
+      ".claude"
+    ]
+  },
+  "2025-09": {
+    "period_start": "2025-09-16",
+    "period_end": "2025-10-15",
+    "total_commits": 6,
+    "overtime_commits": 6,
+    "weekend_commits": 1,
+    "late_night_commits": 1,
+    "total_work_minutes": 147.0,
+    "overtime_work_minutes": 147.0,
+    "weekend_work_minutes": 72.8,
+    "late_night_work_minutes": 47.5,
+    "total_work_hours": 2.45,
+    "overtime_work_hours": 2.45,
+    "projects": [
+      "git_challenge",
+      "timeclock",
+      "PermitChangeDocumentGenerator"
+    ]
+  },
+  "2025-10": {
+    "period_start": "2025-10-16",
+    "period_end": "2025-11-15",
+    "total_commits": 2,
+    "overtime_commits": 2,
+    "weekend_commits": 0,
+    "late_night_commits": 1,
+    "total_work_minutes": 97.0,
+    "overtime_work_minutes": 97.0,
+    "weekend_work_minutes": 0,
+    "late_night_work_minutes": 54.6,
+    "total_work_hours": 1.62,
+    "overtime_work_hours": 1.62,
+    "projects": [
+      "timeclock"
+    ]
+  }
+}

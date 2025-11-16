@@ -1,0 +1,454 @@
+日付,プロジェクト名,作業内容,変更ファイル数,追加行数,削除行数,元推定時間（分）,補正後推定時間（分）,時間外,休日,深夜
+2024-07-03,samurai-terakoya,Create tera.txt,1,1,0,10.5,1.6,○,,○
+2024-07-03,samurai-terakoya,Update tera.txt,1,1,0,10.5,1.6,○,,○
+2024-07-03,samurai-terakoya,Delete tera.txt,1,0,2,10.4,1.6,○,,○
+2024-07-03,samurai-terakoya,Add orange.png,1,0,0,10.0,1.5,○,,○
+2024-07-03,samurai-terakoya,Add kadai_005,2,14,0,22.0,3.3,○,,○
+2024-07-11,javascript-basic-kadai,Add files via upload,2,13,0,21.5,3.3,,,
+2024-07-11,javascript-basic-kadai,Add files via upload,2,19,0,24.5,3.7,,,
+2024-07-11,javascript-basic-kadai,Merge pull request #1 from ravikla3575s/fix,2,19,0,24.5,3.7,,,
+2024-07-11,javascript-basic-kadai,Add files via upload,1,1,1,10.7,1.6,,,
+2024-07-11,javascript-basic-kadai,Add files via upload,1,7,1,13.7,2.1,,,
+2024-07-11,javascript-basic-kadai,Merge pull request #2 from ravikla3575s/fix,1,7,1,13.7,2.1,,,
+2024-07-11,javascript-basic-kadai,Update bmi.js,1,3,3,12.1,1.8,,,
+2024-07-11,javascript-basic-kadai,Delete kadai_005/kadai_005 directory,2,0,19,18.8,2.9,,,
+2024-07-17,practice,Add files via upload,47,266,0,373.0,56.6,○,,
+2024-07-18,practice,集約,2,212,16,124.2,18.8,○,,○
+2024-07-23,javascript-basic-kadai,7章 課題提出,3,25,0,32.5,4.9,○,,○
+2024-07-23,javascript-basic-kadai,９章課題提出,3,19,3,30.1,4.6,,,
+2024-07-23,javascript-basic-kadai,Update holiday.js,1,8,0,14.0,2.1,,,
+2024-07-23,javascript-basic-kadai,MDN課題提出,3,21,3,31.1,4.7,○,,
+2024-07-23,javascript-basic-kadai,fix,1,10,3,15.6,2.4,○,,
+2024-07-23,javascript-basic-kadai,14章課題提出,2,21,0,25.5,3.9,○,,
+2024-07-23,javascript-basic-kadai,再提出,1,2,2,11.4,1.7,○,,○
+2024-07-24,javascript-basic-kadai,fix,1,1,1,10.7,1.6,○,,○
+2024-07-28,atcoder-practice,Initial commit,2,146,0,88.0,13.4,,○,
+2024-07-29,atcoder-practice,ビット演算,1,14,137,44.4,6.7,○,,○
+2024-07-29,atcoder-practice,ビット演算,1,0,0,10.0,1.5,○,,○
+2024-07-29,atcoder-practice,通常の総当たり解答,1,21,0,20.5,3.1,○,,○
+2024-08-05,javascript-basic-kadai,課題提出,2,24,0,27.0,4.1,○,,
+2024-08-06,javascript-basic-kadai,再提出,2,10,6,21.2,3.2,○,,○
+2024-08-06,javascript-basic-kadai,課題提出,2,20,0,25.0,3.8,○,,
+2024-08-13,php-basic-kadai,Add files via upload,1,9,0,14.5,2.2,○,,
+2024-08-13,php-basic-kadai,Add files via upload,1,1,1,10.7,1.6,○,,○
+2024-08-13,php-basic-kadai,Add files via upload,1,14,2,17.4,2.6,○,,○
+2024-08-13,php-basic-kadai,Add files via upload,1,17,2,18.9,2.9,○,,○
+2024-08-13,php-basic-kadai,Add files via upload,1,7,7,14.9,2.3,○,,○
+2024-08-14,php-basic-kadai,Add files via upload,1,4,0,12.0,1.8,○,,○
+2024-08-14,php-basic-kadai,Add files via upload,1,5,0,12.5,1.9,○,,○
+2024-08-14,php-basic-kadai,Add files via upload,1,52,0,36.0,5.5,○,,○
+2024-08-14,php-basic-kadai,Add files via upload,1,9,1,14.7,2.2,○,,○
+2024-08-14,php-basic-kadai,Update sort.php,1,4,4,12.8,1.9,○,,○
+2024-08-14,php-basic-kadai,Add files via upload,1,12,6,17.2,2.6,○,,○
+2024-08-14,php-basic-kadai,Add files via upload,1,12,7,17.4,2.6,,,
+2024-08-15,php-basic-kadai,Add files via upload,1,42,0,31.0,4.7,○,,○
+2024-08-15,php-basic-kadai,Update class.php,1,4,4,12.8,1.9,○,,○
+2024-08-23,permitPharmacist-VBA,first commit,8,1550,0,480.0,72.8,○,,○
+2024-08-26,cocofolia-support-tool,Add files via upload,3,238,0,139.0,21.1,,,
+2024-10-19,samurai-terakoya,Add files via upload,1,0,0,10.0,1.5,○,○,
+2025-02-08,shimatsusyo,xls.format,1,0,0,10.0,1.5,,○,
+2025-02-09,shimatsusyo,Create 00－007.txt,1,19,0,19.5,3.0,,○,
+2025-02-09,shimatsusyo,Update 00-007.XLS,1,0,0,10.0,1.5,,○,
+2025-02-13,shimatsusyo,Create 00-007v2.xlsm,1,0,0,10.0,1.5,,,
+2025-02-13,shimatsusyo,Create 00-007.xlsm,1,0,0,10.0,1.5,,,
+2025-02-14,shimatsusyo,Create 表記揺れ修正・割付マクロ.xlsm,1,0,0,10.0,1.5,○,,
+2025-02-14,shimatsusyo,Update 00-007v2.xlsm,1,0,0,10.0,1.5,○,,
+2025-02-14,shimatsusyo,Create 始末書マクロ.xlsm,1,0,0,10.0,1.5,○,,
+2025-02-19,shimatsusyo,ネット を作成,1,1,0,10.5,1.6,○,,
+2025-02-24,Excel-VBA,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-02-24,Excel-VBA,Create .DS_Store,1,0,0,10.0,1.5,○,,○
+2025-02-24,Excel-VBA,Create ConvertToCircledNumber.bas,1,25,0,22.5,3.4,○,,○
+2025-02-24,Excel-VBA,Create FindOrCreateReport.bas,1,21,0,20.5,3.1,○,,○
+2025-02-24,Excel-VBA,Create GetColumnMapping.bas,1,67,0,43.5,6.6,○,,○
+2025-02-24,Excel-VBA,Create ImportCSVData.bas,1,45,0,32.5,4.9,○,,○
+2025-02-24,Excel-VBA,Create IsSheetExist.bas,1,11,0,15.5,2.4,○,,○
+2025-02-24,Excel-VBA,Create ProcessCSV.bas,1,120,0,70.0,10.6,○,,○
+2025-02-24,Excel-VBA,Create ConvertToWesternDate.bas,1,17,0,18.5,2.8,○,,○
+2025-02-24,Excel-VBA,Create GetStartRow.bas,1,34,0,27.0,4.1,○,,○
+2025-02-24,Excel-VBA,Create IncreaseAllStartRows.bas,1,6,0,13.0,2.0,○,,○
+2025-02-24,Excel-VBA,Create IsStartRowOverlap.bas,1,10,0,15.0,2.3,○,,○
+2025-02-24,Excel-VBA,Create ProcessRebillSelection.bas,1,81,0,50.5,7.7,○,,○
+2025-02-24,Excel-VBA,Create TransferBillingDetails.bas,1,81,0,50.5,7.7,○,,○
+2025-02-24,Excel-VBA,Create ShowRebillSelectionForm.bas,1,76,0,48.0,7.3,○,,○
+2025-02-24,Excel-VBA,Update ShowRebillSelectionForm.bas,1,0,42,18.4,2.8,○,,○
+2025-02-24,Excel-VBA,Create CreateRebillSelectionForm.bas,1,41,0,30.5,4.6,○,,○
+2025-02-24,Excel-VBA,Update CreateRebillSelectionForm.bas,1,1,1,10.7,1.6,○,,○
+2025-02-24,Excel-VBA,Create ProcessCSVfix.bas,1,46,0,33.0,5.0,,,
+2025-02-24,Excel-VBA,Create .DS_Store,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Create ConvertToCircledNumber.bas,1,25,0,22.5,3.4,,,
+2025-02-24,Excel-VBA,Create FindOrCreateReport.bas,1,21,0,20.5,3.1,,,
+2025-02-24,Excel-VBA,Create GetColumnMapping.bas,1,67,0,43.5,6.6,,,
+2025-02-24,Excel-VBA,Create IsSheetExist.bas,1,11,0,15.5,2.4,,,
+2025-02-24,Excel-VBA,Create ImportCSVData.bas,1,45,0,32.5,4.9,,,
+2025-02-24,Excel-VBA,Create ConvertToWesternDate.bas,1,17,0,18.5,2.8,,,
+2025-02-24,Excel-VBA,Create ProcessCSV.bas,1,120,0,70.0,10.6,,,
+2025-02-24,Excel-VBA,Create GetStartRow.bas,1,34,0,27.0,4.1,,,
+2025-02-24,Excel-VBA,Create IncreaseAllStartRows.bas,1,6,0,13.0,2.0,,,
+2025-02-24,Excel-VBA,Create IsStartRowOverlap.bas,1,10,0,15.0,2.3,,,
+2025-02-24,Excel-VBA,Create TransferBillingDetails.bas,1,81,0,50.5,7.7,,,
+2025-02-24,Excel-VBA,Create ProcessRebillSelection.bas,1,81,0,50.5,7.7,,,
+2025-02-24,Excel-VBA,Create ShowRebillSelectionForm.bas,1,34,0,27.0,4.1,,,
+2025-02-24,Excel-VBA,Create CreateRebillSelectionForm.bas,1,41,0,30.5,4.6,,,
+2025-02-24,Excel-VBA,Delete .DS_Store,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Delete FindOrCreateReport.bas,1,0,21,14.2,2.2,,,
+2025-02-24,Excel-VBA,Delete ConvertToCircledNumber.bas,1,0,25,15.0,2.3,,,
+2025-02-24,Excel-VBA,Delete ImportCSVData.bas,1,0,45,19.0,2.9,,,
+2025-02-24,Excel-VBA,Delete GetColumnMapping.bas,1,0,67,23.4,3.6,,,
+2025-02-24,Excel-VBA,Delete IsSheetExist.bas,1,0,11,12.2,1.9,,,
+2025-02-24,Excel-VBA,Delete ProcessCSV.bas,1,0,120,34.0,5.2,,,
+2025-02-24,Excel-VBA,Delete ConvertToWesternDate.bas,1,0,17,13.4,2.0,,,
+2025-02-24,Excel-VBA,Delete GetStartRow.bas,1,0,34,16.8,2.5,,,
+2025-02-24,Excel-VBA,Delete IsStartRowOverlap.bas,1,0,10,12.0,1.8,,,
+2025-02-24,Excel-VBA,Delete IncreaseAllStartRows.bas,1,0,6,11.2,1.7,,,
+2025-02-24,Excel-VBA,Delete ProcessRebillSelection.bas,1,0,81,26.2,4.0,,,
+2025-02-24,Excel-VBA,Delete TransferBillingDetails.bas,1,0,81,26.2,4.0,,,
+2025-02-24,Excel-VBA,Delete CreateRebillSelectionForm.bas,1,0,41,18.2,2.8,,,
+2025-02-24,Excel-VBA,Delete ShowRebillSelectionForm.bas,1,0,34,16.8,2.5,,,
+2025-02-24,Excel-VBA,Merge pull request #1 from ravikla3575s/fix,16,46,0,108.0,16.4,,,
+2025-02-24,Excel-VBA,Create GetColumnMapping.bas,1,65,0,42.5,6.4,,,
+2025-02-24,Excel-VBA,Create FindFixFile.bas,1,10,0,15.0,2.3,,,
+2025-02-24,Excel-VBA,Create FormatImportedSheet.bas,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Create GetLastRow.bas,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Create GetLastColumn.bas,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Create GetTemlatePath.bas,1,3,0,11.5,1.7,,,
+2025-02-24,Excel-VBA,Create GetSavePath.bas,1,3,0,11.5,1.7,,,
+2025-02-24,Excel-VBA,Create OpenCSVWorkbook.bas,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Create ImportCSVData.bas,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Delete ProcessCSVfix.bas,1,0,46,19.2,2.9,,,
+2025-02-24,Excel-VBA,Create ProcessCSV.bas,1,46,0,33.0,5.0,,,
+2025-02-24,Excel-VBA,Create ProcessAllCSVFiles.bas,1,27,0,23.5,3.6,,,
+2025-02-24,Excel-VBA,Create SelectCSVFolder.bas,1,11,0,15.5,2.4,,,
+2025-02-24,Excel-VBA,Create SetTemplateInfo.bas,1,30,0,25.0,3.8,,,
+2025-02-24,Excel-VBA,Update FormatImportedSheet.bas,1,17,0,18.5,2.8,,,
+2025-02-24,Excel-VBA,Delete GetColumnMapping.bas,1,0,65,23.0,3.5,,,
+2025-02-24,Excel-VBA,Create GetColumnMapping.bas,1,65,0,42.5,6.4,,,
+2025-02-24,Excel-VBA,Update GetLastRow.bas,1,6,0,13.0,2.0,,,
+2025-02-24,Excel-VBA,Update GetLastColumn.bas,1,6,0,13.0,2.0,,,
+2025-02-24,Excel-VBA,Update ImportCSVData.bas,1,73,0,46.5,7.1,,,
+2025-02-24,Excel-VBA,Update OpenCSVWorkbook.bas,1,5,0,12.5,1.9,,,
+2025-02-24,Excel-VBA,Merge pull request #2 from ravikla3575s/fix,13,256,0,198.0,30.0,,,
+2025-02-24,Excel-VBA,Delete FindFixFile.bas,1,0,10,12.0,1.8,,,
+2025-02-24,Excel-VBA,Delete FormatImportedSheet.bas,1,0,17,13.4,2.0,,,
+2025-02-24,Excel-VBA,Delete GetColumnMapping.bas,1,0,65,23.0,3.5,,,
+2025-02-24,Excel-VBA,Delete GetLastRow.bas,1,0,6,11.2,1.7,,,
+2025-02-24,Excel-VBA,Delete GetLastColumn.bas,1,0,6,11.2,1.7,,,
+2025-02-24,Excel-VBA,Delete GetTemlatePath.bas,1,0,3,10.6,1.6,,,
+2025-02-24,Excel-VBA,Delete GetSavePath.bas,1,0,3,10.6,1.6,,,
+2025-02-24,Excel-VBA,Delete ProcessAllCSVFiles.bas,1,0,27,15.4,2.3,,,
+2025-02-24,Excel-VBA,Delete OpenCSVWorkbook.bas,1,0,5,11.0,1.7,,,
+2025-02-24,Excel-VBA,Delete ImportCSVData.bas,1,0,73,24.6,3.7,,,
+2025-02-24,Excel-VBA,Delete ProcessCSV.bas,1,0,46,19.2,2.9,,,
+2025-02-24,Excel-VBA,Delete SetTemplateInfo.bas,1,0,30,16.0,2.4,,,
+2025-02-24,Excel-VBA,Delete SelectCSVFolder.bas,1,0,11,12.2,1.9,,,
+2025-02-24,Excel-VBA,Delete ConvertToCircledNumber.bas,1,0,25,15.0,2.3,,,
+2025-02-24,Excel-VBA,Delete .DS_Store,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Delete FindOrCreateReport.bas,1,0,21,14.2,2.2,,,
+2025-02-24,Excel-VBA,Delete ImportCSVData.bas,1,0,45,19.0,2.9,,,
+2025-02-24,Excel-VBA,Delete GetColumnMapping.bas,1,0,67,23.4,3.6,,,
+2025-02-24,Excel-VBA,Delete ProcessCSV.bas,1,0,120,34.0,5.2,,,
+2025-02-24,Excel-VBA,Delete IsSheetExist.bas,1,0,11,12.2,1.9,,,
+2025-02-24,Excel-VBA,Delete ConvertToWesternDate.bas,1,0,17,13.4,2.0,,,
+2025-02-24,Excel-VBA,Delete IncreaseAllStartRows.bas,1,0,6,11.2,1.7,,,
+2025-02-24,Excel-VBA,Delete GetStartRow.bas,1,0,34,16.8,2.5,,,
+2025-02-24,Excel-VBA,Delete ProcessRebillSelection.bas,1,0,81,26.2,4.0,,,
+2025-02-24,Excel-VBA,Delete IsStartRowOverlap.bas,1,0,10,12.0,1.8,,,
+2025-02-24,Excel-VBA,Delete TransferBillingDetails.bas,1,0,81,26.2,4.0,,,
+2025-02-24,Excel-VBA,Delete ShowRebillSelectionForm.bas,1,0,34,16.8,2.5,,,
+2025-02-24,Excel-VBA,Delete CreateRebillSelectionForm.bas,1,0,41,18.2,2.8,,,
+2025-02-24,Excel-VBA,Create CreateRebillSelectionForm.bas,1,41,0,30.5,4.6,,,
+2025-02-24,Excel-VBA,Create ConvertToWesternDate.bas,1,17,0,18.5,2.8,,,
+2025-02-24,Excel-VBA,Create FormatImportedSheet.bas,1,17,0,18.5,2.8,,,
+2025-02-24,Excel-VBA,Create FindFixFile.bas,1,10,0,15.0,2.3,,,
+2025-02-24,Excel-VBA,Create GetLastRow.bas,1,6,0,13.0,2.0,,,
+2025-02-24,Excel-VBA,Create GetLastColumn.bas,1,6,0,13.0,2.0,,,
+2025-02-24,Excel-VBA,Create GetColumnMapping.bas,1,65,0,42.5,6.4,,,
+2025-02-24,Excel-VBA,Create GetStartRow.bas,1,34,0,27.0,4.1,,,
+2025-02-24,Excel-VBA,Create GetSavePath.bas,1,3,0,11.5,1.7,,,
+2025-02-24,Excel-VBA,Create GetTemlatePath.bas,1,3,0,11.5,1.7,,,
+2025-02-24,Excel-VBA,Create IncreaseAllStartRows.bas,1,6,0,13.0,2.0,,,
+2025-02-24,Excel-VBA,Create ImportCSVData.bas,1,73,0,46.5,7.1,,,
+2025-02-24,Excel-VBA,Create IsStartRowOverlap.bas,1,10,0,15.0,2.3,,,
+2025-02-24,Excel-VBA,Create ProcessAllCSVFiles.bas,1,27,0,23.5,3.6,,,
+2025-02-24,Excel-VBA,Create OpenCSVWorkbook.bas,1,5,0,12.5,1.9,,,
+2025-02-24,Excel-VBA,Create ProcessCSV.bas,1,48,0,34.0,5.2,,,
+2025-02-24,Excel-VBA,Create SelectCSVFolder.bas,1,11,0,15.5,2.4,,,
+2025-02-24,Excel-VBA,Create ProcessRebillSelection.bas,1,81,0,50.5,7.7,,,
+2025-02-24,Excel-VBA,Create ShowRebillSelectionForm.bas,1,34,0,27.0,4.1,,,
+2025-02-24,Excel-VBA,Create SetTemplateInfo.bas,1,30,0,25.0,3.8,,,
+2025-02-24,Excel-VBA,Create TransferBillingDetails.bas,1,81,0,50.5,7.7,,,
+2025-02-24,Excel-VBA,Merge pull request #3 from ravikla3575s/fix,28,4,291,205.2,31.1,,,
+2025-02-24,Excel-VBA,Create .DS_Store,1,0,0,10.0,1.5,,,
+2025-02-24,Excel-VBA,Update GetStartRow.bas,1,21,6,21.7,3.3,,,
+2025-02-24,Excel-VBA,Create GetYearMonthFromCSV.bas,1,43,0,31.5,4.8,,,
+2025-02-24,Excel-VBA,Update ProcessAllCSVFiles.bas,1,24,16,25.2,3.8,,,
+2025-02-24,Excel-VBA,Create GetYearMonthFromFixf.bas,1,40,0,30.0,4.6,,,
+2025-02-24,Excel-VBA,Update ProcessCSV.bas,1,5,5,13.5,2.0,,,
+2025-02-24,Excel-VBA,Create TransferData.bas,1,18,0,19.0,2.9,,,
+2025-02-24,Excel-VBA,Update TransferBillingDetails.bas,1,70,45,54.0,8.2,,,
+2025-02-24,Excel-VBA,Merge pull request #4 from ravikla3575s/fix,8,221,72,169.9,25.8,,,
+2025-02-24,Excel-VBA,Create FindFixfFile.bas,1,13,0,16.5,2.5,○,,
+2025-02-24,Excel-VBA,Create ProcessWithoutFixf.bas,1,23,0,21.5,3.3,○,,
+2025-02-24,Excel-VBA,Update ProcessCSV.bas,1,35,24,32.3,4.9,○,,
+2025-02-24,Excel-VBA,Update TransferBillingDetails.bas,1,0,1,10.2,1.5,○,,
+2025-02-24,Excel-VBA,Delete FindFixFile.bas,1,0,10,12.0,1.8,○,,
+2025-02-24,Excel-VBA,Merge pull request #5 from ravikla3575s/fix,5,71,35,72.5,11.0,○,,
+2025-02-24,Excel-VBA,Create FindOrCreateReport.bas,1,0,0,10.0,1.5,○,,
+2025-02-24,Excel-VBA,Update FindOrCreateReport.bas,1,24,0,22.0,3.3,○,,
+2025-02-24,Excel-VBA,Merge pull request #6 from ravikla3575s/fix,1,24,0,22.0,3.3,○,,
+2025-02-24,Excel-VBA,Update GetYearMonthFromFixf.bas,1,17,9,20.3,3.1,○,,
+2025-02-24,Excel-VBA,Update GetYearMonthFromFixf.bas,1,26,44,31.8,4.8,○,,
+2025-02-24,Excel-VBA,Update FindOrCreateReport.bas,1,23,16,24.7,3.7,○,,
+2025-02-24,Excel-VBA,Create ConvertCircleNumber.bas,1,11,0,15.5,2.4,○,,
+2025-02-24,Excel-VBA,Update FindOrCreateReport.bas,1,18,2,19.4,2.9,○,,
+2025-02-24,Excel-VBA,Merge pull request #7 from ravikla3575s/fix,3,74,50,67.0,10.2,○,,
+2025-02-24,Excel-VBA,Create ConvertToCircledNumber.bas,1,11,0,15.5,2.4,○,,
+2025-02-24,Excel-VBA,Delete ConvertCircleNumber.bas,1,0,11,12.2,1.9,○,,
+2025-02-24,Excel-VBA,Merge pull request #8 from ravikla3575s/fix,1,0,0,10.0,1.5,○,,
+2025-02-24,Excel-VBA,Update ProcessAllCSVFiles.bas,1,18,4,19.8,3.0,○,,
+2025-02-24,Excel-VBA,Create GetUniqueSheetName.bas,1,26,0,23.0,3.5,○,,
+2025-02-24,Excel-VBA,Merge pull request #9 from ravikla3575s/fix,2,44,4,37.8,5.7,○,,
+2025-02-24,Excel-VBA,Update TransferBillingDetails.bas,1,17,15,21.5,3.3,○,,
+2025-02-24,Excel-VBA,Merge pull request #10 from ravikla3575s/fix,1,17,15,21.5,3.3,○,,
+2025-02-26,Excel-VBA,Update .DS_Store,1,0,0,10.0,1.5,○,,
+2025-02-26,Excel-VBA,Delete ConvertToCircledNumber.bas,1,0,11,12.2,1.9,○,,
+2025-02-26,Excel-VBA,Delete ConvertToWesternDate.bas,1,0,17,13.4,2.0,○,,
+2025-02-26,Excel-VBA,Delete FindOrCreateReport.bas,1,0,47,19.4,2.9,○,,
+2025-02-26,Excel-VBA,Delete FindFixfFile.bas,1,0,13,12.6,1.9,○,,
+2025-02-26,Excel-VBA,Delete GetColumnMapping.bas,1,0,65,23.0,3.5,○,,
+2025-02-26,Excel-VBA,Delete GetSavePath.bas,1,0,3,10.6,1.6,○,,
+2025-02-26,Excel-VBA,Delete GetTemlatePath.bas,1,0,3,10.6,1.6,○,,
+2025-02-26,Excel-VBA,Delete GetStartRow.bas,1,0,49,19.8,3.0,○,,
+2025-02-26,Excel-VBA,Delete GetUniqueSheetName.bas,1,0,26,15.2,2.3,○,,
+2025-02-26,Excel-VBA,Delete GetYearMonthFromCSV.bas,1,0,43,18.6,2.8,○,,
+2025-02-26,Excel-VBA,Delete ImportCSVData.bas,1,0,73,24.6,3.7,○,,
+2025-02-26,Excel-VBA,Update GetYearMonthFromFixf.bas,1,24,8,23.6,3.6,○,,
+2025-02-26,Excel-VBA,Delete ProcessAllCSVFiles.bas,1,0,49,19.8,3.0,○,,
+2025-02-26,Excel-VBA,Delete ProcessCSV.bas,1,0,59,21.8,3.3,○,,
+2025-02-26,Excel-VBA,Create ConvertToCircledNumber.bas,1,11,0,15.5,2.4,○,,
+2025-02-26,Excel-VBA,Create ConvertToWesternDate.bas,1,17,0,18.5,2.8,○,,
+2025-02-26,Excel-VBA,Create FindAllFixfFiles.bas,1,15,0,17.5,2.7,○,,
+2025-02-26,Excel-VBA,Create FindOrCreateReport.bas,1,47,0,33.5,5.1,○,,
+2025-02-26,Excel-VBA,Create GetColumnMapping.bas,1,65,0,42.5,6.4,○,,
+2025-02-26,Excel-VBA,Create GetSavePath.bas,1,3,0,11.5,1.7,○,,
+2025-02-26,Excel-VBA,Create GetStartRow.bas,1,49,0,34.5,5.2,○,,
+2025-02-26,Excel-VBA,Create GetTemlatePath.bas,1,3,0,11.5,1.7,○,,
+2025-02-26,Excel-VBA,Create GetUniqueSheetName.bas,1,26,0,23.0,3.5,○,,
+2025-02-26,Excel-VBA,Create GetYearMonthFromCSV.bas,1,43,0,31.5,4.8,○,,
+2025-02-26,Excel-VBA,Create ImportCSVData.bas,1,73,0,46.5,7.1,○,,
+2025-02-26,Excel-VBA,Create ProcessAllCSVFiles.bas,1,49,0,34.5,5.2,○,,
+2025-02-26,Excel-VBA,Create ProcessCSV.bas,1,59,0,39.5,6.0,○,,
+2025-02-26,Excel-VBA,Create SelectCSVFolder.bas,1,11,0,15.5,2.4,○,,
+2025-02-26,Excel-VBA,Create ProcessWithoutFixf.bas,1,23,0,21.5,3.3,○,,
+2025-02-26,Excel-VBA,Create SetTemplateInfo.bas,1,30,0,25.0,3.8,○,,
+2025-02-26,Excel-VBA,Create ShowRebillSelectionForm.bas,1,34,0,27.0,4.1,○,,
+2025-02-26,Excel-VBA,Create TransferBillingDetails.bas,1,115,0,67.5,10.2,○,,
+2025-02-26,Excel-VBA,Create TransferData.bas,1,28,0,24.0,3.6,○,,
+2025-02-26,Excel-VBA,Delete ProcessWithoutFixf.bas,1,0,23,14.6,2.2,○,,
+2025-02-26,Excel-VBA,Delete SetTemplateInfo.bas,1,0,30,16.0,2.4,○,,
+2025-02-26,Excel-VBA,Delete SelectCSVFolder.bas,1,0,11,12.2,1.9,○,,
+2025-02-26,Excel-VBA,Delete ShowRebillSelectionForm.bas,1,0,34,16.8,2.5,○,,
+2025-02-26,Excel-VBA,Delete TransferBillingDetails.bas,1,0,107,31.4,4.8,○,,
+2025-02-26,Excel-VBA,Delete TransferData.bas,1,0,18,13.6,2.1,○,,
+2025-02-26,Excel-VBA,Merge pull request #11 from ravikla3575s/fix,22,86,50,168.0,25.5,○,,
+2025-02-26,Excel-VBA,Delete 保険請求管理報告書 directory,28,0,919,328.8,49.9,○,,
+2025-02-26,Excel-VBA,Delete .DS_Store,1,0,0,10.0,1.5,○,,
+2025-02-26,Excel-VBA,Add files via upload,28,919,0,480.0,72.8,○,,
+2025-02-26,Excel-VBA,Add files via upload,1,814,0,417.0,63.3,○,,○
+2025-02-28,Excel-VBA,GetYearMonthFromFixf.bas を更新,1,20,38,27.6,4.2,,,
+2025-03-03,Excel-VBA,Add files via upload,1,902,0,461.0,70.0,,,
+2025-03-03,Excel-VBA,Add files via upload,1,1234,0,480.0,72.8,○,,○
+2025-03-04,Excel-VBA,ProcessCSV_ver7.0.bas を更新,1,1,1,10.7,1.6,○,,
+2025-03-04,Excel-VBA,Add files via upload,1,47,14,36.3,5.5,○,,
+2025-03-04,Excel-VBA,Add files via upload,1,9,9,16.3,2.5,○,,
+2025-03-04,Excel-VBA,Add files via upload,1,1282,0,480.0,72.8,○,,
+2025-03-05,Excel-VBA,Add files via upload,1,337,196,217.7,33.0,○,,○
+2025-03-23,pharmacy_inventory_manager_complete,Initial commit,1,2,0,11.0,1.7,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #1 from ravikla3575s/devin/1742726980-initial-release,8,1491,0,480.0,72.8,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #2 from ravikla3575s/devin/1742727406-add-excel-file,2,27,0,28.5,4.3,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #4 from ravikla3575s/devin/1742730074-add-drug-info-parser,16,3151,58,480.0,72.8,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #5 from ravikla3575s/devin/1742733137-repo-reorganization,14,242,325,261.0,39.6,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,"Revert ""リポジトリ構造の整理 (Repository Reorganization)""",14,325,242,285.9,43.4,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #6 from ravikla3575s/revert-5-devin/1742733137-repo-reorganization,14,325,242,285.9,43.4,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #8 from ravikla3575s/devin/1742734130-organize-files,17,4415,12,480.0,72.8,○,○,
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #9 from ravikla3575s/devin/1742735405-fix-type-mismatch,1,168,168,127.6,19.4,○,○,○
+2025-03-23,pharmacy_inventory_manager_complete,Merge pull request #10 from ravikla3575s/devin/1742748620-fix-encoding-shift-jis,2,45,524,142.3,21.6,○,○,○
+2025-03-23,pharmacy_inventory_manager_complete,Update main_module.bas,1,45,45,41.5,6.3,○,○,○
+2025-03-23,pharmacy_inventory_manager_complete,Update user_interface_module.bas,1,479,0,249.5,37.9,○,○,○
+2025-03-25,DrugAdministrationGuidanceSupportSystem,Merge pull request #1 from ravikla3575s/feature/initial-setup,1,1,1,10.7,1.6,○,,○
+2025-03-25,DrugAdministrationGuidanceSupportSystem,Merge pull request #2 from ravikla3575s/devin/1742831811-database-design,7,1362,0,480.0,72.8,○,,○
+2025-04-24,Excel-VBA,Add files via upload,1,0,0,10.0,1.5,○,,
+2025-04-24,Excel-VBA,Add files via upload,2,0,0,15.0,2.3,○,,
+2025-08-01,TsuruhaHD,Merge pull request #1 from Sekine53629/fix,13,2679,1812,480.0,72.8,,,
+2025-08-01,TsuruhaHD,Merge pull request #2 from Sekine53629/develop,18,2330,0,480.0,72.8,,,
+2025-08-02,TsuruhaHD,Merge pull request #3 from Sekine53629/develop,6,555,1,312.7,47.5,,○,
+2025-08-09,TsuruhaHD,Merge pull request #6 from Sekine53629/develop,80,39515,0,480.0,72.8,,○,
+2025-08-09,TsuruhaHD,Merge branch 'main' into fix,117,42870,307,480.0,72.8,○,○,
+2025-08-09,TsuruhaHD,Merge pull request #7 from Sekine53629/fix,300,1006783,1167,480.0,72.8,○,○,
+2025-08-09,TsuruhaHD,Merge branch 'develop' into fix,117,42813,256,480.0,72.8,○,○,
+2025-08-09,TsuruhaHD,Merge pull request #8 from Sekine53629/fix,300,1009500,3023,480.0,72.8,○,○,
+2025-08-09,TsuruhaHD,Merge branch 'main' into develop,2,107,62,80.9,12.3,○,○,
+2025-08-09,TsuruhaHD,Merge pull request #9 from Sekine53629/develop,2,148,109,110.8,16.8,○,○,
+2025-08-10,TsuruhaHD,Merge pull request #10 from Sekine53629/develop,63,2507,35862,480.0,72.8,,○,
+2025-08-11,TsuruhaHD,Merge pull request #11 from Sekine53629/develop,21,10724,0,480.0,72.8,○,,
+2025-08-11,TsuruhaHD,Merge pull request #12 from Sekine53629/develop,38,26939,0,480.0,72.8,,,
+2025-08-11,.claude,アジャイル開発自動フロー作成,44,33443,0,480.0,72.8,,,
+2025-08-13,TsuruhaHD,UI完成→実装テスト,23,10596,5323,480.0,72.8,○,,○
+2025-08-13,TsuruhaHD,Merge pull request #13 from Sekine53629/develop,23,10596,5323,480.0,72.8,○,,○
+2025-08-13,TsuruhaHD,コア部分開発完了→中程度優先課題開発,13,4125,70,480.0,72.8,,,
+2025-08-13,TsuruhaHD,Merge pull request #14 from Sekine53629/develop,13,4125,70,480.0,72.8,,,
+2025-08-13,TsuruhaHD,中程度開発テスト,4,774,284,468.8,71.1,,,
+2025-08-13,TsuruhaHD,Merge pull request #15 from Sekine53629/develop,4,774,284,468.8,71.1,,,
+2025-08-13,TsuruhaHD,中程度開発 最終テスト工程,5,554,97,326.4,49.5,,,
+2025-08-13,TsuruhaHD,Merge pull request #16 from Sekine53629/develop,5,554,97,326.4,49.5,,,
+2025-08-13,TsuruhaHD,クラッシュ対策導入,1,202,0,111.0,16.8,,,
+2025-08-13,TsuruhaHD,Merge pull request #17 from Sekine53629/develop,1,202,0,111.0,16.8,,,
+2025-08-13,TsuruhaHD,開発完了前テスト,29,6151,29,480.0,72.8,○,,○
+2025-08-13,TsuruhaHD,Merge pull request #18 from Sekine53629/develop,29,6151,29,480.0,72.8,○,,○
+2025-08-13,TsuruhaHD,最終工程テスト,4,33,34,48.3,7.3,○,,○
+2025-08-13,TsuruhaHD,ユーザー定義型修正,4,95,74,87.3,13.2,○,,○
+2025-08-13,TsuruhaHD,Merge pull request #19 from Sekine53629/develop,7,128,108,125.6,19.1,○,,○
+2025-08-13,TsuruhaHD,CLAUDE.mdファイル生成用mdファイル作成,7,702,7,392.4,59.5,○,,○
+2025-08-13,TsuruhaHD,Merge pull request #20 from Sekine53629/develop,7,702,7,392.4,59.5,○,,○
+2025-08-14,TsuruhaHD,デバッグ作業記録,9,187,34,150.3,22.8,○,,○
+2025-08-14,TsuruhaHD,Merge pull request #21 from Sekine53629/develop,9,187,34,150.3,22.8,○,,○
+2025-08-14,TsuruhaHD,バグ２４個目修正,7,2672,0,480.0,72.8,○,,○
+2025-08-14,TsuruhaHD,Merge branch 'main' into fix,269,98248,36063,480.0,72.8,○,,○
+2025-08-14,TsuruhaHD,Merge pull request #22 from Sekine53629/fix,7,523,43,310.1,47.1,○,,○
+2025-08-14,TsuruhaHD,バグ２４個目修正,2,119,1,74.7,11.3,○,,○
+2025-08-14,TsuruhaHD,バグ２４個目修正,2,13,0,21.5,3.3,○,,○
+2025-08-14,TsuruhaHD,バグ２４個目修正,2,13,0,21.5,3.3,○,,○
+2025-08-14,TsuruhaHD,CSVデータベース体系化,20,3804,2096,480.0,72.8,,,
+2025-08-14,TsuruhaHD,Merge branch 'main' into develop,8,581,82,351.9,53.4,,,
+2025-08-14,TsuruhaHD,Merge pull request #23 from Sekine53629/develop,21,3899,2073,480.0,72.8,,,
+2025-08-14,TsuruhaHD,データベース接続テスト,8,1398,4,480.0,72.8,,,
+2025-08-14,TsuruhaHD,Merge pull request #24 from Sekine53629/develop,8,1398,4,480.0,72.8,,,
+2025-08-14,TsuruhaHD,CLAUDE.mdファイル更新_関係図更新,10,779,647,480.0,72.8,,,
+2025-08-14,TsuruhaHD,Merge pull request #25 from Sekine53629/develop,10,779,647,480.0,72.8,,,
+2025-08-14,TsuruhaHD,UIをよりアプリケーション様に修正,6,560,35,322.0,48.9,,,
+2025-08-14,TsuruhaHD,Merge pull request #26 from Sekine53629/develop,6,560,35,322.0,48.9,,,
+2025-08-14,TsuruhaHD,バグ修正♯52,5,124,9,93.8,14.2,○,,
+2025-08-14,TsuruhaHD,Merge pull request #27 from Sekine53629/develop,5,124,9,93.8,14.2,○,,
+2025-08-14,TsuruhaHD,Shift‐JISに対応＃５４,8,793,30,447.5,67.9,○,,
+2025-08-14,TsuruhaHD,Merge pull request #28 from Sekine53629/develop,8,793,30,447.5,67.9,○,,
+2025-08-14,TsuruhaHD,実データDBテスト,3,605,10,324.5,49.2,○,,○
+2025-08-14,TsuruhaHD,Merge pull request #29 from Sekine53629/develop,3,605,10,324.5,49.2,○,,○
+2025-08-14,TsuruhaHD,ErrorHandller＃55,2,14,4,22.8,3.5,○,,○
+2025-08-14,TsuruhaHD,Merge pull request #30 from Sekine53629/develop,2,14,4,22.8,3.5,○,,○
+2025-08-14,TsuruhaHD,ShiftーJIS対応＃５７,5,25,7,43.9,6.7,○,,○
+2025-08-14,TsuruhaHD,Merge pull request #31 from Sekine53629/develop,5,25,7,43.9,6.7,○,,○
+2025-08-14,TsuruhaHD,＃６４,6,1105,66,480.0,72.8,○,,○
+2025-08-14,TsuruhaHD,Merge pull request #32 from Sekine53629/develop,6,1105,66,480.0,72.8,○,,○
+2025-08-15,TsuruhaHD,患者マスタ仕様変更,10,1418,401,480.0,72.8,○,,○
+2025-08-15,TsuruhaHD,Merge pull request #33 from Sekine53629/develop,10,1418,401,480.0,72.8,○,,○
+2025-08-15,TsuruhaHD,クラッシュ対策＃6２,6,1203,156,480.0,72.8,,,
+2025-08-15,TsuruhaHD,Merge pull request #34 from Sekine53629/develop,6,1203,156,480.0,72.8,,,
+2025-08-15,TsuruhaHD,データベース重複チェック改善,5,108,20,88.0,13.4,,,
+2025-08-15,TsuruhaHD,Merge branch 'main' into develop,8,574,74,346.8,52.6,,,
+2025-08-15,TsuruhaHD,Merge pull request #35 from Sekine53629/develop,5,103,14,84.3,12.8,,,
+2025-08-15,TsuruhaHD,エラーコードCSV完成,23,9125,14,480.0,72.8,○,,○
+2025-08-15,TsuruhaHD,Merge pull request #36 from Sekine53629/develop,23,9125,14,480.0,72.8,○,,○
+2025-08-16,TsuruhaHD,データベース詳細設計再定義,48,9819,2879,480.0,72.8,○,○,
+2025-08-16,TsuruhaHD,Merge pull request #37 from Sekine53629/develop,48,9819,2879,480.0,72.8,○,○,
+2025-08-16,TsuruhaHD,要件定義書v3,9,3891,19,480.0,72.8,○,○,
+2025-08-16,TsuruhaHD,Merge pull request #38 from Sekine53629/develop,9,3891,19,480.0,72.8,○,○,
+2025-08-16,TsuruhaHD,パフォーマンステスト,6,1400,569,480.0,72.8,○,○,
+2025-08-16,TsuruhaHD,Merge pull request #39 from Sekine53629/develop,6,1400,569,480.0,72.8,○,○,
+2025-08-16,TsuruhaHD,パフォーマンス向上　1250倍達成,5,397,11,230.7,35.0,○,○,○
+2025-08-16,TsuruhaHD,Merge pull request #40 from Sekine53629/develop,5,397,11,230.7,35.0,○,○,○
+2025-08-16,TsuruhaHD,パフォーマンス向上テストクリア,2,152,1,91.2,13.8,○,○,○
+2025-08-16,TsuruhaHD,Merge pull request #41 from Sekine53629/develop,2,152,1,91.2,13.8,○,○,○
+2025-08-16,TsuruhaHD,R7/8/16引き継ぎ書,3,321,0,180.5,27.4,○,○,○
+2025-08-16,TsuruhaHD,Merge pull request #42 from Sekine53629/develop,3,321,0,180.5,27.4,○,○,○
+2025-08-17,TsuruhaHD,エラーコードフルロードテスト,7,3049,0,480.0,72.8,○,○,○
+2025-08-17,TsuruhaHD,Merge pull request #43 from Sekine53629/develop,7,3049,0,480.0,72.8,○,○,○
+2025-08-18,TsuruhaHD,[修正] スタックオーバーフロー問題の解決と統合キャッシュマネージャーへの移行,8,529,68,323.1,49.0,○,,○
+2025-08-18,TsuruhaHD,[新機能] 未請求データ管理機能の実装完了,3,1096,0,480.0,72.8,○,,○
+2025-08-18,TsuruhaHD,[ドキュメント] PROJECT_ROADMAP_V4作成 - 統合ロードマップ版,1,456,0,238.0,36.1,○,,○
+2025-08-18,TsuruhaHD,[新機能] 入金データ管理機能の実装完了,3,1168,0,480.0,72.8,○,,○
+2025-08-18,TsuruhaHD,[新機能] 売掛金データ管理機能の実装,3,1077,666,480.0,72.8,○,,○
+2025-08-18,TsuruhaHD,[修正] トランザクションデータ管理モジュールのCSVデータ処理エラー修正,11,770,33,451.6,68.5,○,,○
+2025-08-18,TsuruhaHD,[新機能] トランザクション履歴管理機能の実装完了,1,798,0,409.0,62.1,○,,○
+2025-08-18,TsuruhaHD,[修正] Dictionary操作でのSetキーワード追加,4,5,5,28.5,4.3,○,,○
+2025-08-18,TsuruhaHD,[修正] 日本語文字化け問題の解決,1,25,19,26.3,4.0,○,,○
+2025-08-18,TsuruhaHD,[改善] 売掛金データ管理モジュールのインデックス処理改善,2,23,4,27.3,4.1,○,,○
+2025-08-18,TsuruhaHD,[修正] エイジング分析と回収状況の集計処理を修正,1,28,9,25.8,3.9,○,,○
+2025-08-18,TsuruhaHD,[ドキュメント] 2025年8月18日作業引き継ぎ書,1,252,0,136.0,20.6,○,,○
+2025-08-19,ROI-Calculator-App,Add files via upload,17,6097,0,480.0,72.8,○,,○
+2025-08-20,TsuruhaHD,CSVデータベース処理速度テスト,61,22672,79,480.0,72.8,○,,○
+2025-08-20,InsuranceBillingReportGenerator-CSV,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-08-20,InsuranceBillingReportGenerator-CSV,新規リポジトリ作成,216,92771,0,480.0,72.8,○,,○
+2025-08-20,Redmine,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-08-20,Redmine,新規リポジトリ追加,14,2269,0,480.0,72.8,○,,○
+2025-08-20,OfficerChangeMacro,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-08-20,OfficerChangeMacro,新規リポジトリ追加,1,287,0,153.5,23.3,○,,○
+2025-08-20,MonthlyReportGenerator,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-08-20,MonthlyReportGenerator,新規リポジトリ追加,13,2426,0,480.0,72.8,○,,○
+2025-08-20,AutoShiftProductor,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-08-20,AutoShiftProductor,新規リポジトリ追加,6,1390,0,480.0,72.8,○,,○
+2025-08-20,PharmacyBrowser,Initial commit,1,2,0,11.0,1.7,○,,○
+2025-08-20,PharmacyBrowser,新規リポジトリ追加,40,10795,0,480.0,72.8,○,,○
+2025-08-22,Parallel_Vibe_Coding_Protocol,Initial commit,2,4,0,17.0,2.6,,,
+2025-08-27,PermitChangeDocumentsGenerator,Initial commit,1,2,0,11.0,1.7,,,
+2025-08-28,PermitChangeDocumentsGenerator,feat: ファイルロック自動解除機能を追加（エラー5460対応）,2,836,0,433.0,65.7,,,
+2025-08-28,PermitChangeDocumentsGenerator,develop,91,24269,0,480.0,72.8,,,
+2025-08-28,PermitChangeDocumentsGenerator,Merge pull request #1 from Sekine53629/fix/file-lock-error-5460,93,25105,0,480.0,72.8,,,
+2025-08-28,Python_Practice,Initial commit,1,2,0,11.0,1.7,○,,
+2025-08-29,Practice_Python,Initial commit,1,2,0,11.0,1.7,○,,
+2025-09-03,GoogleFormSenseAnalytics,Initial commit,1,2,0,11.0,1.7,,,
+2025-09-03,SubsetSumSearchLibrary,Initial commit,1,2,0,11.0,1.7,○,,
+2025-09-04,SubsetSumSearchLibrary,探索システムツール開発,9,6382,0,480.0,72.8,○,,
+2025-09-04,SubsetSumSearchLibrary,文言の修正,1,22,22,25.4,3.9,○,,
+2025-09-06,SubsetSumSearchLibrary,確実性レベル表示と領収金額変更警告機能を実装,26,7824,97,480.0,72.8,○,○,○
+2025-09-06,SubsetSumSearchLibrary,保険請求モード: CSV負担割合に基づくチェックボックス自動調整機能実装,5,588,4,324.8,49.3,○,○,
+2025-09-06,SubsetSumSearchLibrary,CSV読込機能を修正: undefinedラベル問題を解決,2,67,9,50.3,7.6,○,○,
+2025-09-06,SubsetSumSearchLibrary,CSV読み込みの順序問題を修正,2,198,4,114.8,17.4,○,○,
+2025-09-06,SubsetSumSearchLibrary,タイトル横に詳細リンクを追加,1,28,1,24.2,3.7,○,○,
+2025-09-06,SubsetSumSearchLibrary,保険請求モードで詳細リンクを非表示に,1,6,0,13.0,2.0,○,○,
+2025-09-06,SubsetSumSearchLibrary,全金種最適組み合わせ探索アルゴリズムを実装,2,621,2,325.9,49.5,○,○,
+2025-09-06,SubsetSumSearchLibrary,システムドキュメントを作成,2,478,0,254.0,38.5,○,○,
+2025-09-06,SubsetSumSearchLibrary,ヘルプシステム統合版を作成,4,1875,5,480.0,72.8,,○,
+2025-09-06,Python_Practice,practice,15,91,0,125.5,19.0,○,○,○
+2025-09-06,SubsetSumSearchLibrary,マニュアル格納,1,342,0,181.0,27.5,○,○,○
+2025-09-06,GoogleFormSenseAnalytics,ドキュメント作成,7,1876,0,480.0,72.8,○,○,○
+2025-09-06,Practice_Python,練習,2,23,0,26.5,4.0,○,○,○
+2025-09-06,TsuruhaHD,いちおう,8,1533,217,480.0,72.8,○,○,○
+2025-09-06,TsuruhaHD,Merge pull request #44 from Sekine53629/develop,90,30265,933,480.0,72.8,○,○,○
+2025-09-06,.claude,いちおう,2,105,5,68.5,10.4,○,○,○
+2025-09-06,.claude,＿,1,2,1,11.2,1.7,○,○,○
+2025-09-06,InsuranceBillingReportGenerator-CSV,いちおう,37,13833,3,480.0,72.8,○,○,○
+2025-09-07,SubsetSumSearchLibrary,技術仕様書の文言チェック,2,245,75,152.5,23.1,○,○,○
+2025-09-07,GoogleFormSenseAnalytics,アンケート中間結果,25,4443,0,480.0,72.8,,○,
+2025-09-07,GoogleFormSenseAnalytics,中間報告まとめ,7,804,5,443.0,67.2,○,○,○
+2025-09-07,GoogleFormSenseAnalytics,件数修正,1,1,1,10.7,1.6,○,○,○
+2025-09-08,GoogleFormSenseAnalytics,Create pharmacy_operations_report.html,1,759,0,389.5,59.1,○,,
+2025-09-08,InternalExamPreparationApp,Initial commit,1,2,0,11.0,1.7,○,,
+2025-09-09,PermitChangeDocumentsGenerator,データベース管理方法改善案,7,1812,2,480.0,72.8,,,
+2025-09-16,PermitChangeDocumentGenerator,統合,2,300,741,313.2,47.5,○,,○
+2025-09-16,PermitChangeDocumentGenerator,Update Main.bas,1,231,92,143.9,21.8,○,,
+2025-09-20,github-basic-kadai,Initial commit,1,2,0,11.0,1.7,○,○,
+2025-09-21,github-basic-kadai,kadai_005を提出,1,2,0,11.0,1.7,,○,
+2025-09-21,github-basic-kadai,kadai_005を再提出,1,23,2,21.9,3.3,,○,
+2025-09-21,github-basic-kadai,再提出用ファイルをコミット,1,9,4,15.3,2.3,,○,
+2025-09-21,github-basic-kadai,再提出ファイルをプッシュ,1,16,5,19.0,2.9,,○,
+2025-09-21,github-basic-kadai,再提出ファイルをプッシュ,1,12,34,22.8,3.5,,○,
+2025-09-22,git_challenge,hellow_world.txtを追加し、二行目を追加,1,2,0,11.0,1.7,,,
+2025-09-22,git_challenge,プルリクエストを送信,1,1,1,10.7,1.6,,,
+2025-09-22,git_challenge,Merge pull request #1 from Sekine53629/pull_request,1,1,1,10.7,1.6,,,
+2025-09-22,python-basic-kadai,python課題、四則演算,1,58,0,39.0,5.9,,,
+2025-09-22,python-basic-kadai,課題7・リスト/ディクショナリー,1,1,0,10.5,1.6,,,
+2025-09-22,python-basic-kadai,kadai_007をサブモジュールから通常ディレクトリに変更,2,101,1,65.7,10.0,,,
+2025-09-22,python-basic-kadai,課題7・リスト/ディクショナリー再提出,1,7,7,14.9,2.3,,,
+2025-09-22,python-basic-kadai,課題8 条件分岐,1,81,0,50.5,7.7,,,
+2025-09-22,python-basic-kadai,課題9 繰り返し処理,1,117,0,68.5,10.4,,,
+2025-09-22,python-basic-kadai,課題9 繰り返し処理 再提出,1,2,2,11.4,1.7,,,
+2025-09-22,python-basic-kadai,課題13 関数を使いこなそう,1,86,0,53.0,8.0,○,,
+2025-09-22,python-basic-kadai,課題14 変数のスコープを理解しよう,1,65,0,42.5,6.4,○,,
+2025-09-22,python-basic-kadai,課題15 クラスを理解しよう,2,106,3,68.6,10.4,○,,
+2025-09-22,python-basic-kadai,課題15 クラスを理解しよう 再提出,1,7,7,14.9,2.3,○,,
+2025-09-22,python-basic-kadai,課題15 クラスを理解しよう 再々提出,1,5,5,13.5,2.0,○,,
+2025-09-22,python-basic-kadai,課題17 学習したことを使ってコードを書こう,1,134,0,77.0,11.7,○,,
+2025-09-24,linux-basic-kadai,ファイル・ディレクトリの権限を変更しよう,1,0,0,10.0,1.5,○,,
+2025-09-24,linux-basic-kadai,ファイル・ディレクトリの権限を変更しよう,1,0,0,10.0,1.5,○,,
+2025-10-11,timeclock,打刻システムデプロイ,10,1041,220,480.0,72.8,○,○,
+2025-11-04,timeclock,打刻実績をギットハブと統合,12,429,0,279.5,42.4,○,,
+2025-11-04,timeclock,打刻実績をギットハブと統合,13,507,181,359.7,54.6,○,,○

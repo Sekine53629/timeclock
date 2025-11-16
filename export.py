@@ -149,7 +149,7 @@ def generate_monthly_report_html(summary: Dict) -> str:
                 <span class="value">{format_time_html(summary['standard_total_minutes'])} ({summary['standard_total_hours']:.2f}時間)</span>
             </div>
             <div class="summary-item">
-                <span class="label">総残業時間:</span>
+                <span class="label">総時間外労働時間:</span>
 """
 
     if summary['total_overtime_minutes'] > 0:
@@ -173,7 +173,7 @@ def generate_monthly_report_html(summary: Dict) -> str:
                     <th>プロジェクト</th>
                     <th>稼働日数</th>
                     <th>作業時間</th>
-                    <th>残業時間</th>
+                    <th>時間外労働時間</th>
                 </tr>
             </thead>
             <tbody>
@@ -204,7 +204,7 @@ def generate_monthly_report_html(summary: Dict) -> str:
                 <tr>
                     <th>日付</th>
                     <th>作業時間</th>
-                    <th>残業時間</th>
+                    <th>時間外労働時間</th>
                     <th>主なプロジェクト</th>
                 </tr>
             </thead>

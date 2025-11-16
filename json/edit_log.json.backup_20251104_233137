@@ -152,39 +152,5 @@
     },
     "reason": "GitHub統合時一時停止",
     "editor": "0053629"
-  },
-  {
-    "timestamp": "2025-11-04T23:31:37.399697",
-    "account": "0053629",
-    "record_id": "0053629_2025-11-04_20251104_215340.426905",
-    "action": "edit",
-    "before": {
-      "account": "0053629",
-      "project": "tsuruha",
-      "date": "2025-11-04",
-      "start_time": "2025-11-04T21:53:40.426905",
-      "breaks": [],
-      "end_time": "2025-11-04T22:27:29.382870",
-      "status": "completed",
-      "comment": "打刻実績管理",
-      "total_minutes": 33,
-      "total_break_minutes": 0,
-      "submission_status": "edited"
-    },
-    "after": {
-      "account": "0053629",
-      "project": "tsuruha",
-      "date": "2025-11-04",
-      "start_time": "2025-11-04T21:53:40.426905",
-      "breaks": [],
-      "end_time": "2025-11-04T23:31:29.382870",
-      "status": "completed",
-      "comment": "打刻実績管理",
-      "total_minutes": 97,
-      "total_break_minutes": 0,
-      "submission_status": "edited"
-    },
-    "reason": "GitHub全統合完了",
-    "editor": "0053629"
   }
 ]

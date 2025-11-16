@@ -112,7 +112,7 @@ def cmd_report_daily(args):
 
     print(f"\n標準労働時間: {standard_hours}時間 ({standard_minutes}分)")
     if overtime_minutes > 0:
-        print(f"残業時間: {format_time(overtime_minutes)} ⚠️")
+        print(f"時間外労働時間: {format_time(overtime_minutes)} ⚠️")
     elif overtime_minutes < 0:
         print(f"不足時間: {format_time(abs(overtime_minutes))}")
     else:
@@ -173,7 +173,7 @@ def cmd_list_projects(args):
         print(f"  - {project}")
 
 def cmd_report_monthly(args):
-    """月次レポート（プロジェクト別残業時間含む）"""
+    """月次レポート（プロジェクト別時間外労働時間含む）"""
     tc = TimeClock()
 
     # 年月の指定がない場合は今月
@@ -203,9 +203,9 @@ def cmd_report_monthly(args):
     print(f"標準労働時間: {format_time(summary['standard_total_minutes'])} ({summary['standard_total_hours']:.2f}時間)")
 
     if summary['total_overtime_minutes'] > 0:
-        print(f"総残業時間: {format_time(summary['total_overtime_minutes'])} ({summary['total_overtime_hours']:.2f}時間) ⚠️")
+        print(f"総時間外労働時間: {format_time(summary['total_overtime_minutes'])} ({summary['total_overtime_hours']:.2f}時間) ⚠️")
     else:
-        print(f"総残業時間: なし ✓")
+        print(f"総時間外労働時間: なし ✓")
 
     # プロジェクト別統計
     if summary['project_stats']:
@@ -217,7 +217,7 @@ def cmd_report_monthly(args):
             print(f"\n■ {project}")
             print(f"  稼働日数: {stats['days_worked_count']}日")
             print(f"  作業時間: {format_time(stats['total_minutes'])} ({stats['total_hours']:.2f}時間)")
-            print(f"  残業時間: {format_time(stats['overtime_minutes'])} ({stats['overtime_hours']:.2f}時間)", end='')
+            print(f"  時間外労働時間: {format_time(stats['overtime_minutes'])} ({stats['overtime_hours']:.2f}時間)", end='')
 
             if stats['overtime_minutes'] > 0:
                 print(" ⚠️")
@@ -228,7 +228,7 @@ def cmd_report_monthly(args):
                 print(f"\n  日別内訳:")
                 for date, minutes in sorted(stats['daily_breakdown'].items()):
                     overtime = stats['overtime_by_day'].get(date, 0)
-                    print(f"    {date}: {format_time(minutes)} (残業: {format_time(overtime)})")
+                    print(f"    {date}: {format_time(minutes)} (時間外労働: {format_time(overtime)})")
 
     # 日別サマリー（詳細モード）
     if args.verbose and summary['daily_stats']:
@@ -245,7 +245,7 @@ def cmd_report_monthly(args):
             print(f"\n{date}")
             print(f"  合計: {format_time(total)}", end='')
             if overtime > 0:
-                print(f" (残業: {format_time(overtime)}) ⚠️")
+                print(f" (時間外労働: {format_time(overtime)}) ⚠️")
             else:
                 print()
 
@@ -347,7 +347,7 @@ def main():
     parser_project.set_defaults(func=cmd_report_project)
 
     # report monthly
-    parser_monthly = report_subparsers.add_parser('monthly', help='月次レポート（プロジェクト別残業時間含む）')
+    parser_monthly = report_subparsers.add_parser('monthly', help='月次レポート（プロジェクト別時間外労働時間含む）')
     parser_monthly.add_argument('account', help='アカウント名')
     parser_monthly.add_argument('year_month', nargs='?', help='年月 (YYYY-MM、省略時は今月)')
     parser_monthly.add_argument('-v', '--verbose', action='store_true',

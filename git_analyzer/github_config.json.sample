@@ -1,0 +1,10 @@
+{
+  "tokens": [
+    "ghp_your_github_token_1_here",
+    "ghp_your_github_token_2_here"
+  ],
+  "usernames": [
+    "your_github_username_1",
+    "your_github_username_2"
+  ]
+}

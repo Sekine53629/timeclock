@@ -305,7 +305,7 @@ class TimeClock:
     def get_monthly_summary(self, account: str, year: int, month: int,
                            standard_hours_per_day: Optional[int] = None) -> Dict:
         """
-        月次サマリーを取得（プロジェクト別の残業時間含む）
+        月次サマリーを取得（プロジェクト別の時間外労働時間含む）
         締め日設定に基づいて集計期間を計算
 
         Args:
@@ -396,24 +396,24 @@ class TimeClock:
                 daily_stats[date]['projects'][project] = 0
             daily_stats[date]['projects'][project] += minutes
 
-        # プロジェクト別の残業時間を計算
+        # プロジェクト別の時間外労働時間を計算
         standard_minutes_per_day = standard_hours_per_day * 60
 
         for project, stats in project_stats.items():
             stats['days_worked_count'] = len(stats['days_worked'])
             stats['total_hours'] = stats['total_minutes'] / 60
 
-            # 各プロジェクトの日別残業時間を計算
+            # 各プロジェクトの日別時間外労働時間を計算
             stats['overtime_minutes'] = 0
             stats['overtime_by_day'] = {}
 
             for date, minutes in stats['daily_breakdown'].items():
                 # その日の総作業時間を取得
                 day_total = daily_stats[date]['total_minutes']
-                # その日の残業時間
+                # その日の時間外労働時間
                 day_overtime = max(0, day_total - standard_minutes_per_day)
 
-                # プロジェクトごとの割合で残業時間を按分
+                # プロジェクトごとの割合で時間外労働時間を按分
                 if day_total > 0:
                     project_ratio = minutes / day_total
                     project_overtime = int(day_overtime * project_ratio)
