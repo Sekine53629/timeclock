@@ -1,0 +1,13 @@
+20:20:36 - INFO - ============================================================
+20:20:36 - INFO - タイムクロックアプリケーション起動
+20:20:36 - INFO - ログファイル: /Users/yoshipc/.timeclock/timeclock.log
+20:20:36 - INFO - ============================================================
+[DEBUG] main() 関数開始
+[DEBUG] tk.Tk() 作成中...
+[DEBUG] tk.Tk() 作成完了
+[DEBUG] TimeClockGUI インスタンス作成中...
+[IdleMonitor] Warning: Idle monitoring is only supported on Windows. Current platform: Darwin
+[DEBUG] TimeClockGUI インスタンス作成完了
+[DEBUG] mainloop() 開始
+2025-10-22 20:20:43.494 Python[34813:6037198] +[IMKClient subclass]: chose IMKClient_Modern
+2025-10-22 20:20:43.494 Python[34813:6037198] +[IMKInputSession subclass]: chose IMKInputSession_Modern

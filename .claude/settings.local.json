@@ -5,6 +5,7 @@
       "Bash(python git_import.py:*)",
       "Bash(awk:*)",
       "Bash(python:*)",
+      "Bash(python3:*)",
       "Read(//c/Users/imao3/Documents/GitHub/**)",
       "Bash(where:*)",
       "Bash(pip install:*)",
@@ -12,7 +13,19 @@
       "Bash(git pull:*)",
       "Bash(git ls-tree:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(python gui.py:*)",
+      "Bash(python test_edit_features.py:*)",
+      "Bash(git log:*)",
+      "Bash(/tmp/full_git_log.txt)",
+      "Bash(gh repo list:*)",
+      "Bash(tee:*)",
+      "Bash(pgrep:*)",
+      "Bash(pkill:*)",
+      "Bash(find:*)",
+      "Bash(git diff:*)",
+      "Bash(git checkout:*)",
+      "Bash(git rm:*)"
     ],
     "deny": [],
     "ask": []

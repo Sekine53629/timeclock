@@ -1,0 +1,15 @@
+{
+  "accounts": {
+    "testUser": {
+      "closing_day": 31,
+      "standard_hours_per_day": 8
+    }
+  },
+  "users": [
+    "testUser"
+  ],
+  "auto_break": {
+    "enabled": false,
+    "threshold_minutes": 15
+  }
+}

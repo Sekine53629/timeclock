@@ -8,16 +8,11 @@
           "project": "PermitChangeDocumentGenerator",
           "date": "2025-09-16",
           "start_time": "2025-09-16T01:10:56",
-          "breaks": [
-            {
-              "start": "2025-09-16T01:40:56",
-              "end": "2025-09-16T07:29:01"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-09-16T07:59:01",
           "status": "completed",
-          "total_minutes": 60,
-          "total_break_minutes": 348,
+          "total_minutes": 408,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (2コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -41,16 +36,11 @@
           "project": "github-basic-kadai",
           "date": "2025-09-21",
           "start_time": "2025-09-21T06:39:16",
-          "breaks": [
-            {
-              "start": "2025-09-21T07:11:44",
-              "end": "2025-09-21T08:34:35"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-09-21T11:47:20",
           "status": "completed",
-          "total_minutes": 225,
-          "total_break_minutes": 82,
+          "total_minutes": 308,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (7コミット)",
           "is_legal_holiday": true,
           "submission_status": "imported"
@@ -60,35 +50,25 @@
           "project": "python-basic-kadai",
           "date": "2025-09-22",
           "start_time": "2025-09-22T13:33:32",
-          "breaks": [
-            {
-              "start": "2025-09-22T17:32:31",
-              "end": "2025-09-22T18:57:30"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-09-22T21:28:25",
           "status": "completed",
-          "total_minutes": 389,
-          "total_break_minutes": 84,
+          "total_minutes": 474,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (13コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "db-basic-kadai",
+          "project": "lamp-docker",
           "date": "2025-09-23",
           "start_time": "2025-09-23T11:09:53",
-          "breaks": [
-            {
-              "start": "2025-09-23T12:25:35",
-              "end": "2025-09-23T15:18:56"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-09-23T16:25:56",
           "status": "completed",
-          "total_minutes": 142,
-          "total_break_minutes": 173,
+          "total_minutes": 316,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (4コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -100,14 +80,34 @@
           "start_time": "2025-09-24T01:08:19",
           "breaks": [
             {
-              "start": "2025-09-24T01:38:19",
-              "end": "2025-09-24T17:51:01"
+              "start": "2025-09-24T04:08:19",
+              "end": "2025-09-24T05:08:19"
+            },
+            {
+              "start": "2025-09-24T07:08:19",
+              "end": "2025-09-24T08:08:19"
+            },
+            {
+              "start": "2025-09-24T10:08:19",
+              "end": "2025-09-24T11:08:19"
+            },
+            {
+              "start": "2025-09-24T13:08:19",
+              "end": "2025-09-24T14:08:19"
+            },
+            {
+              "start": "2025-09-24T16:08:19",
+              "end": "2025-09-24T17:08:19"
+            },
+            {
+              "start": "2025-09-24T19:08:19",
+              "end": "2025-09-24T20:08:19"
             }
           ],
           "end_time": "2025-09-24T19:15:56",
           "status": "completed",
-          "total_minutes": 114,
-          "total_break_minutes": 972,
+          "total_minutes": 480,
+          "total_break_minutes": 607,
           "comment": "Git作業記録から自動インポート (5コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -145,16 +145,11 @@
           "project": "medicom-auto-browsing",
           "date": "2025-10-04",
           "start_time": "2025-10-04T09:05:51",
-          "breaks": [
-            {
-              "start": "2025-10-04T09:35:51",
-              "end": "2025-10-04T13:24:10"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-10-04T13:54:10",
           "status": "completed",
-          "total_minutes": 60,
-          "total_break_minutes": 228,
+          "total_minutes": 288,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (2コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -175,23 +170,27 @@
         },
         {
           "account": "0053629",
-          "project": "debug_tools",
+          "project": "medicom-auto-browser-forMac",
           "date": "2025-10-06",
           "start_time": "2025-10-06T08:15:57",
           "breaks": [
             {
-              "start": "2025-10-06T08:52:20",
-              "end": "2025-10-06T15:16:00"
+              "start": "2025-10-06T11:15:57",
+              "end": "2025-10-06T12:15:57"
             },
             {
-              "start": "2025-10-06T16:16:00",
-              "end": "2025-10-06T18:17:05"
+              "start": "2025-10-06T14:15:57",
+              "end": "2025-10-06T15:15:57"
+            },
+            {
+              "start": "2025-10-06T17:15:57",
+              "end": "2025-10-06T17:46:57"
             }
           ],
           "end_time": "2025-10-06T18:47:05",
           "status": "completed",
-          "total_minutes": 126,
-          "total_break_minutes": 504,
+          "total_minutes": 480,
+          "total_break_minutes": 151,
           "comment": "Git作業記録から自動インポート (4コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -212,65 +211,80 @@
         },
         {
           "account": "0053629",
-          "project": "GoogleFormSenseAnalytics",
+          "project": "medicom-auto-browser-forMac",
           "date": "2025-10-08",
           "start_time": "2025-10-08T06:39:41",
           "breaks": [
             {
-              "start": "2025-10-08T08:00:57",
-              "end": "2025-10-08T13:04:02"
+              "start": "2025-10-08T09:39:41",
+              "end": "2025-10-08T10:39:41"
             },
             {
-              "start": "2025-10-08T14:08:27",
-              "end": "2025-10-08T17:49:33"
+              "start": "2025-10-08T12:39:41",
+              "end": "2025-10-08T13:39:41"
+            },
+            {
+              "start": "2025-10-08T15:39:41",
+              "end": "2025-10-08T16:39:41"
             }
           ],
           "end_time": "2025-10-08T18:19:33",
           "status": "completed",
-          "total_minutes": 175,
-          "total_break_minutes": 524,
+          "total_minutes": 480,
+          "total_break_minutes": 219,
           "comment": "Git作業記録から自動インポート (5コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "Python_Practice",
+          "project": "atcoder-practice",
           "date": "2025-10-09",
           "start_time": "2025-10-09T21:28:29",
-          "breaks": [
-            {
-              "start": "2025-10-09T21:59:01",
-              "end": "2025-10-09T23:12:16"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-10-09T23:47:42",
           "status": "completed",
-          "total_minutes": 65,
-          "total_break_minutes": 73,
+          "total_minutes": 139,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (7コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "data_analysis_basic_kadai",
+          "project": "timeclock",
           "date": "2025-10-10",
           "start_time": "2025-10-10T01:29:14",
           "breaks": [
             {
-              "start": "2025-10-10T03:25:27",
-              "end": "2025-10-10T15:39:48"
+              "start": "2025-10-10T04:29:14",
+              "end": "2025-10-10T05:29:14"
             },
             {
-              "start": "2025-10-10T17:08:45",
-              "end": "2025-10-10T20:49:42"
+              "start": "2025-10-10T07:29:14",
+              "end": "2025-10-10T08:29:14"
+            },
+            {
+              "start": "2025-10-10T10:29:14",
+              "end": "2025-10-10T11:29:14"
+            },
+            {
+              "start": "2025-10-10T13:29:14",
+              "end": "2025-10-10T14:29:14"
+            },
+            {
+              "start": "2025-10-10T16:29:14",
+              "end": "2025-10-10T17:29:14"
+            },
+            {
+              "start": "2025-10-10T19:29:14",
+              "end": "2025-10-10T20:29:14"
             }
           ],
           "end_time": "2025-10-10T21:19:42",
           "status": "completed",
-          "total_minutes": 235,
-          "total_break_minutes": 955,
+          "total_minutes": 480,
+          "total_break_minutes": 710,
           "comment": "Git作業記録から自動インポート (9コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -307,16 +321,11 @@
           "project": "code-snippet-manager",
           "date": "2025-10-16",
           "start_time": "2025-10-16T00:05:32",
-          "breaks": [
-            {
-              "start": "2025-10-16T00:56:02",
-              "end": "2025-10-16T06:04:53"
-            }
-          ],
+          "breaks": [],
           "end_time": "2025-10-16T07:48:49",
           "status": "completed",
-          "total_minutes": 154,
-          "total_break_minutes": 308,
+          "total_minutes": 463,
+          "total_break_minutes": 0,
           "comment": "Git作業記録から自動インポート (8コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -328,14 +337,18 @@
           "start_time": "2025-10-17T00:01:30",
           "breaks": [
             {
-              "start": "2025-10-17T01:39:46",
-              "end": "2025-10-17T07:29:48"
+              "start": "2025-10-17T03:01:30",
+              "end": "2025-10-17T04:01:30"
+            },
+            {
+              "start": "2025-10-17T06:01:30",
+              "end": "2025-10-17T06:08:30"
             }
           ],
           "end_time": "2025-10-17T09:08:50",
           "status": "completed",
-          "total_minutes": 197,
-          "total_break_minutes": 350,
+          "total_minutes": 480,
+          "total_break_minutes": 67,
           "comment": "Git作業記録から自動インポート (7コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -383,18 +396,34 @@
           "start_time": "2025-10-21T01:51:28",
           "breaks": [
             {
-              "start": "2025-10-21T02:27:47",
-              "end": "2025-10-21T06:21:08"
+              "start": "2025-10-21T04:51:28",
+              "end": "2025-10-21T05:51:28"
             },
             {
-              "start": "2025-10-21T07:21:08",
-              "end": "2025-10-21T21:13:14"
+              "start": "2025-10-21T07:51:28",
+              "end": "2025-10-21T08:51:28"
+            },
+            {
+              "start": "2025-10-21T10:51:28",
+              "end": "2025-10-21T11:51:28"
+            },
+            {
+              "start": "2025-10-21T13:51:28",
+              "end": "2025-10-21T14:51:28"
+            },
+            {
+              "start": "2025-10-21T16:51:28",
+              "end": "2025-10-21T17:51:28"
+            },
+            {
+              "start": "2025-10-21T19:51:28",
+              "end": "2025-10-21T20:51:28"
             }
           ],
           "end_time": "2025-10-21T22:14:19",
           "status": "completed",
-          "total_minutes": 157,
-          "total_break_minutes": 1065,
+          "total_minutes": 480,
+          "total_break_minutes": 742,
           "comment": "Git作業記録から自動インポート (6コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -551,14 +580,26 @@
           "start_time": "2025-10-30T09:38:11",
           "breaks": [
             {
-              "start": "2025-10-30T10:08:11",
-              "end": "2025-10-30T23:02:46"
+              "start": "2025-10-30T12:38:11",
+              "end": "2025-10-30T13:38:11"
+            },
+            {
+              "start": "2025-10-30T15:38:11",
+              "end": "2025-10-30T16:38:11"
+            },
+            {
+              "start": "2025-10-30T18:38:11",
+              "end": "2025-10-30T19:38:11"
+            },
+            {
+              "start": "2025-10-30T21:38:11",
+              "end": "2025-10-30T22:38:11"
             }
           ],
           "end_time": "2025-10-30T23:49:03",
           "status": "completed",
-          "total_minutes": 76,
-          "total_break_minutes": 774,
+          "total_minutes": 480,
+          "total_break_minutes": 370,
           "comment": "Git作業記録から自動インポート (6コミット)",
           "is_legal_holiday": false,
           "submission_status": "imported"
@@ -647,7 +688,7 @@
         },
         {
           "account": "0053629",
-          "project": "lamp-docker",
+          "project": "python-basic-kadai",
           "date": "2025-11-13",
           "start_time": "2025-11-13T20:45:15",
           "breaks": [],
@@ -661,7 +702,7 @@
         },
         {
           "account": "0053629",
-          "project": "PermitChangeDocumentsGenerator",
+          "project": "SubsetSumSearchLibrary",
           "date": "2025-11-14",
           "start_time": "2025-11-14T01:16:35",
           "breaks": [],

@@ -6,6 +6,7 @@ PC操作監視モジュール
 
 import ctypes
 import time
+import platform
 from datetime import datetime
 from typing import Callable, Optional
 import threading
@@ -30,6 +31,11 @@ class IdleMonitor:
         self.on_idle_detected: Optional[Callable] = None
         self.last_idle_time: Optional[datetime] = None
 
+        # プラットフォームチェック（Windows専用機能）
+        self.is_windows = platform.system() == 'Windows'
+        if not self.is_windows:
+            print(f"[IdleMonitor] Warning: Idle monitoring is only supported on Windows. Current platform: {platform.system()}")
+
     def get_idle_time_seconds(self) -> float:
         """
         PCのアイドル時間を秒単位で取得
@@ -37,6 +43,10 @@ class IdleMonitor:
         Returns:
             アイドル時間（秒）
         """
+        # Windows以外では常に0を返す（監視無効）
+        if not self.is_windows:
+            return 0
+
         class LASTINPUTINFO(ctypes.Structure):
             _fields_ = [
                 ('cbSize', ctypes.c_uint),
@@ -70,6 +80,11 @@ class IdleMonitor:
             callback: アイドル検出時に呼び出される関数
                      引数: アイドル時間（分）
         """
+        # Windows以外では監視を開始しない
+        if not self.is_windows:
+            print("[IdleMonitor] Idle monitoring is disabled on non-Windows platforms")
+            return
+
         if self.is_monitoring:
             return
 

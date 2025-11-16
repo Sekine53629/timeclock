@@ -8,12 +8,11 @@
   "users": [],
   "auto_break": {
     "enabled": true,
-    "threshold_minutes": 60
+    "threshold_minutes": 10
   },
   "company_overtime_records": {
     "0053629": {
-      "2025-11": 26.5,
-      "2025-10": 13.14
+      "2025-11": 26.5
     }
   }
 }

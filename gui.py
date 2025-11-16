@@ -2,6 +2,18 @@
 """
 打刻システム GUI アプリケーション
 """
+import os
+import platform
+# macOS の Tk 非推奨警告を抑制
+os.environ['TK_SILENCE_DEPRECATION'] = '1'
+# macOS でダークモードの自動適用を無効化
+if platform.system() == 'Darwin':
+    try:
+        from tkinter import _tkinter
+        _tkinter.setappearance('aqua')
+    except:
+        pass
+
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext, simpledialog
 from datetime import datetime
@@ -23,30 +35,47 @@ class TimeClockGUI:
             self.root = root
             self.root.title("打刻システム")
             self.root.geometry("900x650")  # コンパクトなサイズ
+            logger.info("ウィンドウ設定完了")
 
             # 最小サイズを設定
             self.root.minsize(800, 600)
+            logger.info("最小サイズ設定完了")
 
-            # ダークモードの色設定
-            self.setup_dark_theme()
+            # ライトモードの色設定（macOS互換性のため最小限の設定）
+            logger.info("カラー設定開始")
+            self.setup_colors_only()
+            logger.info("カラー設定完了")
 
+            logger.info("TimeClock初期化開始")
             self.tc = TimeClock()
+            logger.info("TimeClock初期化完了")
+
+            logger.info("ConfigManager初期化開始")
             self.config_manager = ConfigManager()
+            logger.info("ConfigManager初期化完了")
 
             # 設定の読み込み
+            logger.info("自動休憩設定読み込み開始")
             self.load_auto_break_config()
+            logger.info("自動休憩設定読み込み完了")
 
             # アイドル監視機能の初期化
+            logger.info("IdleMonitor初期化開始")
             self.idle_monitor = IdleMonitor(
                 idle_threshold_minutes=self.auto_break_threshold,
                 check_interval_seconds=30
             )
+            logger.info("IdleMonitor初期化完了")
 
             # メインフレームの作成
+            logger.info("ウィジェット作成開始")
             self.create_widgets()
+            logger.info("ウィジェット作成完了")
 
             # 初期状態の更新
+            logger.info("ステータス更新開始")
             self.update_status()
+            logger.info("ステータス更新完了")
 
             # 定期的にステータスを更新（30秒ごと）
             self.schedule_status_update()
@@ -66,147 +95,26 @@ class TimeClockGUI:
             )
             raise
 
-    def setup_dark_theme(self):
-        """ダークモードのテーマを設定"""
-        # ダークモードの色定義
+    def setup_colors_only(self):
+        """色定義のみ設定（macOS互換性のため、ttkスタイル設定を削除）"""
+        # ライトモードの色定義
         self.colors = {
-            'bg': '#1e1e1e',           # 背景色（濃いグレー）
-            'fg': '#e0e0e0',           # 文字色（明るいグレー）
-            'bg_light': '#2d2d2d',     # 少し明るい背景
-            'bg_dark': '#181818',      # より暗い背景
+            'bg': '#f0f0f0',           # 背景色（明るいグレー）
+            'fg': '#000000',           # 文字色（黒）
+            'bg_light': '#ffffff',     # より明るい背景（白）
+            'bg_dark': '#e0e0e0',      # 少し暗い背景
             'accent': '#007acc',       # アクセントカラー（青）
             'accent_hover': '#005a9e', # ホバー時のアクセント
-            'success': '#4ec9b0',      # 成功（緑がかった青）
-            'warning': '#ce9178',      # 警告（オレンジ）
-            'error': '#f48771',        # エラー（赤）
-            'border': '#3e3e3e',       # ボーダー色
+            'success': '#00a000',      # 成功（緑）
+            'warning': '#ff8c00',      # 警告（オレンジ）
+            'error': '#d00000',        # エラー（赤）
+            'border': '#c0c0c0',       # ボーダー色
         }
 
-        # tkinterのスタイル設定
+        # 最小限のスタイル設定
         self.root.configure(bg=self.colors['bg'])
+        logger.info("色設定を適用しました（ttkスタイルは未適用）")
 
-        # ttkスタイルの設定
-        style = ttk.Style()
-        style.theme_use('clam')  # clamテーマをベースに
-
-        # 全体の背景色とフォント
-        style.configure('.',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'],
-                       fieldbackground=self.colors['bg_light'],
-                       bordercolor=self.colors['border'],
-                       darkcolor=self.colors['bg_dark'],
-                       lightcolor=self.colors['bg_light'])
-
-        # Notebookのスタイル
-        style.configure('TNotebook',
-                       background=self.colors['bg'],
-                       borderwidth=0,
-                       tabmargins=0)
-
-        # タブのレイアウトを設定して、選択時のサイズ変更を防ぐ
-        style.layout('TNotebook.Tab', [
-            ('Notebook.tab', {
-                'sticky': 'nswe',
-                'children': [
-                    ('Notebook.padding', {
-                        'side': 'top',
-                        'sticky': 'nswe',
-                        'children': [
-                            ('Notebook.label', {'side': 'top', 'sticky': ''})
-                        ]
-                    })
-                ]
-            })
-        ])
-
-        # タブのスタイル（自然なバランスのサイズに固定）
-        style.configure('TNotebook.Tab',
-                       background=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       padding=[20, 6],  # 横20、縦6で自然なバランス
-                       borderwidth=0)
-
-        # 選択状態でも同じパディングを維持（色だけ変更）
-        style.map('TNotebook.Tab',
-                 background=[('selected', self.colors['accent']), ('!selected', self.colors['bg_light'])],
-                 foreground=[('selected', '#ffffff'), ('!selected', self.colors['fg'])],
-                 padding=[('selected', [20, 6]), ('!selected', [20, 6])])
-
-        # Frameのスタイル
-        style.configure('TFrame', background=self.colors['bg'])
-
-        # LabelFrameのスタイル
-        style.configure('TLabelframe',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'],
-                       bordercolor=self.colors['border'])
-        style.configure('TLabelframe.Label',
-                       background=self.colors['bg'],
-                       foreground=self.colors['accent'])
-
-        # Labelのスタイル
-        style.configure('TLabel',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'])
-
-        # Buttonのスタイル
-        style.configure('TButton',
-                       background=self.colors['accent'],
-                       foreground='#ffffff',
-                       borderwidth=1,
-                       focuscolor=self.colors['accent'],
-                       padding=[10, 5])
-        style.map('TButton',
-                 background=[('active', self.colors['accent_hover']),
-                           ('pressed', self.colors['bg_dark'])])
-
-        # Entryのスタイル
-        style.configure('TEntry',
-                       fieldbackground=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       insertcolor=self.colors['fg'],
-                       bordercolor=self.colors['border'])
-
-        # Comboboxのスタイル
-        style.configure('TCombobox',
-                       fieldbackground=self.colors['bg_light'],
-                       background=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       arrowcolor=self.colors['fg'],
-                       bordercolor=self.colors['border'])
-
-        # Checkbuttonのスタイル
-        style.configure('TCheckbutton',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'])
-
-        # Radiobuttonのスタイル
-        style.configure('TRadiobutton',
-                       background=self.colors['bg'],
-                       foreground=self.colors['fg'])
-
-        # Treeviewのスタイル
-        style.configure('Treeview',
-                       background=self.colors['bg_light'],
-                       foreground=self.colors['fg'],
-                       fieldbackground=self.colors['bg_light'],
-                       bordercolor=self.colors['border'])
-        style.configure('Treeview.Heading',
-                       background=self.colors['bg_dark'],
-                       foreground=self.colors['accent'],
-                       borderwidth=1)
-        style.map('Treeview',
-                 background=[('selected', self.colors['accent'])])
-
-        # Scrollbarのスタイル
-        style.configure('Vertical.TScrollbar',
-                       background=self.colors['bg_light'],
-                       troughcolor=self.colors['bg_dark'],
-                       bordercolor=self.colors['border'],
-                       arrowcolor=self.colors['fg'])
-
-        logger.info("ダークモードを適用しました")
 
     def create_widgets(self):
         """ウィジェットの作成"""
@@ -222,14 +130,21 @@ class TimeClockGUI:
 
     def create_main_tab(self):
         """メインタブ（作業開始/終了）の作成"""
-        main_frame = ttk.Frame(self.notebook)
+        # macOS互換性のため、通常のtkフレームを使用
+        main_frame = tk.Frame(self.notebook, bg=self.colors['bg'])
         self.notebook.add(main_frame, text="打刻")
 
         # 現在の状態表示エリア
-        status_group = ttk.LabelFrame(main_frame, text="現在の状態", padding=10)
+        status_group = tk.LabelFrame(main_frame, text="現在の状態",
+                                     bg=self.colors['bg'], fg=self.colors['fg'],
+                                     padx=10, pady=10)
         status_group.pack(fill=tk.X, padx=10, pady=10)
 
-        self.status_text = scrolledtext.ScrolledText(status_group, height=8, width=70)
+        self.status_text = scrolledtext.ScrolledText(
+            status_group, height=8, width=70,
+            bg=self.colors['bg_light'],
+            fg=self.colors['fg']
+        )
         self.status_text.pack(fill=tk.BOTH, expand=True)
         self.status_text.config(state=tk.DISABLED)
 
@@ -298,6 +213,8 @@ class TimeClockGUI:
                        value="monthly", command=self.on_report_type_changed).pack(anchor=tk.W)
         ttk.Radiobutton(type_group, text="プロジェクト別レポート", variable=self.report_type_var,
                        value="project", command=self.on_report_type_changed).pack(anchor=tk.W)
+        ttk.Radiobutton(type_group, text="会社打刻実績管理", variable=self.report_type_var,
+                       value="company_overtime", command=self.on_report_type_changed).pack(anchor=tk.W)
 
         # レポート設定
         setting_group = ttk.LabelFrame(report_frame, text="レポート設定", padding=10)
@@ -328,9 +245,121 @@ class TimeClockGUI:
         result_group = ttk.LabelFrame(report_frame, text="レポート結果", padding=10)
         result_group.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.report_text = scrolledtext.ScrolledText(result_group, height=15, width=70)
+        self.report_text = scrolledtext.ScrolledText(
+            result_group, height=15, width=70,
+            bg=self.colors['bg_light'],
+            fg=self.colors['fg']
+        )
         self.report_text.pack(fill=tk.BOTH, expand=True)
         self.report_text.config(state=tk.DISABLED)
+
+        # 月次レポート用の会社打刻実績入力フォーム（初期は非表示）
+        self.monthly_company_overtime_frame = ttk.LabelFrame(result_group, text="会社打刻実績", padding=10)
+
+        # 対象期間
+        self.monthly_period_label = ttk.Label(self.monthly_company_overtime_frame, text="対象期間: -")
+        self.monthly_period_label.grid(row=0, column=0, columnspan=3, sticky=tk.W, pady=5)
+
+        # アプリ記録
+        ttk.Label(self.monthly_company_overtime_frame, text="アプリ記録:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
+        self.monthly_app_hours_label = ttk.Label(self.monthly_company_overtime_frame, text="0.0時間")
+        self.monthly_app_hours_label.grid(row=1, column=1, sticky=tk.W, padx=5, pady=5)
+        ttk.Label(self.monthly_company_overtime_frame, text="(法定時間外労働 + 法定休日労働)",
+                  foreground="gray").grid(row=1, column=2, sticky=tk.W, padx=5, pady=5)
+
+        # 会社打刻実績
+        ttk.Label(self.monthly_company_overtime_frame, text="会社打刻実績:").grid(row=2, column=0, sticky=tk.W, padx=5, pady=5)
+        self.monthly_company_hours_var = tk.StringVar(value="0.0")
+        self.monthly_company_hours_entry = ttk.Entry(
+            self.monthly_company_overtime_frame,
+            textvariable=self.monthly_company_hours_var,
+            width=15
+        )
+        self.monthly_company_hours_entry.grid(row=2, column=1, sticky=tk.W, padx=5, pady=5)
+        ttk.Label(self.monthly_company_overtime_frame, text="時間").grid(row=2, column=2, sticky=tk.W, padx=5, pady=5)
+
+        # 合計
+        ttk.Label(self.monthly_company_overtime_frame, text="合計:").grid(row=3, column=0, sticky=tk.W, padx=5, pady=5)
+        self.monthly_combined_hours_label = ttk.Label(
+            self.monthly_company_overtime_frame,
+            text="0.0時間",
+            font=("TkDefaultFont", 10, "bold")
+        )
+        self.monthly_combined_hours_label.grid(row=3, column=1, sticky=tk.W, padx=5, pady=5)
+
+        # 60時間超過分
+        ttk.Label(self.monthly_company_overtime_frame, text="60時間超過分:").grid(row=4, column=0, sticky=tk.W, padx=5, pady=5)
+        self.monthly_over_60_label = ttk.Label(self.monthly_company_overtime_frame, text="-")
+        self.monthly_over_60_label.grid(row=4, column=1, sticky=tk.W, padx=5, pady=5)
+
+        # 保存ボタン
+        ttk.Button(
+            self.monthly_company_overtime_frame,
+            text="保存",
+            command=self.save_monthly_company_overtime
+        ).grid(row=5, column=0, columnspan=3, pady=10)
+
+        # 会社打刻実績の変更時に合計を更新
+        self.monthly_company_hours_var.trace_add('write', self.update_monthly_overtime_display)
+
+        # 月次レポート用の時間外労働情報を保持
+        self.current_monthly_overtime_info = None
+
+        # 会社打刻実績管理用のTreeview（初期は非表示）
+        self.company_overtime_frame = ttk.Frame(result_group)
+
+        # Treeview
+        columns = ('period', 'overtime_hours', 'app_hours', 'combined_hours', 'over_60')
+        self.company_overtime_tree = ttk.Treeview(
+            self.company_overtime_frame,
+            columns=columns,
+            show='headings',
+            height=12
+        )
+
+        self.company_overtime_tree.heading('period', text='対象月')
+        self.company_overtime_tree.heading('overtime_hours', text='会社打刻実績（時間）')
+        self.company_overtime_tree.heading('app_hours', text='アプリ記録（時間）')
+        self.company_overtime_tree.heading('combined_hours', text='合計（時間）')
+        self.company_overtime_tree.heading('over_60', text='60時間超過分')
+
+        self.company_overtime_tree.column('period', width=120)
+        self.company_overtime_tree.column('overtime_hours', width=150)
+        self.company_overtime_tree.column('app_hours', width=150)
+        self.company_overtime_tree.column('combined_hours', width=120)
+        self.company_overtime_tree.column('over_60', width=120)
+
+        # スクロールバー
+        overtime_scrollbar = ttk.Scrollbar(
+            self.company_overtime_frame,
+            orient=tk.VERTICAL,
+            command=self.company_overtime_tree.yview
+        )
+        self.company_overtime_tree.configure(yscrollcommand=overtime_scrollbar.set)
+
+        self.company_overtime_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        overtime_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # ダブルクリックで編集
+        self.company_overtime_tree.bind('<Double-1>', self.edit_company_overtime_from_tree)
+
+        # ボタンフレーム
+        self.overtime_button_frame = ttk.Frame(result_group)
+        ttk.Button(
+            self.overtime_button_frame,
+            text="新しい月を追加",
+            command=self.add_company_overtime_period
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            self.overtime_button_frame,
+            text="選択した月を編集",
+            command=self.edit_selected_company_overtime
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            self.overtime_button_frame,
+            text="更新",
+            command=self.show_report
+        ).pack(side=tk.LEFT, padx=5)
 
         # 初期化
         self.refresh_report_accounts()
@@ -491,7 +520,7 @@ class TimeClockGUI:
         self.standard_hours_var = tk.IntVar(value=8)
         ttk.Spinbox(hours_frame, from_=1, to=12, textvariable=self.standard_hours_var, width=10).pack(side=tk.LEFT, padx=(0, 5))
         ttk.Label(hours_frame, text="時間/日").pack(side=tk.LEFT)
-        ttk.Label(hours_frame, text="（時間外労働時間計算の基準）", font=('', 8), foreground='gray').pack(side=tk.LEFT, padx=(10, 0))
+        ttk.Label(hours_frame, text="（残業時間計算の基準）", font=('', 8), foreground='gray').pack(side=tk.LEFT, padx=(10, 0))
 
         # 保存ボタン
         button_frame = ttk.Frame(config_group)
@@ -761,14 +790,47 @@ class TimeClockGUI:
     def on_report_type_changed(self):
         """レポート種類変更時の処理"""
         report_type = self.report_type_var.get()
+
+        # 日付フォーマットの自動変換
+        current_date = self.report_date_var.get()
+        if report_type == "monthly":
+            # 月次レポート: YYYY-MM-DD → YYYY-MM
+            if len(current_date) == 10 and current_date.count('-') == 2:
+                # YYYY-MM-DD形式ならYYYY-MMに変換
+                self.report_date_var.set(current_date[:7])
+        elif report_type == "daily":
+            # 日別レポート: YYYY-MM → YYYY-MM-DD
+            if len(current_date) == 7 and current_date.count('-') == 1:
+                # YYYY-MM形式ならYYYY-MM-DDに変換（当月1日）
+                self.report_date_var.set(f"{current_date}-01")
+
+        # プロジェクト選択の表示/非表示
         if report_type == "project":
-            # プロジェクト選択を表示
             self.project_label.grid(row=2, column=0, sticky=tk.W, padx=5, pady=5)
             self.report_project_combo.grid(row=2, column=1, padx=5, pady=5)
         else:
-            # プロジェクト選択を非表示
             self.project_label.grid_forget()
             self.report_project_combo.grid_forget()
+
+        # レポート表示エリアの切り替え
+        if report_type == "company_overtime":
+            # 会社打刻実績管理：Treeviewを表示
+            self.report_text.pack_forget()
+            self.monthly_company_overtime_frame.pack_forget()
+            self.company_overtime_frame.pack(fill=tk.BOTH, expand=True)
+            self.overtime_button_frame.pack(fill=tk.X, pady=5)
+        elif report_type == "monthly":
+            # 月次レポート：report_textと会社打刻実績フォームを表示
+            self.company_overtime_frame.pack_forget()
+            self.overtime_button_frame.pack_forget()
+            self.report_text.pack(fill=tk.BOTH, expand=True)
+            self.monthly_company_overtime_frame.pack(fill=tk.X, padx=10, pady=10)
+        else:
+            # その他のレポート：report_textのみ表示
+            self.company_overtime_frame.pack_forget()
+            self.overtime_button_frame.pack_forget()
+            self.monthly_company_overtime_frame.pack_forget()
+            self.report_text.pack(fill=tk.BOTH, expand=True)
 
     def start_work(self):
         """作業開始"""
@@ -825,11 +887,44 @@ class TimeClockGUI:
             return
 
         try:
-            session = self.tc.end_work(account)
+            # 月間時間外労働の累計を取得
+            overtime_info = self.tc.get_monthly_overtime_hours(account)
+
+            # 休日情報を入力するダイアログを表示
+            dialog = HolidayInputDialog(
+                self.root,
+                overtime_info,
+                self.tc,
+                account
+            )
+            self.root.wait_window(dialog.top)
+
+            if dialog.result is None:
+                # キャンセルされた
+                return
+
+            is_holiday = dialog.result['is_holiday']
+            is_legal_holiday = dialog.result['is_legal_holiday']
+
+            # 作業終了
+            session = self.tc.end_work(account, is_holiday, is_legal_holiday)
             total_hours = session['total_minutes'] / 60
-            messagebox.showinfo("作業終了",
-                              f"作業を終了しました\n{session['account']} - {session['project']}\n"
-                              f"作業時間: {session['total_minutes']}分 ({total_hours:.2f}時間)")
+            night_hours = session.get('night_work_minutes', 0) / 60
+
+            # 結果メッセージ
+            msg = (f"作業を終了しました\n"
+                  f"{session['account']} - {session['project']}\n"
+                  f"作業時間: {session['total_minutes']}分 ({total_hours:.2f}時間)")
+
+            if night_hours > 0:
+                msg += f"\n深夜労働: {session['night_work_minutes']}分 ({night_hours:.2f}時間)"
+
+            if is_legal_holiday:
+                msg += "\n【法定休日】"
+            elif is_holiday:
+                msg += "\n【休日】"
+
+            messagebox.showinfo("作業終了", msg)
             self.update_status()
         except ValueError as e:
             messagebox.showerror("エラー", str(e))
@@ -950,36 +1045,59 @@ class TimeClockGUI:
             messagebox.showerror("エラー", "アカウントを選択してください")
             return
 
-        self.report_text.config(state=tk.NORMAL)
-        self.report_text.delete(1.0, tk.END)
-
         try:
-            if report_type == "daily":
-                date = self.report_date_var.get()
-                summary = self.tc.get_daily_summary(account, date)
-                report = self.format_daily_report(summary)
-            elif report_type == "monthly":
-                year_month = self.report_date_var.get()
-                try:
-                    year, month = map(int, year_month.split('-'))
-                except ValueError:
-                    messagebox.showerror("エラー", "年月は YYYY-MM 形式で指定してください")
-                    return
-                summary = self.tc.get_monthly_summary(account, year, month)
-                report = self.format_monthly_report(summary)
-            elif report_type == "project":
-                project = self.report_project_var.get()
-                if not project:
-                    messagebox.showerror("エラー", "プロジェクトを選択してください")
-                    return
-                summary = self.tc.get_project_summary(account, project)
-                report = self.format_project_report(summary)
+            if report_type == "company_overtime":
+                # 会社打刻実績管理
+                self.show_company_overtime_report(account)
+            else:
+                # 通常のレポート
+                self.report_text.config(state=tk.NORMAL)
+                self.report_text.delete(1.0, tk.END)
 
-            self.report_text.insert(tk.END, report)
+                if report_type == "daily":
+                    date = self.report_date_var.get()
+                    summary = self.tc.get_daily_summary(account, date)
+                    report = self.format_daily_report(summary)
+                elif report_type == "monthly":
+                    year_month = self.report_date_var.get()
+                    try:
+                        year, month = map(int, year_month.split('-'))
+                    except ValueError:
+                        messagebox.showerror("エラー", "年月は YYYY-MM 形式で指定してください")
+                        return
+                    summary = self.tc.get_monthly_summary(account, year, month)
+                    report = self.format_monthly_report(summary)
+
+                    # 会社打刻実績情報を月次サマリーから取得して表示
+                    # アプリ記録 = 総労働時間
+                    app_hours = summary['total_hours']
+                    company_overtime_hours = self.tc.get_company_overtime(account, year, month)
+                    combined_overtime_hours = app_hours + company_overtime_hours
+                    over_60_hours = max(0, combined_overtime_hours - 60)
+
+                    self.current_monthly_overtime_info = {
+                        'period_start': summary['start_date'],
+                        'period_end': summary['end_date'],
+                        'year': year,
+                        'month': month,
+                        'total_for_60h_calc_hours': app_hours,
+                        'company_overtime_hours': company_overtime_hours,
+                        'combined_overtime_hours': combined_overtime_hours,
+                        'over_60_hours': over_60_hours
+                    }
+                    self.update_monthly_company_overtime_form()
+                elif report_type == "project":
+                    project = self.report_project_var.get()
+                    if not project:
+                        messagebox.showerror("エラー", "プロジェクトを選択してください")
+                        return
+                    summary = self.tc.get_project_summary(account, project)
+                    report = self.format_project_report(summary)
+
+                self.report_text.insert(tk.END, report)
+                self.report_text.config(state=tk.DISABLED)
         except Exception as e:
             messagebox.showerror("エラー", str(e))
-
-        self.report_text.config(state=tk.DISABLED)
 
     def format_daily_report(self, summary):
         """日別レポートをフォーマット"""
@@ -1004,13 +1122,25 @@ class TimeClockGUI:
         lines.append(f"アカウント: {summary['account']}")
         lines.append(f"集計期間: {summary['start_date']} ～ {summary['end_date']}")
         lines.append(f"稼働日数: {summary['working_days']}日")
-        lines.append(f"\n総作業時間: {self.format_time(summary['total_minutes'])} ({summary['total_hours']:.2f}時間)")
-        lines.append(f"標準労働時間: {self.format_time(summary['standard_total_minutes'])} ({summary['standard_total_hours']:.2f}時間)")
+
+        # 日曜日を除いた作業時間
+        weekday_minutes = summary['total_minutes'] - summary.get('sunday_work_minutes', 0)
+        weekday_hours = weekday_minutes / 60
+
+        lines.append(f"\n平日・土曜作業時間: {self.format_time(weekday_minutes)} ({weekday_hours:.2f}時間)")
 
         if summary['total_overtime_minutes'] > 0:
-            lines.append(f"総時間外労働時間: {self.format_time(summary['total_overtime_minutes'])} ({summary['total_overtime_hours']:.2f}時間)")
+            lines.append(f"  うち残業時間: {self.format_time(summary['total_overtime_minutes'])} ({summary['total_overtime_hours']:.2f}時間)")
         else:
-            lines.append("総時間外労働時間: なし")
+            lines.append("  うち残業時間: なし")
+
+        # 日曜日の作業時間を別表示
+        if summary.get('sunday_work_minutes', 0) > 0:
+            lines.append(f"\n日曜日作業時間: {self.format_time(summary['sunday_work_minutes'])} ({summary['sunday_work_hours']:.2f}時間)")
+            lines.append(f"  日曜日稼働日数: {summary['sunday_days_count']}日")
+            lines.append(f"  日曜日: {', '.join(summary['sunday_days'])}")
+
+        lines.append(f"\n総作業時間: {self.format_time(summary['total_minutes'])} ({summary['total_hours']:.2f}時間)")
 
         if summary['project_stats']:
             lines.append("\n【プロジェクト別内訳】")
@@ -1018,7 +1148,7 @@ class TimeClockGUI:
                 lines.append(f"\n■ {project}")
                 lines.append(f"  稼働日数: {stats['days_worked_count']}日")
                 lines.append(f"  作業時間: {self.format_time(stats['total_minutes'])} ({stats['total_hours']:.2f}時間)")
-                lines.append(f"  時間外労働時間: {self.format_time(stats['overtime_minutes'])} ({stats['overtime_hours']:.2f}時間)")
+                lines.append(f"  残業時間: {self.format_time(stats['overtime_minutes'])} ({stats['overtime_hours']:.2f}時間)")
 
         return '\n'.join(lines)
 
@@ -1038,6 +1168,222 @@ class TimeClockGUI:
 
         return '\n'.join(lines)
 
+    def show_company_overtime_report(self, account):
+        """会社打刻実績管理レポートを表示"""
+        # Treeviewをクリア
+        for item in self.company_overtime_tree.get_children():
+            self.company_overtime_tree.delete(item)
+
+        # 全ての会社打刻実績を取得
+        all_company_overtime = self.tc.get_all_company_overtime(account)
+
+        # 各月の情報を取得して表示
+        for period_key in sorted(all_company_overtime.keys(), reverse=True):
+            year, month = map(int, period_key.split('-'))
+            company_hours = all_company_overtime[period_key]
+
+            # アプリで記録した時間を取得するため、月次時間外労働を計算
+            # YYYY年MM月期を指定するため、MM月の15日を渡す
+            target_date = f"{year:04d}-{month:02d}-15"
+            overtime_info = self.tc.get_monthly_overtime_hours(account, target_date)
+
+            app_hours = overtime_info['total_for_60h_calc_hours']
+            combined_hours = overtime_info['combined_overtime_hours']
+            over_60_hours = overtime_info['over_60_hours']
+
+            # 表示する月の形式
+            period_display = f"{year}年{month}月期"
+
+            # 60時間超過分の表示
+            if over_60_hours > 0:
+                over_60_display = f"{over_60_hours:.1f}時間 超過"
+                tag = "over_60"
+            else:
+                over_60_display = "-"
+                tag = ""
+
+            # Treeviewに追加
+            item_id = self.company_overtime_tree.insert(
+                '',
+                'end',
+                values=(
+                    period_display,
+                    f"{company_hours:.1f}",
+                    f"{app_hours:.1f}",
+                    f"{combined_hours:.1f}",
+                    over_60_display
+                ),
+                tags=(tag,)
+            )
+
+        # 60時間超過の行を赤色で表示
+        self.company_overtime_tree.tag_configure("over_60", foreground="red")
+
+    def edit_company_overtime_from_tree(self, event):
+        """Treeviewからダブルクリックで編集"""
+        selection = self.company_overtime_tree.selection()
+        if selection:
+            self.edit_selected_company_overtime()
+
+    def edit_selected_company_overtime(self):
+        """選択した月の会社打刻実績を編集"""
+        selection = self.company_overtime_tree.selection()
+        if not selection:
+            messagebox.showwarning("警告", "編集する月を選択してください")
+            return
+
+        # 選択された行の情報を取得
+        item = selection[0]
+        values = self.company_overtime_tree.item(item, 'values')
+        period_display = values[0]  # "YYYY年MM月期"
+        current_value = float(values[1])
+
+        # 年月を抽出
+        import re
+        match = re.match(r'(\d+)年(\d+)月期', period_display)
+        if not match:
+            return
+
+        year = int(match.group(1))
+        month = int(match.group(2))
+        account = self.report_account_var.get()
+
+        # 入力ダイアログ
+        new_value = simpledialog.askfloat(
+            "会社打刻実績の編集",
+            f"{period_display}の会社打刻実績（時間外労働時間）を入力してください。",
+            initialvalue=current_value,
+            minvalue=0.0,
+            maxvalue=500.0
+        )
+
+        if new_value is not None:
+            # 保存
+            self.tc.set_company_overtime(account, year, month, new_value)
+            # 表示を更新
+            self.show_report()
+
+    def update_monthly_company_overtime_form(self):
+        """月次レポート用の会社打刻実績フォームを更新"""
+        if not self.current_monthly_overtime_info:
+            return
+
+        info = self.current_monthly_overtime_info
+
+        # 対象期間
+        period_text = f"対象期間: {info['period_start']} ～ {info['period_end']} ({info['year']}年{info['month']}月期)"
+        self.monthly_period_label.config(text=period_text)
+
+        # アプリ記録
+        app_hours = info['total_for_60h_calc_hours']
+        app_text = f"{app_hours:.1f}時間"
+        self.monthly_app_hours_label.config(text=app_text)
+
+        # 会社打刻実績
+        company_hours = info['company_overtime_hours']
+        self.monthly_company_hours_var.set(f"{company_hours:.1f}")
+
+        # 合計と60時間超過分を更新
+        self.update_monthly_overtime_display()
+
+    def update_monthly_overtime_display(self, *args):
+        """月次レポート用の合計と60時間超過分の表示を更新"""
+        if not self.current_monthly_overtime_info:
+            return
+
+        try:
+            company_hours = float(self.monthly_company_hours_var.get())
+        except ValueError:
+            company_hours = 0.0
+
+        app_hours = self.current_monthly_overtime_info['total_for_60h_calc_hours']
+        combined_hours = app_hours + company_hours
+        over_60_hours = max(0, combined_hours - 60)
+
+        # 合計表示
+        combined_text = f"{combined_hours:.1f}時間"
+        if combined_hours > 60:
+            self.monthly_combined_hours_label.config(text=combined_text, foreground="red")
+        elif combined_hours > 50:
+            self.monthly_combined_hours_label.config(text=combined_text, foreground="orange")
+        else:
+            self.monthly_combined_hours_label.config(text=combined_text, foreground="black")
+
+        # 60時間超過分表示
+        if over_60_hours > 0:
+            over_60_text = f"{over_60_hours:.1f}時間 超過"
+            self.monthly_over_60_label.config(text=over_60_text, foreground="red")
+        else:
+            self.monthly_over_60_label.config(text="-", foreground="black")
+
+    def save_monthly_company_overtime(self):
+        """月次レポートの会社打刻実績を保存"""
+        if not self.current_monthly_overtime_info:
+            messagebox.showerror("エラー", "月次レポートを表示してから保存してください")
+            return
+
+        account = self.report_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        try:
+            company_hours = float(self.monthly_company_hours_var.get())
+        except ValueError:
+            messagebox.showerror("エラー", "有効な数値を入力してください")
+            return
+
+        if company_hours < 0:
+            messagebox.showerror("エラー", "0以上の数値を入力してください")
+            return
+
+        # 保存
+        year = self.current_monthly_overtime_info['year']
+        month = self.current_monthly_overtime_info['month']
+        self.tc.set_company_overtime(account, year, month, company_hours)
+
+        messagebox.showinfo("保存完了", f"{year}年{month}月期の会社打刻実績を保存しました")
+
+        # 表示を更新
+        self.show_report()
+
+    def add_company_overtime_period(self):
+        """新しい月の会社打刻実績を追加"""
+        account = self.report_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # 年月を入力
+        year_month = simpledialog.askstring(
+            "新しい月を追加",
+            "対象月を入力してください（YYYY-MM形式）\n例: 2025-11",
+            initialvalue=datetime.now().strftime('%Y-%m')
+        )
+
+        if not year_month:
+            return
+
+        try:
+            year, month = map(int, year_month.split('-'))
+        except ValueError:
+            messagebox.showerror("エラー", "年月はYYYY-MM形式で入力してください")
+            return
+
+        # 時間外労働時間を入力
+        hours = simpledialog.askfloat(
+            "会社打刻実績の入力",
+            f"{year}年{month}月期の会社打刻実績（時間外労働時間）を入力してください。",
+            initialvalue=0.0,
+            minvalue=0.0,
+            maxvalue=500.0
+        )
+
+        if hours is not None:
+            # 保存
+            self.tc.set_company_overtime(account, year, month, hours)
+            # 表示を更新
+            self.show_report()
 
     def save_db_path(self):
         """データベースパスを保存"""
@@ -1546,9 +1892,264 @@ class TimeClockGUI:
             self.root.destroy()
 
 
+class HolidayInputDialog:
+    """休日情報入力ダイアログ"""
+
+    def __init__(self, parent, overtime_info, tc, account):
+        """
+        Args:
+            parent: 親ウィンドウ
+            overtime_info: 月間時間外労働情報の辞書
+            tc: TimeClockインスタンス
+            account: アカウント名
+        """
+        self.result = None
+        self.tc = tc
+        self.account = account
+        self.overtime_info = overtime_info
+
+        self.top = tk.Toplevel(parent)
+        self.top.title("作業終了 - 休日情報")
+        self.top.geometry("500x400")
+        self.top.resizable(False, False)
+
+        # モーダルに設定
+        self.top.transient(parent)
+        self.top.grab_set()
+
+        # メインフレーム
+        main_frame = ttk.Frame(self.top, padding="20")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # 月間時間外労働の情報表示
+        info_frame = ttk.LabelFrame(main_frame, text="月間時間外労働（60時間計算用）", padding="10")
+        info_frame.pack(fill=tk.X, pady=(0, 15))
+
+        period_label = ttk.Label(
+            info_frame,
+            text=f"集計期間: {overtime_info['period_start']} ～ {overtime_info['period_end']}",
+            font=("", 10)
+        )
+        period_label.pack(anchor=tk.W, pady=(0, 5))
+
+        # アプリで記録した時間
+        app_hours = overtime_info['total_for_60h_calc_hours']
+        app_text = f"アプリ記録: {app_hours:.1f}時間\n"
+        app_text += f"  ├ 法定時間外労働: {overtime_info['total_overtime_hours']:.1f}時間\n"
+        app_text += f"  └ 法定休日労働: {overtime_info['legal_holiday_work_hours']:.1f}時間"
+
+        app_label = ttk.Label(
+            info_frame,
+            text=app_text,
+            font=("", 9)
+        )
+        app_label.pack(anchor=tk.W, pady=(0, 5))
+
+        # 会社打刻実績
+        company_frame = ttk.Frame(info_frame)
+        company_frame.pack(fill=tk.X, pady=(0, 5))
+
+        company_hours = overtime_info['company_overtime_hours']
+        company_text = f"会社打刻実績: {company_hours:.1f}時間"
+        if company_hours == 0:
+            company_text += " （未設定）"
+
+        self.company_label = ttk.Label(
+            company_frame,
+            text=company_text,
+            font=("", 9),
+            foreground="blue" if company_hours > 0 else "gray"
+        )
+        self.company_label.pack(side=tk.LEFT)
+
+        edit_company_button = ttk.Button(
+            company_frame,
+            text="編集",
+            command=self.edit_company_overtime,
+            width=6
+        )
+        edit_company_button.pack(side=tk.LEFT, padx=(10, 0))
+
+        # 合算時間
+        combined_hours = overtime_info['combined_overtime_hours']
+        combined_text = f"合計: {combined_hours:.1f}時間"
+        if combined_hours > 60:
+            combined_text += f" （60時間超過: {combined_hours - 60:.1f}時間）"
+            combined_color = "red"
+        elif combined_hours > 50:
+            combined_text += " （60時間に接近中）"
+            combined_color = "orange"
+        else:
+            combined_color = "black"
+
+        self.combined_label = ttk.Label(
+            info_frame,
+            text=combined_text,
+            font=("", 11, "bold"),
+            foreground=combined_color
+        )
+        self.combined_label.pack(anchor=tk.W, pady=(5, 0))
+
+        # 説明
+        note_frame = ttk.Frame(main_frame)
+        note_frame.pack(fill=tk.X, pady=(0, 15))
+
+        note_label = ttk.Label(
+            note_frame,
+            text="※ 月60時間を超える時間外労働には50%の割増率が適用されます\n"
+                 "※ 深夜労働（22:00～5:00）には25%の割増率が加算されます",
+            font=("", 9),
+            foreground="gray"
+        )
+        note_label.pack(anchor=tk.W)
+
+        # 休日チェックボックス
+        checkbox_frame = ttk.LabelFrame(main_frame, text="本日の勤務区分", padding="10")
+        checkbox_frame.pack(fill=tk.X, pady=(0, 15))
+
+        self.is_holiday_var = tk.BooleanVar(value=False)
+        self.is_legal_holiday_var = tk.BooleanVar(value=False)
+
+        holiday_cb = ttk.Checkbutton(
+            checkbox_frame,
+            text="休日勤務",
+            variable=self.is_holiday_var,
+            command=self.on_holiday_change
+        )
+        holiday_cb.pack(anchor=tk.W, pady=(0, 5))
+
+        legal_holiday_cb = ttk.Checkbutton(
+            checkbox_frame,
+            text="法定休日勤務（35%割増、60時間計算に含まれない）",
+            variable=self.is_legal_holiday_var,
+            command=self.on_legal_holiday_change
+        )
+        legal_holiday_cb.pack(anchor=tk.W)
+
+        # ボタン
+        button_frame = ttk.Frame(main_frame)
+        button_frame.pack(fill=tk.X, pady=(10, 0))
+
+        ok_button = ttk.Button(
+            button_frame,
+            text="確定",
+            command=self.ok
+        )
+        ok_button.pack(side=tk.RIGHT, padx=(5, 0))
+
+        cancel_button = ttk.Button(
+            button_frame,
+            text="キャンセル",
+            command=self.cancel
+        )
+        cancel_button.pack(side=tk.RIGHT)
+
+        # Enterキーで確定
+        self.top.bind('<Return>', lambda e: self.ok())
+        # Escapeキーでキャンセル
+        self.top.bind('<Escape>', lambda e: self.cancel())
+
+        # ウィンドウを中央に配置
+        self.top.update_idletasks()
+        x = (self.top.winfo_screenwidth() // 2) - (self.top.winfo_width() // 2)
+        y = (self.top.winfo_screenheight() // 2) - (self.top.winfo_height() // 2)
+        self.top.geometry(f"+{x}+{y}")
+
+    def edit_company_overtime(self):
+        """会社打刻実績を編集"""
+        current_value = self.overtime_info['company_overtime_hours']
+
+        # 入力ダイアログ
+        new_value = simpledialog.askfloat(
+            "会社打刻実績の編集",
+            f"会社での打刻実績（時間外労働時間）を入力してください。\n"
+            f"対象期間: {self.overtime_info['period_start']} ～ {self.overtime_info['period_end']}\n"
+            f"（{self.overtime_info['year']}年{self.overtime_info['month']}月期）",
+            initialvalue=current_value,
+            minvalue=0.0,
+            maxvalue=500.0,
+            parent=self.top
+        )
+
+        if new_value is not None:
+            # 会社打刻実績を保存
+            self.tc.set_company_overtime(
+                self.account,
+                self.overtime_info['year'],
+                self.overtime_info['month'],
+                new_value
+            )
+
+            # overtime_infoを更新
+            self.overtime_info = self.tc.get_monthly_overtime_hours(self.account)
+
+            # 表示を更新
+            self.update_overtime_display()
+
+    def update_overtime_display(self):
+        """時間外労働表示を更新"""
+        # 会社打刻実績の表示を更新
+        company_hours = self.overtime_info['company_overtime_hours']
+        company_text = f"会社打刻実績: {company_hours:.1f}時間"
+        if company_hours == 0:
+            company_text += " （未設定）"
+
+        self.company_label.config(
+            text=company_text,
+            foreground="blue" if company_hours > 0 else "gray"
+        )
+
+        # 合算時間の表示を更新
+        combined_hours = self.overtime_info['combined_overtime_hours']
+        combined_text = f"合計: {combined_hours:.1f}時間"
+        if combined_hours > 60:
+            combined_text += f" （60時間超過: {combined_hours - 60:.1f}時間）"
+            combined_color = "red"
+        elif combined_hours > 50:
+            combined_text += " （60時間に接近中）"
+            combined_color = "orange"
+        else:
+            combined_color = "black"
+
+        self.combined_label.config(
+            text=combined_text,
+            foreground=combined_color
+        )
+
+    def on_holiday_change(self):
+        """休日チェックボックスの変更時"""
+        if self.is_holiday_var.get():
+            # 休日にチェックを入れたら、法定休日を解除
+            pass
+        else:
+            # 休日のチェックを外したら、法定休日も解除
+            self.is_legal_holiday_var.set(False)
+
+    def on_legal_holiday_change(self):
+        """法定休日チェックボックスの変更時"""
+        if self.is_legal_holiday_var.get():
+            # 法定休日にチェックを入れたら、休日も自動的にチェック
+            self.is_holiday_var.set(True)
+
+    def ok(self):
+        """確定ボタン"""
+        self.result = {
+            'is_holiday': self.is_holiday_var.get(),
+            'is_legal_holiday': self.is_legal_holiday_var.get()
+        }
+        self.top.destroy()
+
+    def cancel(self):
+        """キャンセルボタン"""
+        self.result = None
+        self.top.destroy()
+
+
 def main():
+    logger.info("main() 関数開始")
     root = tk.Tk()
     app = TimeClockGUI(root)
+    logger.info("mainloop() 開始")
     root.mainloop()
 
 

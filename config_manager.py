@@ -4,6 +4,7 @@ Google Drive上のデータベース配置とアカウント名を管理
 """
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -23,6 +24,23 @@ class ConfigManager:
             config_path: 設定ファイルのパス（省略時はホームディレクトリの.timeclockrc）
         """
         self.config_path = config_path or self.DEFAULT_CONFIG_PATH
+
+    @staticmethod
+    def get_application_path() -> Path:
+        """
+        アプリケーションの実行ファイルがあるディレクトリを取得
+        PyInstallerでエグゼ化した場合にも対応
+
+        Returns:
+            アプリケーションディレクトリのPath
+        """
+        if getattr(sys, 'frozen', False):
+            # PyInstallerでエグゼ化されている場合
+            application_path = Path(sys.executable).parent
+        else:
+            # 通常のPythonスクリプトとして実行されている場合
+            application_path = Path(__file__).parent
+        return application_path
 
     def load(self) -> Dict:
         """
@@ -62,11 +80,15 @@ class ConfigManager:
         デフォルト設定を返す
 
         Returns:
-            デフォルト設定辞書（ローカルのホームディレクトリを使用）
+            デフォルト設定辞書（プログラムフォルダ内のdbフォルダを使用）
         """
+        # プログラムフォルダ内のdbフォルダをデフォルトとする
+        app_path = self.get_application_path()
+        default_db_path = app_path / 'db'
+
         return {
-            'db_path': str(Path.home() / '.timeclock'),
-            'default_account': None
+            'db_path': str(default_db_path),
+            'default_account': 'testUser'
         }
 
     def get_db_path(self) -> str:
@@ -77,7 +99,43 @@ class ConfigManager:
             データベースディレクトリのパス
         """
         config = self.load()
-        return config.get('db_path', str(Path.home() / '.timeclock'))
+        # デフォルトはプログラムフォルダ内のdbフォルダ
+        default_path = self._get_default_config()['db_path']
+        db_path = config.get('db_path', default_path)
+
+        # DBフォルダが存在しない場合は作成し、初期データを配置
+        self._initialize_db_folder(db_path)
+
+        return db_path
+
+    def _initialize_db_folder(self, db_path: str):
+        """
+        DBフォルダを初期化し、デフォルトのconfig.jsonを作成
+
+        Args:
+            db_path: データベースフォルダのパス
+        """
+        db_folder = Path(db_path)
+        config_file = db_folder / 'config.json'
+
+        # フォルダが存在しない場合は作成
+        db_folder.mkdir(parents=True, exist_ok=True)
+
+        # config.jsonが存在しない場合はテスト用のデフォルトを作成
+        if not config_file.exists():
+            default_config = {
+                "accounts": {
+                    "testUser": {
+                        "closing_day": 31,
+                        "standard_hours_per_day": 8
+                    }
+                },
+                "users": [
+                    "testUser"
+                ]
+            }
+            with open(config_file, 'w', encoding='utf-8') as f:
+                json.dump(default_config, f, ensure_ascii=False, indent=2)
 
     def get_default_account(self) -> Optional[str]:
         """

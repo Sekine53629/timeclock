@@ -55,3 +55,13 @@ git_analyzer/*_summary.json
 git_analyzer/*_summary.txt
 git_analyzer/*_data.json
 git_import_statistics.json
+
+# 社内秘 - Confidential work history files
+tsuruha_work_report_for_lawyer.md
+*work_history*.json
+tsuruha_git_work_history.json
+estimation_log.txt
+clone_analysis_log.txt
+complete_github_work_history*.json
+all_tsuruha_projects_history.json
+all_projects_work_history.json
