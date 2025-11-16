@@ -562,3 +562,129 @@ class Storage:
             return {}
 
         return config['company_overtime_records'].get(account, {})
+
+    def set_shift_total_hours(self, account: str, year: int, month: int, hours: float):
+        """
+        月ごとのシフト総労働時間を保存
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月、例: 11月期 = 10/16-11/15）
+            hours: シフトの総労働時間
+        """
+        config = self.load_config()
+
+        if 'shift_total_hours' not in config:
+            config['shift_total_hours'] = {}
+
+        if account not in config['shift_total_hours']:
+            config['shift_total_hours'][account] = {}
+
+        # キーを "YYYY-MM" 形式で保存
+        period_key = f"{year:04d}-{month:02d}"
+        config['shift_total_hours'][account][period_key] = hours
+
+        self.save_config(config)
+
+    def get_shift_total_hours(self, account: str, year: int, month: int) -> float:
+        """
+        月ごとのシフト総労働時間を取得
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月）
+
+        Returns:
+            シフトの総労働時間（時間単位）、未設定の場合は0.0
+        """
+        config = self.load_config()
+
+        if 'shift_total_hours' not in config:
+            return 0.0
+
+        if account not in config['shift_total_hours']:
+            return 0.0
+
+        period_key = f"{year:04d}-{month:02d}"
+        return config['shift_total_hours'][account].get(period_key, 0.0)
+
+    def get_all_shift_total_hours(self, account: str) -> Dict[str, float]:
+        """
+        指定アカウントの全てのシフト総労働時間を取得
+
+        Args:
+            account: アカウント名
+
+        Returns:
+            {"YYYY-MM": hours, ...} の辞書
+        """
+        config = self.load_config()
+
+        if 'shift_total_hours' not in config:
+            return {}
+
+        return config['shift_total_hours'].get(account, {})
+
+    def set_project_main_job_flag(self, account: str, project: str, is_main_job: bool):
+        """
+        プロジェクトが本職の勤務時間に含まれるかどうかを設定
+
+        Args:
+            account: アカウント名
+            project: プロジェクト名
+            is_main_job: 本職の勤務時間に含める場合True
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            config['project_settings'] = {}
+
+        if account not in config['project_settings']:
+            config['project_settings'][account] = {}
+
+        config['project_settings'][account][project] = {
+            'is_main_job': is_main_job
+        }
+
+        self.save_config(config)
+
+    def get_project_main_job_flag(self, account: str, project: str) -> bool:
+        """
+        プロジェクトが本職の勤務時間に含まれるかどうかを取得
+
+        Args:
+            account: アカウント名
+            project: プロジェクト名
+
+        Returns:
+            本職の勤務時間に含める場合True、デフォルトはTrue
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            return True  # デフォルトは本職に含める
+
+        if account not in config['project_settings']:
+            return True
+
+        project_settings = config['project_settings'][account].get(project, {})
+        return project_settings.get('is_main_job', True)
+
+    def get_all_project_settings(self, account: str) -> Dict[str, Dict]:
+        """
+        指定アカウントの全てのプロジェクト設定を取得
+
+        Args:
+            account: アカウント名
+
+        Returns:
+            {"project_name": {"is_main_job": bool}, ...} の辞書
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            return {}
+
+        return config['project_settings'].get(account, {})

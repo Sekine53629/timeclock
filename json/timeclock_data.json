@@ -114,7 +114,7 @@
         },
         {
           "account": "0053629",
-          "project": "database_manager",
+          "project": "tsuruha",
           "date": "2025-09-27",
           "start_time": "2025-09-27T13:01:14",
           "breaks": [],
@@ -122,7 +122,7 @@
           "status": "completed",
           "total_minutes": 120,
           "total_break_minutes": 0,
-          "comment": "Git作業記録から自動インポート (3コミット)",
+          "comment": "Git作業記録から自動インポート (3コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
@@ -142,7 +142,7 @@
         },
         {
           "account": "0053629",
-          "project": "medicom-auto-browsing",
+          "project": "tsuruha",
           "date": "2025-10-04",
           "start_time": "2025-10-04T09:05:51",
           "breaks": [
@@ -155,13 +155,13 @@
           "status": "completed",
           "total_minutes": 60,
           "total_break_minutes": 228,
-          "comment": "Git作業記録から自動インポート (2コミット)",
+          "comment": "Git作業記録から自動インポート (2コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "medicom-auto-browser-forMac",
+          "project": "tsuruha",
           "date": "2025-10-05",
           "start_time": "2025-10-05T01:51:38",
           "breaks": [],
@@ -169,7 +169,7 @@
           "status": "completed",
           "total_minutes": 120,
           "total_break_minutes": 0,
-          "comment": "Git作業記録から自動インポート (2コミット)",
+          "comment": "Git作業記録から自動インポート (2コ",
           "is_legal_holiday": true,
           "submission_status": "imported"
         },
@@ -198,7 +198,7 @@
         },
         {
           "account": "0053629",
-          "project": "medicom-auto-browser-forMac",
+          "project": "tsuruha",
           "date": "2025-10-07",
           "start_time": "2025-10-07T07:42:15",
           "breaks": [],
@@ -206,13 +206,13 @@
           "status": "completed",
           "total_minutes": 120,
           "total_break_minutes": 0,
-          "comment": "Git作業記録から自動インポート (1コミット)",
+          "comment": "Git作業記録から自動インポート (1コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "GoogleFormSenseAnalytics",
+          "project": "tsuruha",
           "date": "2025-10-08",
           "start_time": "2025-10-08T06:39:41",
           "breaks": [
@@ -229,7 +229,7 @@
           "status": "completed",
           "total_minutes": 175,
           "total_break_minutes": 524,
-          "comment": "Git作業記録から自動インポート (5コミット)",
+          "comment": "Git作業記録から自動インポート (5コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
@@ -290,7 +290,7 @@
         },
         {
           "account": "0053629",
-          "project": "code-snippet-manager",
+          "project": "tsuruha",
           "date": "2025-10-15",
           "start_time": "2025-10-15T19:39:48",
           "breaks": [],
@@ -298,13 +298,13 @@
           "status": "completed",
           "total_minutes": 257,
           "total_break_minutes": 0,
-          "comment": "Git作業記録から自動インポート (14コミット)",
+          "comment": "Git作業記録から自動インポート (14",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "code-snippet-manager",
+          "project": "tsuruha",
           "date": "2025-10-16",
           "start_time": "2025-10-16T00:05:32",
           "breaks": [
@@ -315,15 +315,15 @@
           ],
           "end_time": "2025-10-16T07:48:49",
           "status": "completed",
-          "total_minutes": 154,
+          "total_minutes": 155,
           "total_break_minutes": 308,
-          "comment": "Git作業記録から自動インポート (8コミット)",
+          "comment": "Git作業記録から自動インポート (8コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "code-snippet-manager",
+          "project": "tsuruha",
           "date": "2025-10-17",
           "start_time": "2025-10-17T00:01:30",
           "breaks": [
@@ -336,7 +336,7 @@
           "status": "completed",
           "total_minutes": 197,
           "total_break_minutes": 350,
-          "comment": "Git作業記録から自動インポート (7コミット)",
+          "comment": "Git作業記録から自動インポート (7コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
@@ -378,7 +378,7 @@
         },
         {
           "account": "0053629",
-          "project": "PermitChangeDocumentGenerator",
+          "project": "tsuruha",
           "date": "2025-10-21",
           "start_time": "2025-10-21T01:51:28",
           "breaks": [
@@ -395,7 +395,7 @@
           "status": "completed",
           "total_minutes": 157,
           "total_break_minutes": 1065,
-          "comment": "Git作業記録から自動インポート (6コミット)",
+          "comment": "Git作業記録から自動インポート (6コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
@@ -647,7 +647,7 @@
         },
         {
           "account": "0053629",
-          "project": "lamp-docker",
+          "project": "tsuruha",
           "date": "2025-11-13",
           "start_time": "2025-11-13T20:45:15",
           "breaks": [],
@@ -655,13 +655,13 @@
           "status": "completed",
           "total_minutes": 128,
           "total_break_minutes": 0,
-          "comment": "Git作業記録から自動インポート (8コミット)",
+          "comment": "Git作業記録から自動インポート (8コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         },
         {
           "account": "0053629",
-          "project": "PermitChangeDocumentsGenerator",
+          "project": "tsuruha",
           "date": "2025-11-14",
           "start_time": "2025-11-14T01:16:35",
           "breaks": [],
@@ -669,7 +669,7 @@
           "status": "completed",
           "total_minutes": 120,
           "total_break_minutes": 0,
-          "comment": "Git作業記録から自動インポート (7コミット)",
+          "comment": "Git作業記録から自動インポート (7コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
         }

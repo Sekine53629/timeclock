@@ -186,5 +186,467 @@
     },
     "reason": "GitHub全統合完了",
     "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:22:51.555157",
+    "account": "0053629",
+    "record_id": "0053629_2025-11-14_20251114_011635",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "PermitChangeDocumentsGenerator",
+      "date": "2025-11-14",
+      "start_time": "2025-11-14T01:16:35",
+      "breaks": [],
+      "end_time": "2025-11-14T03:16:35",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (7コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-11-14",
+      "start_time": "2025-11-14T01:16:35",
+      "breaks": [],
+      "end_time": "2025-11-14T03:16:35",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (7コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:23:12.999741",
+    "account": "0053629",
+    "record_id": "0053629_2025-11-13_20251113_204515",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "lamp-docker",
+      "date": "2025-11-13",
+      "start_time": "2025-11-13T20:45:15",
+      "breaks": [],
+      "end_time": "2025-11-13T22:53:56",
+      "status": "completed",
+      "total_minutes": 128,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (8コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-11-13",
+      "start_time": "2025-11-13T20:45:15",
+      "breaks": [],
+      "end_time": "2025-11-13T22:53:56",
+      "status": "completed",
+      "total_minutes": 128,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (8コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:23:42.167966",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-21_20251021_015128",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "PermitChangeDocumentGenerator",
+      "date": "2025-10-21",
+      "start_time": "2025-10-21T01:51:28",
+      "breaks": [
+        {
+          "start": "2025-10-21T02:27:47",
+          "end": "2025-10-21T06:21:08"
+        },
+        {
+          "start": "2025-10-21T07:21:08",
+          "end": "2025-10-21T21:13:14"
+        }
+      ],
+      "end_time": "2025-10-21T22:14:19",
+      "status": "completed",
+      "total_minutes": 157,
+      "total_break_minutes": 1065,
+      "comment": "Git作業記録から自動インポート (6コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-21",
+      "start_time": "2025-10-21T01:51:28",
+      "breaks": [
+        {
+          "start": "2025-10-21T02:27:47",
+          "end": "2025-10-21T06:21:08"
+        },
+        {
+          "start": "2025-10-21T07:21:08",
+          "end": "2025-10-21T21:13:14"
+        }
+      ],
+      "end_time": "2025-10-21T22:14:19",
+      "status": "completed",
+      "total_minutes": 157,
+      "total_break_minutes": 1065,
+      "comment": "Git作業記録から自動インポート (6コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:24:04.629435",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-15_20251015_193948",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "code-snippet-manager",
+      "date": "2025-10-15",
+      "start_time": "2025-10-15T19:39:48",
+      "breaks": [],
+      "end_time": "2025-10-15T23:57:18",
+      "status": "completed",
+      "total_minutes": 257,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (14コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-15",
+      "start_time": "2025-10-15T19:39:48",
+      "breaks": [],
+      "end_time": "2025-10-15T23:57:18",
+      "status": "completed",
+      "total_minutes": 257,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (14",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:24:20.553547",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-16_20251016_000532",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "code-snippet-manager",
+      "date": "2025-10-16",
+      "start_time": "2025-10-16T00:05:32",
+      "breaks": [
+        {
+          "start": "2025-10-16T00:56:02",
+          "end": "2025-10-16T06:04:53"
+        }
+      ],
+      "end_time": "2025-10-16T07:48:49",
+      "status": "completed",
+      "total_minutes": 154,
+      "total_break_minutes": 308,
+      "comment": "Git作業記録から自動インポート (8コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-16",
+      "start_time": "2025-10-16T00:05:32",
+      "breaks": [
+        {
+          "start": "2025-10-16T00:56:02",
+          "end": "2025-10-16T06:04:53"
+        }
+      ],
+      "end_time": "2025-10-16T07:48:49",
+      "status": "completed",
+      "total_minutes": 155,
+      "total_break_minutes": 308,
+      "comment": "Git作業記録から自動インポート (8コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:24:34.638518",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-17_20251017_000130",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "code-snippet-manager",
+      "date": "2025-10-17",
+      "start_time": "2025-10-17T00:01:30",
+      "breaks": [
+        {
+          "start": "2025-10-17T01:39:46",
+          "end": "2025-10-17T07:29:48"
+        }
+      ],
+      "end_time": "2025-10-17T09:08:50",
+      "status": "completed",
+      "total_minutes": 197,
+      "total_break_minutes": 350,
+      "comment": "Git作業記録から自動インポート (7コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-17",
+      "start_time": "2025-10-17T00:01:30",
+      "breaks": [
+        {
+          "start": "2025-10-17T01:39:46",
+          "end": "2025-10-17T07:29:48"
+        }
+      ],
+      "end_time": "2025-10-17T09:08:50",
+      "status": "completed",
+      "total_minutes": 197,
+      "total_break_minutes": 350,
+      "comment": "Git作業記録から自動インポート (7コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:24:53.877812",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-04_20251004_090551",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "medicom-auto-browsing",
+      "date": "2025-10-04",
+      "start_time": "2025-10-04T09:05:51",
+      "breaks": [
+        {
+          "start": "2025-10-04T09:35:51",
+          "end": "2025-10-04T13:24:10"
+        }
+      ],
+      "end_time": "2025-10-04T13:54:10",
+      "status": "completed",
+      "total_minutes": 60,
+      "total_break_minutes": 228,
+      "comment": "Git作業記録から自動インポート (2コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-04",
+      "start_time": "2025-10-04T09:05:51",
+      "breaks": [
+        {
+          "start": "2025-10-04T09:35:51",
+          "end": "2025-10-04T13:24:10"
+        }
+      ],
+      "end_time": "2025-10-04T13:54:10",
+      "status": "completed",
+      "total_minutes": 60,
+      "total_break_minutes": 228,
+      "comment": "Git作業記録から自動インポート (2コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:25:08.545430",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-05_20251005_015138",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "medicom-auto-browser-forMac",
+      "date": "2025-10-05",
+      "start_time": "2025-10-05T01:51:38",
+      "breaks": [],
+      "end_time": "2025-10-05T03:51:38",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (2コミット)",
+      "is_legal_holiday": true,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-05",
+      "start_time": "2025-10-05T01:51:38",
+      "breaks": [],
+      "end_time": "2025-10-05T03:51:38",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (2コ",
+      "is_legal_holiday": true,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:25:34.119069",
+    "account": "0053629",
+    "record_id": "0053629_2025-09-27_20250927_130114",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "database_manager",
+      "date": "2025-09-27",
+      "start_time": "2025-09-27T13:01:14",
+      "breaks": [],
+      "end_time": "2025-09-27T15:01:14",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (3コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-09-27",
+      "start_time": "2025-09-27T13:01:14",
+      "breaks": [],
+      "end_time": "2025-09-27T15:01:14",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (3コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:25:51.538373",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-07_20251007_074215",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "medicom-auto-browser-forMac",
+      "date": "2025-10-07",
+      "start_time": "2025-10-07T07:42:15",
+      "breaks": [],
+      "end_time": "2025-10-07T09:42:15",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (1コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-07",
+      "start_time": "2025-10-07T07:42:15",
+      "breaks": [],
+      "end_time": "2025-10-07T09:42:15",
+      "status": "completed",
+      "total_minutes": 120,
+      "total_break_minutes": 0,
+      "comment": "Git作業記録から自動インポート (1コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
+  },
+  {
+    "timestamp": "2025-11-16T14:26:05.683059",
+    "account": "0053629",
+    "record_id": "0053629_2025-10-08_20251008_063941",
+    "action": "edit",
+    "before": {
+      "account": "0053629",
+      "project": "GoogleFormSenseAnalytics",
+      "date": "2025-10-08",
+      "start_time": "2025-10-08T06:39:41",
+      "breaks": [
+        {
+          "start": "2025-10-08T08:00:57",
+          "end": "2025-10-08T13:04:02"
+        },
+        {
+          "start": "2025-10-08T14:08:27",
+          "end": "2025-10-08T17:49:33"
+        }
+      ],
+      "end_time": "2025-10-08T18:19:33",
+      "status": "completed",
+      "total_minutes": 175,
+      "total_break_minutes": 524,
+      "comment": "Git作業記録から自動インポート (5コミット)",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "after": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-10-08",
+      "start_time": "2025-10-08T06:39:41",
+      "breaks": [
+        {
+          "start": "2025-10-08T08:00:57",
+          "end": "2025-10-08T13:04:02"
+        },
+        {
+          "start": "2025-10-08T14:08:27",
+          "end": "2025-10-08T17:49:33"
+        }
+      ],
+      "end_time": "2025-10-08T18:19:33",
+      "status": "completed",
+      "total_minutes": 175,
+      "total_break_minutes": 524,
+      "comment": "Git作業記録から自動インポート (5コ",
+      "is_legal_holiday": false,
+      "submission_status": "imported"
+    },
+    "reason": "",
+    "editor": "0053629"
   }
 ]

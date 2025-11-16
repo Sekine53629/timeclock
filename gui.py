@@ -215,6 +215,8 @@ class TimeClockGUI:
                        value="project", command=self.on_report_type_changed).pack(anchor=tk.W)
         ttk.Radiobutton(type_group, text="会社打刻実績管理", variable=self.report_type_var,
                        value="company_overtime", command=self.on_report_type_changed).pack(anchor=tk.W)
+        ttk.Radiobutton(type_group, text="シフト総労働時間管理", variable=self.report_type_var,
+                       value="shift_hours", command=self.on_report_type_changed).pack(anchor=tk.W)
 
         # レポート設定
         setting_group = ttk.LabelFrame(report_frame, text="レポート設定", padding=10)
@@ -357,6 +359,56 @@ class TimeClockGUI:
         ).pack(side=tk.LEFT, padx=5)
         ttk.Button(
             self.overtime_button_frame,
+            text="更新",
+            command=self.show_report
+        ).pack(side=tk.LEFT, padx=5)
+
+        # シフト総労働時間管理用のTreeview（初期は非表示）
+        self.shift_hours_frame = ttk.Frame(result_group)
+
+        # Treeview
+        shift_columns = ('period', 'shift_hours')
+        self.shift_hours_tree = ttk.Treeview(
+            self.shift_hours_frame,
+            columns=shift_columns,
+            show='headings',
+            height=12
+        )
+
+        self.shift_hours_tree.heading('period', text='対象月')
+        self.shift_hours_tree.heading('shift_hours', text='シフト総労働時間')
+
+        self.shift_hours_tree.column('period', width=200)
+        self.shift_hours_tree.column('shift_hours', width=200)
+
+        # スクロールバー
+        shift_scrollbar = ttk.Scrollbar(
+            self.shift_hours_frame,
+            orient=tk.VERTICAL,
+            command=self.shift_hours_tree.yview
+        )
+        self.shift_hours_tree.configure(yscrollcommand=shift_scrollbar.set)
+
+        self.shift_hours_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        shift_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # ダブルクリックで編集
+        self.shift_hours_tree.bind('<Double-1>', self.edit_shift_hours_from_tree)
+
+        # ボタンフレーム
+        self.shift_button_frame = ttk.Frame(result_group)
+        ttk.Button(
+            self.shift_button_frame,
+            text="新しい月を追加",
+            command=self.add_shift_hours_period
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            self.shift_button_frame,
+            text="選択した月を編集",
+            command=self.edit_selected_shift_hours
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            self.shift_button_frame,
             text="更新",
             command=self.show_report
         ).pack(side=tk.LEFT, padx=5)
@@ -571,6 +623,64 @@ class TimeClockGUI:
                                                  text="状態: 無効",
                                                  foreground='gray', font=('', 9))
         self.auto_break_status_label.grid(row=3, column=0, columnspan=3, sticky=tk.W, padx=5, pady=(10, 0))
+
+        # プロジェクト設定（右側）
+        project_settings_group = ttk.LabelFrame(right_frame, text="プロジェクト設定", padding=10)
+        project_settings_group.pack(fill=tk.BOTH, expand=True, pady=(10, 0))
+
+        # 説明ラベル
+        desc_label = ttk.Label(project_settings_group,
+                              text="各プロジェクトが本職の勤務時間に含まれるかを設定します。\n"
+                                   "副業のプロジェクトは「含めない」に設定してください。",
+                              foreground='gray', font=('', 9))
+        desc_label.pack(fill=tk.X, padx=5, pady=(0, 10))
+
+        # アカウント選択
+        account_frame = ttk.Frame(project_settings_group)
+        account_frame.pack(fill=tk.X, padx=5, pady=5)
+        ttk.Label(account_frame, text="アカウント:").pack(side=tk.LEFT, padx=(0, 5))
+        self.project_settings_account_var = tk.StringVar()
+        self.project_settings_account_combo = ttk.Combobox(
+            account_frame,
+            textvariable=self.project_settings_account_var,
+            width=20,
+            state='readonly'
+        )
+        self.project_settings_account_combo.pack(side=tk.LEFT, padx=(0, 5))
+        self.project_settings_account_combo.bind('<<ComboboxSelected>>', self.on_project_settings_account_selected)
+        ttk.Button(account_frame, text="更新", command=self.refresh_project_settings).pack(side=tk.LEFT, padx=5)
+
+        # プロジェクト一覧
+        project_list_frame = ttk.Frame(project_settings_group)
+        project_list_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        columns = ('project', 'is_main_job')
+        self.project_settings_tree = ttk.Treeview(
+            project_list_frame,
+            columns=columns,
+            show='headings',
+            height=8
+        )
+
+        self.project_settings_tree.heading('project', text='プロジェクト名')
+        self.project_settings_tree.heading('is_main_job', text='本職に含める')
+
+        self.project_settings_tree.column('project', width=200)
+        self.project_settings_tree.column('is_main_job', width=100)
+
+        # スクロールバー
+        project_scrollbar = ttk.Scrollbar(
+            project_list_frame,
+            orient=tk.VERTICAL,
+            command=self.project_settings_tree.yview
+        )
+        self.project_settings_tree.configure(yscrollcommand=project_scrollbar.set)
+
+        self.project_settings_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        project_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # ダブルクリックで設定切り替え
+        self.project_settings_tree.bind('<Double-1>', self.toggle_project_main_job_flag)
 
         # 初期化
         self.refresh_user_list()
@@ -817,18 +927,32 @@ class TimeClockGUI:
             # 会社打刻実績管理：Treeviewを表示
             self.report_text.pack_forget()
             self.monthly_company_overtime_frame.pack_forget()
+            self.shift_hours_frame.pack_forget()
+            self.shift_button_frame.pack_forget()
             self.company_overtime_frame.pack(fill=tk.BOTH, expand=True)
             self.overtime_button_frame.pack(fill=tk.X, pady=5)
+        elif report_type == "shift_hours":
+            # シフト総労働時間管理：Treeviewを表示
+            self.report_text.pack_forget()
+            self.monthly_company_overtime_frame.pack_forget()
+            self.company_overtime_frame.pack_forget()
+            self.overtime_button_frame.pack_forget()
+            self.shift_hours_frame.pack(fill=tk.BOTH, expand=True)
+            self.shift_button_frame.pack(fill=tk.X, pady=5)
         elif report_type == "monthly":
             # 月次レポート：report_textと会社打刻実績フォームを表示
             self.company_overtime_frame.pack_forget()
             self.overtime_button_frame.pack_forget()
+            self.shift_hours_frame.pack_forget()
+            self.shift_button_frame.pack_forget()
             self.report_text.pack(fill=tk.BOTH, expand=True)
             self.monthly_company_overtime_frame.pack(fill=tk.X, padx=10, pady=10)
         else:
             # その他のレポート：report_textのみ表示
             self.company_overtime_frame.pack_forget()
             self.overtime_button_frame.pack_forget()
+            self.shift_hours_frame.pack_forget()
+            self.shift_button_frame.pack_forget()
             self.monthly_company_overtime_frame.pack_forget()
             self.report_text.pack(fill=tk.BOTH, expand=True)
 
@@ -1049,6 +1173,9 @@ class TimeClockGUI:
             if report_type == "company_overtime":
                 # 会社打刻実績管理
                 self.show_company_overtime_report(account)
+            elif report_type == "shift_hours":
+                # シフト総労働時間管理
+                self.show_shift_hours_report(account)
             else:
                 # 通常のレポート
                 self.report_text.config(state=tk.NORMAL)
@@ -1890,6 +2017,184 @@ class TimeClockGUI:
         finally:
             # ウィンドウを閉じる
             self.root.destroy()
+
+    def on_project_settings_account_selected(self, event=None):
+        """プロジェクト設定のアカウント選択時の処理"""
+        self.refresh_project_settings()
+
+    def refresh_project_settings(self):
+        """プロジェクト設定の一覧を更新"""
+        account = self.project_settings_account_var.get()
+        if not account:
+            # アカウント一覧を更新
+            accounts = self.tc.list_accounts()
+            self.project_settings_account_combo['values'] = accounts
+            if accounts:
+                self.project_settings_account_var.set(accounts[0])
+                account = accounts[0]
+            else:
+                return
+
+        # Treeviewをクリア
+        for item in self.project_settings_tree.get_children():
+            self.project_settings_tree.delete(item)
+
+        # プロジェクト一覧を取得
+        projects = self.tc.list_projects(account)
+
+        # 各プロジェクトの設定を表示
+        for project in projects:
+            is_main_job = self.tc.storage.get_project_main_job_flag(account, project)
+            self.project_settings_tree.insert(
+                '',
+                'end',
+                values=(project, "はい" if is_main_job else "いいえ")
+            )
+
+    def toggle_project_main_job_flag(self, event=None):
+        """プロジェクトの本職フラグを切り替え"""
+        selection = self.project_settings_tree.selection()
+        if not selection:
+            return
+
+        account = self.project_settings_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # 選択された行の情報を取得
+        item = selection[0]
+        values = self.project_settings_tree.item(item, 'values')
+        project = values[0]
+        current_is_main_job = values[1] == "はい"
+
+        # フラグを反転
+        new_is_main_job = not current_is_main_job
+
+        # 保存
+        self.tc.storage.set_project_main_job_flag(account, project, new_is_main_job)
+
+        # 表示を更新
+        self.project_settings_tree.item(
+            item,
+            values=(project, "はい" if new_is_main_job else "いいえ")
+        )
+
+        # メッセージを表示
+        status_text = "本職の勤務時間に含める" if new_is_main_job else "本職の勤務時間に含めない"
+        messagebox.showinfo(
+            "設定を保存しました",
+            f"プロジェクト「{project}」を {status_text} に設定しました"
+        )
+
+    def show_shift_hours_report(self, account):
+        """シフト総労働時間管理レポートを表示"""
+        # Treeviewをクリア
+        for item in self.shift_hours_tree.get_children():
+            self.shift_hours_tree.delete(item)
+
+        # 全てのシフト総労働時間を取得
+        all_shift_hours = self.tc.storage.get_all_shift_total_hours(account)
+
+        # 各月の情報を取得して表示
+        for period_key in sorted(all_shift_hours.keys(), reverse=True):
+            year, month = map(int, period_key.split('-'))
+            shift_hours = all_shift_hours[period_key]
+
+            # 月の表示名
+            period_display = f"{year}年{month:02d}月期"
+
+            # Treeviewに追加
+            self.shift_hours_tree.insert(
+                '',
+                'end',
+                values=(
+                    period_display,
+                    f"{shift_hours:.1f}時間"
+                )
+            )
+
+    def edit_shift_hours_from_tree(self, event):
+        """Treeviewからダブルクリックで編集"""
+        selection = self.shift_hours_tree.selection()
+        if selection:
+            self.edit_selected_shift_hours()
+
+    def edit_selected_shift_hours(self):
+        """選択した月のシフト総労働時間を編集"""
+        selection = self.shift_hours_tree.selection()
+        if not selection:
+            messagebox.showwarning("警告", "編集する月を選択してください")
+            return
+
+        # 選択された行の情報を取得
+        item = selection[0]
+        values = self.shift_hours_tree.item(item, 'values')
+        period_display = values[0]  # "YYYY年MM月期"
+        current_value = float(values[1].replace('時間', ''))
+
+        # 年月を抽出
+        year = int(period_display[:4])
+        month = int(period_display[5:7])
+
+        account = self.report_account_var.get()
+
+        # 入力ダイアログ
+        new_value = simpledialog.askfloat(
+            "シフト総労働時間の編集",
+            f"{period_display}のシフト総労働時間を入力してください（現在値: {current_value}時間）\n\n"
+            f"※本職のシフト表に記載された総労働時間を入力してください。\n"
+            f"  例：176時間",
+            initialvalue=current_value,
+            minvalue=0.0,
+            maxvalue=1000.0
+        )
+
+        if new_value is not None:
+            # 保存
+            self.tc.storage.set_shift_total_hours(account, year, month, new_value)
+            # 表示を更新
+            self.show_report()
+
+    def add_shift_hours_period(self):
+        """新しい月のシフト総労働時間を追加"""
+        account = self.report_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # 年月の入力
+        period_str = simpledialog.askstring(
+            "新しい月を追加",
+            "追加する月を入力してください（YYYY-MM形式）\n例: 2025-11"
+        )
+
+        if not period_str:
+            return
+
+        try:
+            year, month = map(int, period_str.split('-'))
+            if month < 1 or month > 12:
+                raise ValueError("月は1-12の範囲で指定してください")
+        except ValueError as e:
+            messagebox.showerror("エラー", f"無効な形式です: {e}")
+            return
+
+        # シフト総労働時間の入力
+        hours = simpledialog.askfloat(
+            "シフト総労働時間の入力",
+            f"{year}年{month:02d}月期のシフト総労働時間を入力してください\n\n"
+            f"※本職のシフト表に記載された総労働時間を入力してください。\n"
+            f"  例：176時間",
+            minvalue=0.0,
+            maxvalue=1000.0
+        )
+
+        if hours is not None:
+            # 保存
+            self.tc.storage.set_shift_total_hours(account, year, month, hours)
+            # 表示を更新
+            self.show_report()
 
 
 class HolidayInputDialog:
