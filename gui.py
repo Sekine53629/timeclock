@@ -1346,10 +1346,28 @@ class TimeClockGUI:
             # 60時間超過分の表示
             if over_60 > 0:
                 over_60_display = f"{over_60:.1f}"
-                tag = "over_60"
             else:
                 over_60_display = "-"
-                tag = ""
+
+            # 危険度判定のためのタグ設定
+            tags = []
+
+            # 本職関連総労働時間 = シフト総時間 + 会社時間外 + 本アプリ本職
+            total_work_hours = shift_hours + company_overtime + app_main_job
+
+            # 時間外労働時間の合計 = 会社時間外 + 本アプリ本職
+            total_overtime = company_overtime + app_main_job
+
+            # 優先度順に判定（複数条件に当てはまる場合、最も危険度の高いタグを適用）
+            if total_work_hours > 250:
+                # 過労死ライン超過（最優先）
+                tags.append("karoshi_line")
+            elif total_overtime > 80:
+                # 時間外80時間超過
+                tags.append("overtime_80")
+            elif total_overtime > 45:
+                # 時間外45時間超過
+                tags.append("overtime_45")
 
             # Treeviewに追加（7列：対象月、シフト総時間、会社時間外、本アプリ本職、60h超過分、深夜労働、未払い分）
             item_id = self.company_overtime_tree.insert(
@@ -1364,11 +1382,13 @@ class TimeClockGUI:
                     f"{night_hours:.1f}",
                     f"{unpaid:.1f}"
                 ),
-                tags=(tag,)
+                tags=tuple(tags)
             )
 
-        # 60時間超過の行を赤色で表示
-        self.company_overtime_tree.tag_configure("over_60", foreground="red")
+        # タグの色設定
+        self.company_overtime_tree.tag_configure("karoshi_line", background="#ffcccc", foreground="red")  # 過労死ライン：赤背景＋赤文字
+        self.company_overtime_tree.tag_configure("overtime_80", foreground="red")  # 80時間超過：赤文字
+        self.company_overtime_tree.tag_configure("overtime_45", foreground="#ff8800")  # 45時間超過：オレンジ（黄色より視認性高い）
 
     def edit_company_overtime_from_tree(self, event):
         """Treeviewからダブルクリックで編集"""
