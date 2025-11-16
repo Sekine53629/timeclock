@@ -7,7 +7,12 @@
       "Bash(python:*)",
       "Read(//c/Users/imao3/Documents/GitHub/**)",
       "Bash(where:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(git config:*)",
+      "Bash(git pull:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
