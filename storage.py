@@ -498,3 +498,67 @@ class Storage:
             return logs[-limit:]  # 最新のN件
         else:
             return self.edit_log.get_recent_logs(limit)
+
+    def set_company_overtime(self, account: str, year: int, month: int, hours: float):
+        """
+        会社での打刻実績（時間外労働時間）を保存
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月、例: 11月期 = 10/16-11/15）
+            hours: 会社打刻実績の時間外労働時間
+        """
+        config = self.load_config()
+
+        if 'company_overtime_records' not in config:
+            config['company_overtime_records'] = {}
+
+        if account not in config['company_overtime_records']:
+            config['company_overtime_records'][account] = {}
+
+        # キーを "YYYY-MM" 形式で保存
+        period_key = f"{year:04d}-{month:02d}"
+        config['company_overtime_records'][account][period_key] = hours
+
+        self.save_config(config)
+
+    def get_company_overtime(self, account: str, year: int, month: int) -> float:
+        """
+        会社での打刻実績（時間外労働時間）を取得
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月）
+
+        Returns:
+            会社打刻実績の時間外労働時間（時間単位）、未設定の場合は0.0
+        """
+        config = self.load_config()
+
+        if 'company_overtime_records' not in config:
+            return 0.0
+
+        if account not in config['company_overtime_records']:
+            return 0.0
+
+        period_key = f"{year:04d}-{month:02d}"
+        return config['company_overtime_records'][account].get(period_key, 0.0)
+
+    def get_all_company_overtime(self, account: str) -> Dict[str, float]:
+        """
+        指定アカウントの全ての会社打刻実績を取得
+
+        Args:
+            account: アカウント名
+
+        Returns:
+            {"YYYY-MM": hours, ...} の辞書
+        """
+        config = self.load_config()
+
+        if 'company_overtime_records' not in config:
+            return {}
+
+        return config['company_overtime_records'].get(account, {})

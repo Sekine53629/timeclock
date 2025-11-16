@@ -1,0 +1,12 @@
+{
+  "accounts": {
+    "user1": {
+      "closing_day": 31,
+      "standard_hours_per_day": 8
+    },
+    "0053629": {
+      "closing_day": 15,
+      "standard_hours_per_day": 8
+    }
+  }
+}

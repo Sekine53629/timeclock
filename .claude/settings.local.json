@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(python gui.py:*)",
-      "Bash(python test_edit_features.py:*)"
+      "Bash(python test_edit_features.py:*)",
+      "Bash(git log:*)",
+      "Bash(/tmp/full_git_log.txt)",
+      "Bash(gh repo list:*)",
+      "Bash(tee:*)",
+      "Bash(python3:*)",
+      "Bash(pgrep:*)",
+      "Bash(pkill:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,9 @@
+07:36:40 - INFO - ============================================================
+07:36:40 - INFO - タイムクロックアプリケーション起動
+07:36:40 - INFO - ログファイル: /Users/yoshipc/.timeclock/timeclock.log
+07:36:40 - INFO - ============================================================
+[IdleMonitor] Warning: Idle monitoring is only supported on Windows. Current platform: Darwin
+[IdleMonitor] Idle monitoring is disabled on non-Windows platforms
+2025-11-16 07:37:52.715 Python[81452:2946326] +[IMKClient subclass]: chose IMKClient_Modern
+2025-11-16 07:37:52.715 Python[81452:2946326] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+2025-11-16 07:48:26.607 Python[81452:2946326] error messaging the mach port for IMKCFRunLoopWakeUpReliable

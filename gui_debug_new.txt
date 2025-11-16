@@ -1,0 +1,68 @@
+07:05:13 - INFO - ============================================================
+07:05:13 - INFO - タイムクロックアプリケーション起動
+07:05:13 - INFO - ログファイル: /Users/yoshipc/.timeclock/timeclock.log
+07:05:13 - INFO - ============================================================
+[IdleMonitor] Warning: Idle monitoring is only supported on Windows. Current platform: Darwin
+[IdleMonitor] Idle monitoring is disabled on non-Windows platforms
+2025-11-16 07:08:55.519 Python[79751:2915713] +[IMKClient subclass]: chose IMKClient_Modern
+2025-11-16 07:08:55.519 Python[79751:2915713] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+[DEBUG] 月次レポート: year=2025, month=11, target_date=2025-11-15
+[DEBUG timeclock] get_monthly_overtime_hours: account=0053629, period=2025-10-16～2025-11-15
+[DEBUG timeclock] レコード数: 12
+[DEBUG timeclock]   2025-10-19: 484分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 115分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 48分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 17分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 2分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-25: 218分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-26: 687分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-27: 92分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-29: 107分, is_legal_holiday=False
+[DEBUG timeclock]   2025-11-02: 48分, is_legal_holiday=False
+[DEBUG timeclock]   2025-11-02: 129分, is_legal_holiday=False
+[DEBUG timeclock]   2025-11-04: 3分, is_legal_holiday=False
+[DEBUG timeclock] 日別詳細:
+[DEBUG timeclock]   2025-10-19: 484分 [日曜日] → 法定休日労働
+[DEBUG timeclock]   2025-10-22: 182分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-10-25: 218分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-10-26: 687分 [日曜日] → 法定休日労働
+[DEBUG timeclock]   2025-10-27: 92分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-10-29: 107分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-11-02: 177分 [日曜日] → 法定休日労働
+[DEBUG timeclock]   2025-11-04: 3分 (残業0分) [平日・土曜]
+[DEBUG timeclock] 集計結果:
+[DEBUG timeclock]   法定時間外労働: 0分 (0.0時間)
+[DEBUG timeclock]   法定休日労働: 1348分 (22.5時間)
+[DEBUG timeclock]   合計（アプリ記録）: 1348分 (22.5時間)
+[DEBUG] overtime_info: period=2025-10-16～2025-11-15
+[DEBUG] app_hours=22.5
+[DEBUG] 月次レポート: year=2025, month=11, target_date=2025-11-15
+[DEBUG timeclock] get_monthly_overtime_hours: account=0053629, period=2025-10-16～2025-11-15
+[DEBUG timeclock] レコード数: 12
+[DEBUG timeclock]   2025-10-19: 484分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 115分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 48分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 17分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-22: 2分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-25: 218分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-26: 687分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-27: 92分, is_legal_holiday=False
+[DEBUG timeclock]   2025-10-29: 107分, is_legal_holiday=False
+[DEBUG timeclock]   2025-11-02: 48分, is_legal_holiday=False
+[DEBUG timeclock]   2025-11-02: 129分, is_legal_holiday=False
+[DEBUG timeclock]   2025-11-04: 3分, is_legal_holiday=False
+[DEBUG timeclock] 日別詳細:
+[DEBUG timeclock]   2025-10-19: 484分 [日曜日] → 法定休日労働
+[DEBUG timeclock]   2025-10-22: 182分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-10-25: 218分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-10-26: 687分 [日曜日] → 法定休日労働
+[DEBUG timeclock]   2025-10-27: 92分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-10-29: 107分 (残業0分) [平日・土曜]
+[DEBUG timeclock]   2025-11-02: 177分 [日曜日] → 法定休日労働
+[DEBUG timeclock]   2025-11-04: 3分 (残業0分) [平日・土曜]
+[DEBUG timeclock] 集計結果:
+[DEBUG timeclock]   法定時間外労働: 0分 (0.0時間)
+[DEBUG timeclock]   法定休日労働: 1348分 (22.5時間)
+[DEBUG timeclock]   合計（アプリ記録）: 1348分 (22.5時間)
+[DEBUG] overtime_info: period=2025-10-16～2025-11-15
+[DEBUG] app_hours=22.5
