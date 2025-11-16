@@ -310,8 +310,8 @@ class TimeClockGUI:
         # 会社打刻実績管理用のTreeview（初期は非表示）
         self.company_overtime_frame = ttk.Frame(result_group)
 
-        # Treeview
-        columns = ('period', 'overtime_hours', 'app_hours', 'combined_hours', 'over_60')
+        # Treeview - 統合版（シフト時間も含む）
+        columns = ('period', 'shift_hours', 'company_overtime', 'app_main_job', 'over_60', 'night_hours', 'unpaid')
         self.company_overtime_tree = ttk.Treeview(
             self.company_overtime_frame,
             columns=columns,
@@ -320,16 +320,20 @@ class TimeClockGUI:
         )
 
         self.company_overtime_tree.heading('period', text='対象月')
-        self.company_overtime_tree.heading('overtime_hours', text='会社打刻実績（時間）')
-        self.company_overtime_tree.heading('app_hours', text='アプリ記録（時間）')
-        self.company_overtime_tree.heading('combined_hours', text='合計（時間）')
-        self.company_overtime_tree.heading('over_60', text='60時間超過分')
+        self.company_overtime_tree.heading('shift_hours', text='シフト総時間')
+        self.company_overtime_tree.heading('company_overtime', text='会社時間外')
+        self.company_overtime_tree.heading('app_main_job', text='本アプリ本職')
+        self.company_overtime_tree.heading('over_60', text='60h超過分')
+        self.company_overtime_tree.heading('night_hours', text='深夜労働')
+        self.company_overtime_tree.heading('unpaid', text='未払い分')
 
-        self.company_overtime_tree.column('period', width=120)
-        self.company_overtime_tree.column('overtime_hours', width=150)
-        self.company_overtime_tree.column('app_hours', width=150)
-        self.company_overtime_tree.column('combined_hours', width=120)
-        self.company_overtime_tree.column('over_60', width=120)
+        self.company_overtime_tree.column('period', width=100)
+        self.company_overtime_tree.column('shift_hours', width=100)
+        self.company_overtime_tree.column('company_overtime', width=100)
+        self.company_overtime_tree.column('app_main_job', width=100)
+        self.company_overtime_tree.column('over_60', width=100)
+        self.company_overtime_tree.column('night_hours', width=100)
+        self.company_overtime_tree.column('unpaid', width=100)
 
         # スクロールバー
         overtime_scrollbar = ttk.Scrollbar(
@@ -350,12 +354,17 @@ class TimeClockGUI:
         ttk.Button(
             self.overtime_button_frame,
             text="新しい月を追加",
-            command=self.add_company_overtime_period
+            command=self.add_integrated_work_hours_period
         ).pack(side=tk.LEFT, padx=5)
         ttk.Button(
             self.overtime_button_frame,
-            text="選択した月を編集",
-            command=self.edit_selected_company_overtime
+            text="シフト時間編集",
+            command=self.edit_shift_hours_from_integrated
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            self.overtime_button_frame,
+            text="会社時間外編集",
+            command=self.edit_company_overtime_from_integrated
         ).pack(side=tk.LEFT, padx=5)
         ttk.Button(
             self.overtime_button_frame,
@@ -1296,49 +1305,64 @@ class TimeClockGUI:
         return '\n'.join(lines)
 
     def show_company_overtime_report(self, account):
-        """会社打刻実績管理レポートを表示"""
+        """会社打刻実績管理レポート（統合ビュー）を表示"""
         # Treeviewをクリア
         for item in self.company_overtime_tree.get_children():
             self.company_overtime_tree.delete(item)
 
-        # 全ての会社打刻実績を取得
+        # シフト総労働時間と会社打刻実績の両方を取得
+        all_shift_hours = self.tc.storage.get_all_shift_total_hours(account)
         all_company_overtime = self.tc.get_all_company_overtime(account)
 
+        # 両方の期間キーをマージ
+        all_periods = set(all_shift_hours.keys()) | set(all_company_overtime.keys())
+
         # 各月の情報を取得して表示
-        for period_key in sorted(all_company_overtime.keys(), reverse=True):
+        for period_key in sorted(all_periods, reverse=True):
             year, month = map(int, period_key.split('-'))
-            company_hours = all_company_overtime[period_key]
 
-            # アプリで記録した時間を取得するため、月次時間外労働を計算
-            # YYYY年MM月期を指定するため、MM月の15日を渡す
-            target_date = f"{year:04d}-{month:02d}-15"
-            overtime_info = self.tc.get_monthly_overtime_hours(account, target_date)
+            # シフト総時間
+            shift_hours = all_shift_hours.get(period_key, 0.0)
 
-            app_hours = overtime_info['total_for_60h_calc_hours']
-            combined_hours = overtime_info['combined_overtime_hours']
-            over_60_hours = overtime_info['over_60_hours']
+            # 会社時間外（時間外労働時間のみ）
+            company_overtime = all_company_overtime.get(period_key, 0.0)
+
+            # 本アプリ本職実績
+            app_main_job = self.tc.get_monthly_main_job_hours(account, year, month)
+
+            # 60時間超過分 = （会社時間外 + 本アプリ本職実績） - 60
+            combined_for_60h = company_overtime + app_main_job
+            over_60 = max(0, combined_for_60h - 60)
+
+            # 深夜労働時間
+            night_hours = self.tc.get_monthly_night_work_hours(account, year, month)
+
+            # 未払い分打刻実績 = 本アプリ本職実績のみ
+            unpaid = app_main_job
 
             # 表示する月の形式
-            period_display = f"{year}年{month}月期"
+            period_display = f"{year}年{month:02d}月期"
 
             # 60時間超過分の表示
-            if over_60_hours > 0:
-                over_60_display = f"{over_60_hours:.1f}時間 超過"
+            if over_60 > 0:
+                over_60_display = f"{over_60:.1f}"
                 tag = "over_60"
             else:
                 over_60_display = "-"
                 tag = ""
 
-            # Treeviewに追加
+            # Treeviewに追加（7列：対象月、シフト総時間、会社時間外、本アプリ本職、60h超過分、深夜労働、未払い分）
             item_id = self.company_overtime_tree.insert(
                 '',
                 'end',
                 values=(
                     period_display,
-                    f"{company_hours:.1f}",
-                    f"{app_hours:.1f}",
-                    f"{combined_hours:.1f}",
-                    over_60_display
+                    f"{shift_hours:.1f}",
+                    f"{company_overtime:.1f}",
+                    f"{app_main_job:.1f}",
+                    over_60_display,
+                    f"{night_hours:.1f}",
+                    f"{unpaid:.1f}"
                 ),
                 tags=(tag,)
             )
@@ -1363,7 +1387,7 @@ class TimeClockGUI:
         item = selection[0]
         values = self.company_overtime_tree.item(item, 'values')
         period_display = values[0]  # "YYYY年MM月期"
-        current_value = float(values[1])
+        current_value = float(values[2])  # 2列目：会社時間外
 
         # 年月を抽出
         import re
@@ -1389,6 +1413,107 @@ class TimeClockGUI:
             self.tc.set_company_overtime(account, year, month, new_value)
             # 表示を更新
             self.show_report()
+
+    def add_integrated_work_hours_period(self):
+        """新しい月のシフト時間と会社時間外を追加"""
+        account = self.report_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # 年月の入力
+        period_str = simpledialog.askstring(
+            "新しい月を追加",
+            "追加する月を入力してください（YYYY-MM形式）\n例: 2025-11"
+        )
+
+        if not period_str:
+            return
+
+        try:
+            year, month = map(int, period_str.split('-'))
+            if month < 1 or month > 12:
+                raise ValueError("月は1-12の範囲で指定してください")
+        except ValueError as e:
+            messagebox.showerror("エラー", f"無効な形式です: {e}")
+            return
+
+        # シフト総労働時間の入力
+        shift_hours = simpledialog.askfloat(
+            "シフト総労働時間の入力",
+            f"{year}年{month:02d}月期のシフト総労働時間を入力してください\n\n"
+            f"※本職のシフト表に記載された総労働時間を入力してください。\n"
+            f"  例：176時間",
+            minvalue=0.0,
+            maxvalue=1000.0
+        )
+
+        if shift_hours is None:
+            return
+
+        # 会社時間外労働時間の入力
+        company_overtime = simpledialog.askfloat(
+            "会社時間外労働時間の入力",
+            f"{year}年{month:02d}月期の会社打刻実績（時間外労働時間）を入力してください\n\n"
+            f"※休日労働時間を含む時間外労働時間を入力してください。\n"
+            f"  例：26.5時間",
+            minvalue=0.0,
+            maxvalue=500.0
+        )
+
+        if company_overtime is None:
+            return
+
+        # 両方を保存
+        self.tc.storage.set_shift_total_hours(account, year, month, shift_hours)
+        self.tc.set_company_overtime(account, year, month, company_overtime)
+
+        # 表示を更新
+        self.show_report()
+        messagebox.showinfo("完了", f"{year}年{month:02d}月期のデータを追加しました")
+
+    def edit_shift_hours_from_integrated(self):
+        """統合ビューからシフト時間を編集"""
+        selection = self.company_overtime_tree.selection()
+        if not selection:
+            messagebox.showwarning("警告", "編集する月を選択してください")
+            return
+
+        # 選択された行の情報を取得
+        item = selection[0]
+        values = self.company_overtime_tree.item(item, 'values')
+        period_display = values[0]  # "YYYY年MM月期"
+        current_value = float(values[1])  # 1列目：シフト総時間
+
+        # 年月を抽出
+        import re
+        match = re.match(r'(\d+)年(\d+)月期', period_display)
+        if not match:
+            return
+
+        year = int(match.group(1))
+        month = int(match.group(2))
+        account = self.report_account_var.get()
+
+        # 入力ダイアログ
+        new_value = simpledialog.askfloat(
+            "シフト総労働時間の編集",
+            f"{period_display}のシフト総労働時間を入力してください。",
+            initialvalue=current_value,
+            minvalue=0.0,
+            maxvalue=1000.0
+        )
+
+        if new_value is not None:
+            # 保存
+            self.tc.storage.set_shift_total_hours(account, year, month, new_value)
+            # 表示を更新
+            self.show_report()
+
+    def edit_company_overtime_from_integrated(self):
+        """統合ビューから会社時間外を編集"""
+        # edit_selected_company_overtime を呼び出すだけ
+        self.edit_selected_company_overtime()
 
     def update_monthly_company_overtime_form(self):
         """月次レポート用の会社打刻実績フォームを更新"""

@@ -834,3 +834,62 @@ class TimeClock:
             {"YYYY-MM": hours, ...} の辞書
         """
         return self.storage.get_all_company_overtime(account)
+
+    def get_monthly_night_work_hours(self, account: str, year: int, month: int) -> float:
+        """
+        月間の深夜労働時間を取得（22:00～5:00）
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月）
+
+        Returns:
+            深夜労働時間（時間単位）
+        """
+        # 月次サマリーを取得して日付範囲を決定
+        summary = self.get_monthly_summary(account, year, month)
+        start_date = summary['start_date']
+        end_date = summary['end_date']
+
+        # 期間内の全レコードを取得
+        all_records = self.storage.get_records(account)
+        records = [r for r in all_records
+                  if start_date <= r.get('date', '') <= end_date]
+
+        # 深夜労働時間を集計
+        total_night_minutes = sum(r.get('night_work_minutes', 0) for r in records)
+
+        return total_night_minutes / 60
+
+    def get_monthly_main_job_hours(self, account: str, year: int, month: int) -> float:
+        """
+        月間の本職作業時間を取得（本職フラグがTrueのプロジェクトのみ）
+
+        Args:
+            account: アカウント名
+            year: 年
+            month: 月（締め日基準の月）
+
+        Returns:
+            本職作業時間（時間単位）
+        """
+        # 月次サマリーを取得して日付範囲を決定
+        summary = self.get_monthly_summary(account, year, month)
+        start_date = summary['start_date']
+        end_date = summary['end_date']
+
+        # 期間内の全レコードを取得
+        all_records = self.storage.get_records(account)
+        records = [r for r in all_records
+                  if start_date <= r.get('date', '') <= end_date]
+
+        # 本職プロジェクトの作業時間を集計
+        total_main_job_minutes = 0
+        for record in records:
+            project = record.get('project', '')
+            is_main_job = self.storage.get_project_main_job_flag(account, project)
+            if is_main_job:
+                total_main_job_minutes += record.get('total_minutes', 0)
+
+        return total_main_job_minutes / 60
