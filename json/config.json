@@ -19,7 +19,42 @@
   "shift_total_hours": {
     "0053629": {
       "2025-11": 176.0,
-      "2025-12": 168.0
+      "2025-12": 168.0,
+      "2025-10": 160.0
+    }
+  },
+  "project_settings": {
+    "0053629": {
+      "PermitChangeDocumentGenerator": {
+        "is_main_job": true
+      },
+      "Python_Practice": {
+        "is_main_job": false
+      },
+      "data_analysis_basic_kadai": {
+        "is_main_job": false
+      },
+      "db-basic-kadai": {
+        "is_main_job": false
+      },
+      "django-basic-kadai": {
+        "is_main_job": false
+      },
+      "github-basic-kadai": {
+        "is_main_job": false
+      },
+      "lawyer_consultation_tsuruha": {
+        "is_main_job": false
+      },
+      "linux-basic-kadai": {
+        "is_main_job": false
+      },
+      "python-basic-kadai": {
+        "is_main_job": false
+      },
+      "statistical_practice": {
+        "is_main_job": false
+      }
     }
   }
 }

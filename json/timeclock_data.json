@@ -672,6 +672,41 @@
           "comment": "Git作業記録から自動インポート (7コ",
           "is_legal_holiday": false,
           "submission_status": "imported"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-15",
+          "start_time": "2025-11-15T18:37:55.340264",
+          "breaks": [],
+          "end_time": "2025-11-16T17:38:37.337160",
+          "status": "completed",
+          "comment": "過労死検知機能追加",
+          "total_minutes": 180,
+          "night_work_minutes": 0,
+          "is_holiday": true,
+          "is_legal_holiday": false,
+          "total_break_minutes": 1200,
+          "submission_status": "edited"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-16",
+          "start_time": "2025-11-16T17:49:34.350247",
+          "breaks": [
+            {
+              "start": "2025-11-17T06:56:36.670762",
+              "end": "2025-11-17T07:46:00.236460"
+            }
+          ],
+          "end_time": "2025-11-17T07:46:54.995090",
+          "status": "completed",
+          "comment": "Redmine連携機能要件定義・コンセプ",
+          "total_minutes": 787,
+          "night_work_minutes": 420,
+          "is_holiday": true,
+          "is_legal_holiday": false
         }
       ]
     },
