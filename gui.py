@@ -311,7 +311,7 @@ class TimeClockGUI:
         self.company_overtime_frame = ttk.Frame(result_group)
 
         # Treeview - 統合版（シフト時間も含む）
-        columns = ('period', 'shift_hours', 'company_overtime', 'app_main_job', 'over_60', 'night_hours', 'unpaid')
+        columns = ('period', 'shift_hours', 'company_overtime', 'app_main_job', 'total_hours', 'over_60', 'night_hours', 'unpaid')
         self.company_overtime_tree = ttk.Treeview(
             self.company_overtime_frame,
             columns=columns,
@@ -323,17 +323,19 @@ class TimeClockGUI:
         self.company_overtime_tree.heading('shift_hours', text='シフト総時間')
         self.company_overtime_tree.heading('company_overtime', text='会社時間外')
         self.company_overtime_tree.heading('app_main_job', text='本アプリ本職')
+        self.company_overtime_tree.heading('total_hours', text='総労働時間')
         self.company_overtime_tree.heading('over_60', text='60h超過分')
         self.company_overtime_tree.heading('night_hours', text='深夜労働')
         self.company_overtime_tree.heading('unpaid', text='未払い分')
 
         self.company_overtime_tree.column('period', width=100)
-        self.company_overtime_tree.column('shift_hours', width=100)
-        self.company_overtime_tree.column('company_overtime', width=100)
+        self.company_overtime_tree.column('shift_hours', width=90)
+        self.company_overtime_tree.column('company_overtime', width=90)
         self.company_overtime_tree.column('app_main_job', width=100)
-        self.company_overtime_tree.column('over_60', width=100)
-        self.company_overtime_tree.column('night_hours', width=100)
-        self.company_overtime_tree.column('unpaid', width=100)
+        self.company_overtime_tree.column('total_hours', width=100)
+        self.company_overtime_tree.column('over_60', width=90)
+        self.company_overtime_tree.column('night_hours', width=80)
+        self.company_overtime_tree.column('unpaid', width=80)
 
         # スクロールバー
         overtime_scrollbar = ttk.Scrollbar(
@@ -1369,7 +1371,7 @@ class TimeClockGUI:
                 # 時間外45時間超過
                 tags.append("overtime_45")
 
-            # Treeviewに追加（7列：対象月、シフト総時間、会社時間外、本アプリ本職、60h超過分、深夜労働、未払い分）
+            # Treeviewに追加（8列：対象月、シフト総時間、会社時間外、本アプリ本職、総労働時間、60h超過分、深夜労働、未払い分）
             item_id = self.company_overtime_tree.insert(
                 '',
                 'end',
@@ -1378,6 +1380,7 @@ class TimeClockGUI:
                     f"{shift_hours:.1f}",
                     f"{company_overtime:.1f}",
                     f"{app_main_job:.1f}",
+                    f"{total_work_hours:.1f}",
                     over_60_display,
                     f"{night_hours:.1f}",
                     f"{unpaid:.1f}"
