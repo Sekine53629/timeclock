@@ -25,7 +25,8 @@
       "Bash(find:*)",
       "Bash(git diff:*)",
       "Bash(git checkout:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []

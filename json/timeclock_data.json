@@ -707,6 +707,243 @@
           "night_work_minutes": 420,
           "is_holiday": true,
           "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-22",
+          "start_time": "2025-11-22T00:38:41.628806",
+          "breaks": [
+            {
+              "start": "2025-11-22T07:03:14.476260",
+              "end": "2025-11-22T07:46:22.805768"
+            },
+            {
+              "start": "2025-11-22T13:38:34.144158",
+              "end": "2025-11-22T14:30:31.386649"
+            },
+            {
+              "start": "2025-11-22T16:44:51.614751",
+              "end": "2025-11-22T17:07:49.485520"
+            }
+          ],
+          "end_time": "2025-11-22T20:58:12.357365",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 1101,
+          "night_work_minutes": 262,
+          "is_holiday": true,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-24",
+          "start_time": "2025-11-24T09:56:03.089472",
+          "breaks": [
+            {
+              "start": "2025-11-24T17:26:59.455004",
+              "end": "2025-11-24T18:30:14.103748"
+            },
+            {
+              "start": "2025-11-24T20:55:34.498900",
+              "end": "2025-11-27T04:52:16.054357"
+            }
+          ],
+          "end_time": "2025-11-27T05:14:32.236211",
+          "status": "completed",
+          "comment": "画像処理アプリ作成",
+          "total_minutes": 618,
+          "night_work_minutes": 7,
+          "is_holiday": true,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-27",
+          "start_time": "2025-11-27T05:47:01.910680",
+          "breaks": [
+            {
+              "start": "2025-11-27T15:07:15.872388",
+              "end": "2025-11-27T20:59:10.640980"
+            },
+            {
+              "start": "2025-11-28T03:52:14.051232",
+              "end": "2025-11-28T05:27:11.184231"
+            }
+          ],
+          "end_time": "2025-11-28T08:16:03.607584",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 844,
+          "night_work_minutes": 353,
+          "is_holiday": false,
+          "is_legal_holiday": false,
+          "total_break_minutes": 745,
+          "submission_status": "edited"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-28",
+          "start_time": "2025-11-28T23:45:04.567363",
+          "breaks": [
+            {
+              "start": "2025-11-29T00:59:31.337398",
+              "end": "2025-11-29T07:29:46.175416"
+            }
+          ],
+          "end_time": "2025-11-29T07:29:52.675854",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 74,
+          "night_work_minutes": 75,
+          "is_holiday": false,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-30",
+          "start_time": "2025-11-30T12:12:44.611804",
+          "breaks": [
+            {
+              "start": "2025-11-30T13:20:29.519408",
+              "end": "2025-11-30T23:25:05.152549"
+            }
+          ],
+          "end_time": "2025-11-30T23:25:19.816660",
+          "status": "completed",
+          "comment": "保険請求管理システムの参照データ管理シス",
+          "total_minutes": 488,
+          "night_work_minutes": 0,
+          "is_holiday": true,
+          "is_legal_holiday": true,
+          "total_break_minutes": 184,
+          "submission_status": "edited"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-02",
+          "start_time": "2025-12-02T22:19:47.228026",
+          "breaks": [
+            {
+              "start": "2025-12-02T23:52:13.529193",
+              "end": "2025-12-03T07:51:09.035605"
+            }
+          ],
+          "end_time": "2025-12-03T08:38:26.211096",
+          "status": "completed",
+          "comment": "レセプト管理システム‐テストデータ作成",
+          "total_minutes": 139,
+          "night_work_minutes": 93,
+          "is_holiday": false,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-04",
+          "start_time": "2025-12-03T19:00:26.894929",
+          "breaks": [],
+          "end_time": "2025-12-04T00:00:32.582979",
+          "status": "completed",
+          "comment": "保険請求管理Djangoアプリ作成",
+          "total_minutes": 300,
+          "night_work_minutes": 1,
+          "is_holiday": false,
+          "is_legal_holiday": false,
+          "total_break_minutes": 0,
+          "submission_status": "edited"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-04",
+          "start_time": "2025-12-04T20:18:21.804448",
+          "breaks": [
+            {
+              "start": "2025-12-04T21:00:00.691519",
+              "end": "2025-12-04T21:33:49.103632"
+            },
+            {
+              "start": "2025-12-04T21:44:01.665121",
+              "end": "2025-12-04T22:11:21.635134"
+            },
+            {
+              "start": "2025-12-04T22:23:02.605727",
+              "end": "2025-12-04T22:37:28.241180"
+            },
+            {
+              "start": "2025-12-04T23:09:03.696426",
+              "end": "2025-12-04T23:26:30.487783"
+            }
+          ],
+          "end_time": "2025-12-05T02:13:36.958083",
+          "status": "completed",
+          "comment": "保険請求誤差追及機能追加",
+          "total_minutes": 262,
+          "night_work_minutes": 210,
+          "is_holiday": false,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-07",
+          "start_time": "2025-12-07T23:25:28.529796",
+          "breaks": [
+            {
+              "start": "2025-12-08T22:06:53.506520",
+              "end": "2025-12-08T23:44:21.936949"
+            }
+          ],
+          "end_time": "2025-12-08T23:44:30.415733",
+          "status": "completed",
+          "comment": "保険請求システム‐売掛管理機能紐づけ作業",
+          "total_minutes": 732,
+          "night_work_minutes": 343,
+          "is_holiday": false,
+          "is_legal_holiday": false,
+          "total_break_minutes": 727,
+          "submission_status": "edited"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-09",
+          "start_time": "2025-12-09T00:08:47.982696",
+          "breaks": [],
+          "end_time": "2025-12-09T07:41:14.581233",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 92,
+          "night_work_minutes": 292,
+          "is_holiday": false,
+          "is_legal_holiday": false,
+          "total_break_minutes": 360,
+          "submission_status": "edited"
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-09",
+          "start_time": "2025-12-09T07:41:25.509390",
+          "breaks": [
+            {
+              "start": "2025-12-09T08:03:46.120408",
+              "end": "2025-12-11T07:54:30.800898"
+            }
+          ],
+          "end_time": "2025-12-11T07:54:41.589570",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 22,
+          "night_work_minutes": 0,
+          "is_holiday": false,
+          "is_legal_holiday": false
         }
       ]
     },
