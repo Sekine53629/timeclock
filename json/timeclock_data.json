@@ -967,5 +967,21 @@
       "records": []
     }
   },
-  "current_sessions": {}
+  "current_sessions": {
+    "0053629": {
+      "account": "0053629",
+      "project": "tsuruha",
+      "date": "2025-11-25",
+      "start_time": "2025-11-25T22:35:59.432466",
+      "breaks": [
+        {
+          "start": "2025-11-25T23:49:39.718753",
+          "end": null
+        }
+      ],
+      "end_time": null,
+      "status": "on_break",
+      "comment": ""
+    }
+  }
 }
