@@ -313,6 +313,14 @@ class TimeClock:
         """指定アカウントの全プロジェクトのリストを取得"""
         return self.storage.list_projects(account)
 
+    def list_companies(self, account: str) -> List[str]:
+        """指定アカウントの全ての会社/クライアント名を取得"""
+        return self.storage.list_companies(account)
+
+    def list_projects_by_company(self, account: str, company: str) -> List[str]:
+        """指定会社/クライアントに属するプロジェクトのリストを取得"""
+        return self.storage.list_projects_by_company(account, company)
+
     def get_monthly_summary(self, account: str, year: int, month: int,
                            standard_hours_per_day: Optional[int] = None) -> Dict:
         """

@@ -724,6 +724,109 @@ class Storage:
         project_settings = config['project_settings'][account].get(project, {})
         return project_settings.get('git_repo_path', None)
 
+    def set_project_company(self, account: str, project: str, company: str = None):
+        """
+        プロジェクトの会社/クライアントを設定
+
+        Args:
+            account: アカウント名
+            project: プロジェクト名
+            company: 会社/クライアント名（Noneの場合は設定を削除）
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            config['project_settings'] = {}
+
+        if account not in config['project_settings']:
+            config['project_settings'][account] = {}
+
+        if project not in config['project_settings'][account]:
+            config['project_settings'][account][project] = {}
+
+        if company is None:
+            # Noneの場合は削除
+            if 'company' in config['project_settings'][account][project]:
+                del config['project_settings'][account][project]['company']
+        else:
+            config['project_settings'][account][project]['company'] = company
+
+        self.save_config(config)
+
+    def get_project_company(self, account: str, project: str) -> str:
+        """
+        プロジェクトの会社/クライアントを取得
+
+        Args:
+            account: アカウント名
+            project: プロジェクト名
+
+        Returns:
+            会社/クライアント名（未設定の場合はNone）
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            return None
+
+        if account not in config['project_settings']:
+            return None
+
+        project_settings = config['project_settings'][account].get(project, {})
+        return project_settings.get('company', None)
+
+    def list_companies(self, account: str) -> List[str]:
+        """
+        指定アカウントの全ての会社/クライアント名を取得
+
+        Args:
+            account: アカウント名
+
+        Returns:
+            会社/クライアント名のリスト（重複なし）
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            return []
+
+        if account not in config['project_settings']:
+            return []
+
+        companies = set()
+        for project_settings in config['project_settings'][account].values():
+            if isinstance(project_settings, dict) and 'company' in project_settings:
+                companies.add(project_settings['company'])
+
+        return sorted(list(companies))
+
+    def list_projects_by_company(self, account: str, company: str) -> List[str]:
+        """
+        指定会社/クライアントに属するプロジェクトのリストを取得
+
+        Args:
+            account: アカウント名
+            company: 会社/クライアント名
+
+        Returns:
+            プロジェクト名のリスト
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            return []
+
+        if account not in config['project_settings']:
+            return []
+
+        projects = []
+        for project_name, project_settings in config['project_settings'][account].items():
+            if isinstance(project_settings, dict):
+                if project_settings.get('company') == company:
+                    projects.append(project_name)
+
+        return sorted(projects)
+
     def get_all_project_settings(self, account: str) -> Dict[str, Dict]:
         """
         指定アカウントの全てのプロジェクト設定を取得

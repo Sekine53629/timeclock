@@ -166,22 +166,29 @@ class TimeClockGUI:
         self.account_combo.grid(row=0, column=1, padx=5, pady=5)
         self.account_combo.bind('<<ComboboxSelected>>', self.on_account_selected)
 
+        # 会社/クライアント選択
+        ttk.Label(start_group, text="会社/クライアント:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
+        self.company_var = tk.StringVar()
+        self.company_combo = ttk.Combobox(start_group, textvariable=self.company_var, width=30)
+        self.company_combo.grid(row=1, column=1, padx=5, pady=5)
+        self.company_combo.bind('<<ComboboxSelected>>', self.on_company_selected)
+
         # プロジェクト選択（自由入力可能）
-        ttk.Label(start_group, text="プロジェクト:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
+        ttk.Label(start_group, text="プロジェクト:").grid(row=2, column=0, sticky=tk.W, padx=5, pady=5)
         self.project_var = tk.StringVar()
         self.project_combo = ttk.Combobox(start_group, textvariable=self.project_var, width=30)
-        self.project_combo.grid(row=1, column=1, padx=5, pady=5)
+        self.project_combo.grid(row=2, column=1, padx=5, pady=5)
         self.project_combo.bind('<<ComboboxSelected>>', self.on_project_selected)
 
         # プロジェクトリフレッシュボタン（GitHubリポジトリ名を検出）
-        ttk.Button(start_group, text="Git検出", command=self.detect_git_project).grid(row=1, column=2, padx=5)
+        ttk.Button(start_group, text="Git検出", command=self.detect_git_project).grid(row=2, column=2, padx=5)
 
         # 作業内容コメント入力
-        ttk.Label(start_group, text="作業内容:").grid(row=2, column=0, sticky=tk.W, padx=5, pady=5)
+        ttk.Label(start_group, text="作業内容:").grid(row=3, column=0, sticky=tk.W, padx=5, pady=5)
         self.comment_var = tk.StringVar()
         comment_entry = ttk.Entry(start_group, textvariable=self.comment_var, width=32)
-        comment_entry.grid(row=2, column=1, padx=5, pady=5)
-        ttk.Label(start_group, text="(20字以内)").grid(row=2, column=2, sticky=tk.W, padx=5)
+        comment_entry.grid(row=3, column=1, padx=5, pady=5)
+        ttk.Label(start_group, text="(20字以内)").grid(row=3, column=2, sticky=tk.W, padx=5)
 
         # リフレッシュボタン
         ttk.Button(start_group, text="更新", command=self.refresh_accounts).grid(row=0, column=2, padx=5)
@@ -776,11 +783,45 @@ class TimeClockGUI:
         """アカウント選択時の処理"""
         account = self.account_var.get()
         if account:
-            projects = self.tc.list_projects(account)
-            self.project_combo['values'] = projects
-            if projects:
-                self.project_combo.current(0)
+            # 会社/クライアント一覧を更新
+            companies = self.tc.list_companies(account)
+            # 既存プロジェクトからも会社情報を抽出
+            all_projects = self.tc.list_projects(account)
+            # 会社未設定のプロジェクトも表示するために「（会社未設定）」を追加
+            if all_projects:
+                companies_with_unset = companies + ["（会社未設定）"]
+                self.company_combo['values'] = companies_with_unset
+                if companies_with_unset:
+                    self.company_combo.current(0)
+                    self.on_company_selected()
+            else:
+                self.company_combo['values'] = companies
+                self.project_combo['values'] = []
         # アカウント変更時にボタン状態を更新
+        self.update_status()
+
+    def on_company_selected(self, event=None):
+        """会社/クライアント選択時の処理"""
+        account = self.account_var.get()
+        company = self.company_var.get()
+        if account and company:
+            if company == "（会社未設定）":
+                # 会社未設定のプロジェクトを表示
+                all_projects = self.tc.list_projects(account)
+                projects_with_company = []
+                for proj in all_projects:
+                    proj_company = self.tc.storage.get_project_company(account, proj)
+                    if not proj_company:
+                        projects_with_company.append(proj)
+                self.project_combo['values'] = projects_with_company
+            else:
+                # 指定会社のプロジェクトを表示
+                projects = self.tc.list_projects_by_company(account, company)
+                self.project_combo['values'] = projects
+
+            if self.project_combo['values']:
+                self.project_combo.current(0)
+        # 会社変更時にボタン状態を更新
         self.update_status()
 
     def on_project_selected(self, event=None):
