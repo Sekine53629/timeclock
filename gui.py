@@ -1056,6 +1056,27 @@ class TimeClockGUI:
                     self.append_immediate_output("リポジトリが見つかりません\n\n", 'error')
                 return
 
+            # Gitコマンドの場合、プロジェクトのGitリポジトリパスで実行
+            cwd = None
+            if command.strip().lower().startswith('git '):
+                git_path = self.git_path_var.get()
+                if git_path and os.path.exists(git_path):
+                    cwd = git_path
+                    self.append_immediate_output(f"[Gitコマンドを実行: {cwd}]\n", 'output')
+                else:
+                    # Gitパスが未設定の場合は警告
+                    account = self.account_var.get()
+                    project = self.project_var.get()
+                    if account and project:
+                        # config.jsonから取得を試みる
+                        saved_git_path = self.tc.storage.get_project_git_repo_path(account, project)
+                        if saved_git_path and os.path.exists(saved_git_path):
+                            cwd = saved_git_path
+                            self.git_path_var.set(saved_git_path)  # UIにも反映
+                            self.append_immediate_output(f"[Gitコマンドを実行: {cwd}]\n", 'output')
+                        else:
+                            self.append_immediate_output("[警告] Gitリポジトリパスが未設定です。現在のディレクトリで実行します。\n", 'error')
+
             # シェルコマンドとして実行
             # Windowsの場合はshell=Trueを使う
             if sys.platform == 'win32':
@@ -1066,7 +1087,8 @@ class TimeClockGUI:
                     text=True,
                     timeout=30,
                     encoding='utf-8',
-                    errors='replace'
+                    errors='replace',
+                    cwd=cwd
                 )
             else:
                 # Unix系の場合はshlexで分割
@@ -1075,7 +1097,8 @@ class TimeClockGUI:
                     cmd_parts,
                     capture_output=True,
                     text=True,
-                    timeout=30
+                    timeout=30,
+                    cwd=cwd
                 )
 
             # 出力を表示
