@@ -65,3 +65,7 @@ clone_analysis_log.txt
 complete_github_work_history*.json
 all_tsuruha_projects_history.json
 all_projects_work_history.json
+
+# Backup files
+*.backup_*
+json/*.backup_*

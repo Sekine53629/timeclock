@@ -22,7 +22,9 @@ from timeclock import TimeClock
 from config_manager import ConfigManager
 from idle_monitor import IdleMonitor
 from logger import get_logger, log_exception
+from git_auto_sync import GitAutoSync
 import sys
+import threading
 
 # ロガーの初期化
 logger = get_logger(__name__)
@@ -66,6 +68,11 @@ class TimeClockGUI:
                 check_interval_seconds=30
             )
             logger.info("IdleMonitor初期化完了")
+
+            # Git自動同期の初期化
+            logger.info("GitAutoSync初期化開始")
+            self.git_sync = GitAutoSync()
+            logger.info("GitAutoSync初期化完了")
 
             # メインフレームの作成
             logger.info("ウィジェット作成開始")
@@ -1061,6 +1068,10 @@ class TimeClockGUI:
 
             messagebox.showinfo("作業終了", msg)
             self.update_status()
+
+            # Git自動同期を別スレッドで実行
+            self.perform_git_sync_async(f"作業終了: {session['project']} - {session['comment'][:50] if session.get('comment') else ''}")
+
         except ValueError as e:
             messagebox.showerror("エラー", str(e))
 
@@ -1754,6 +1765,9 @@ class TimeClockGUI:
                     self.tc.start_break(account)
                     logger.info(f"{account} の自動休憩を開始しました")
 
+                    # Git自動同期を別スレッドで実行
+                    self.perform_git_sync_async(f"自動休憩: {account} - アイドル時間 {idle_minutes:.1f}分")
+
                     # GUIに通知（メインスレッドで実行）
                     self.root.after(0, lambda a=account, m=idle_minutes: self.show_auto_break_notification(a, m))
 
@@ -1842,6 +1856,42 @@ class TimeClockGUI:
         except Exception as e:
             log_exception(logger, "自動休憩設定の保存エラー", e)
             messagebox.showerror("エラー", f"設定の保存に失敗しました: {str(e)}")
+
+    def perform_git_sync_async(self, commit_message=None):
+        """
+        Git自動同期を非同期で実行
+
+        Args:
+            commit_message: コミットメッセージ（Noneの場合は自動生成）
+        """
+        def git_sync_thread():
+            try:
+                logger.info(f"Git自動同期開始（非同期）: {commit_message}")
+                success, message = self.git_sync.auto_sync(commit_message)
+
+                # 結果をメインスレッドで通知
+                def show_result():
+                    if success:
+                        logger.info(f"Git自動同期成功: {message}")
+                        # 成功時は控えめな通知（ステータスバーに表示するなど）
+                        # messagebox.showinfo("Git同期", message)
+                    else:
+                        logger.error(f"Git自動同期失敗: {message}")
+                        messagebox.showwarning("Git同期エラー", f"Git同期に失敗しました:\n{message}\n\n手動で確認してください。")
+
+                self.root.after(0, show_result)
+
+            except Exception as e:
+                log_exception(logger, "Git自動同期エラー（非同期）", e)
+
+                def show_error():
+                    messagebox.showerror("Git同期エラー", f"Git同期中にエラーが発生しました:\n{str(e)}")
+
+                self.root.after(0, show_error)
+
+        # 別スレッドで実行
+        thread = threading.Thread(target=git_sync_thread, daemon=True)
+        thread.start()
 
     def refresh_edit_accounts(self):
         """編集タブのアカウント一覧を更新"""
