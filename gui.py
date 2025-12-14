@@ -2289,8 +2289,8 @@ class TimeClockGUI:
                 def show_result():
                     if success:
                         logger.info(f"Git自動同期成功: {message}")
-                        # 成功時は控えめな通知（ステータスバーに表示するなど）
-                        # messagebox.showinfo("Git同期", message)
+                        # 成功時も通知を表示
+                        messagebox.showinfo("Git同期完了", "作業内容をGitHubにプッシュしました")
                     else:
                         logger.error(f"Git自動同期失敗: {message}")
                         messagebox.showwarning("Git同期エラー", f"Git同期に失敗しました:\n{message}\n\n手動で確認してください。")

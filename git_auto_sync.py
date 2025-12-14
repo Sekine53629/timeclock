@@ -47,15 +47,21 @@ class GitAutoSync:
             CompletedProcess: コマンド実行結果
         """
         try:
+            # Windowsでコンソールウィンドウを非表示にする
+            kwargs = {
+                'cwd': self.repo_path,
+                'capture_output': True,
+                'text': True,
+                'encoding': 'utf-8',
+                'check': check
+            }
+
+            # Windowsの場合はコンソールウィンドウを非表示
+            if os.name == 'nt':  # Windows
+                kwargs['creationflags'] = subprocess.CREATE_NO_WINDOW
+
             # コマンド実行
-            result = subprocess.run(
-                command,
-                cwd=self.repo_path,
-                capture_output=True,
-                text=True,
-                encoding='utf-8',
-                check=check
-            )
+            result = subprocess.run(command, **kwargs)
             logger.debug(f"Git command: {' '.join(command)}")
             logger.debug(f"Output: {result.stdout}")
             if result.stderr:
