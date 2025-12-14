@@ -644,9 +644,10 @@ class Storage:
         if account not in config['project_settings']:
             config['project_settings'][account] = {}
 
-        config['project_settings'][account][project] = {
-            'is_main_job': is_main_job
-        }
+        if project not in config['project_settings'][account]:
+            config['project_settings'][account][project] = {}
+
+        config['project_settings'][account][project]['is_main_job'] = is_main_job
 
         self.save_config(config)
 
@@ -671,6 +672,57 @@ class Storage:
 
         project_settings = config['project_settings'][account].get(project, {})
         return project_settings.get('is_main_job', True)
+
+    def set_project_git_repo_path(self, account: str, project: str, git_repo_path: str = None):
+        """
+        プロジェクトのGitリポジトリパスを設定
+
+        Args:
+            account: アカウント名
+            project: プロジェクト名
+            git_repo_path: Gitリポジトリのパス（Noneの場合は設定を削除）
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            config['project_settings'] = {}
+
+        if account not in config['project_settings']:
+            config['project_settings'][account] = {}
+
+        if project not in config['project_settings'][account]:
+            config['project_settings'][account][project] = {}
+
+        if git_repo_path is None:
+            # Noneの場合は削除
+            if 'git_repo_path' in config['project_settings'][account][project]:
+                del config['project_settings'][account][project]['git_repo_path']
+        else:
+            config['project_settings'][account][project]['git_repo_path'] = git_repo_path
+
+        self.save_config(config)
+
+    def get_project_git_repo_path(self, account: str, project: str) -> str:
+        """
+        プロジェクトのGitリポジトリパスを取得
+
+        Args:
+            account: アカウント名
+            project: プロジェクト名
+
+        Returns:
+            Gitリポジトリのパス（未設定の場合はNone）
+        """
+        config = self.load_config()
+
+        if 'project_settings' not in config:
+            return None
+
+        if account not in config['project_settings']:
+            return None
+
+        project_settings = config['project_settings'][account].get(project, {})
+        return project_settings.get('git_repo_path', None)
 
     def get_all_project_settings(self, account: str) -> Dict[str, Dict]:
         """

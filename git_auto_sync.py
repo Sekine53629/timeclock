@@ -22,8 +22,18 @@ class GitAutoSync:
         Args:
             repo_path: Gitリポジトリのパス（Noneの場合は現在のディレクトリ）
         """
-        self.repo_path = repo_path or Path.cwd()
+        self.repo_path = Path(repo_path) if repo_path else Path.cwd()
         logger.info(f"GitAutoSync初期化: {self.repo_path}")
+
+    def set_repo_path(self, repo_path):
+        """
+        リポジトリパスを変更
+
+        Args:
+            repo_path: 新しいGitリポジトリのパス
+        """
+        self.repo_path = Path(repo_path)
+        logger.info(f"GitAutoSyncリポジトリパス変更: {self.repo_path}")
 
     def _run_git_command(self, command, check=True):
         """
@@ -86,6 +96,37 @@ class GitAutoSync:
         except Exception as e:
             log_exception(logger, "ブランチ取得エラー", e)
             return "main"
+
+    def get_repo_name(self):
+        """
+        GitHubリポジトリ名を取得
+
+        Returns:
+            str: リポジトリ名（取得できない場合はNone）
+        """
+        try:
+            result = self._run_git_command(['git', 'remote', 'get-url', 'origin'], check=False)
+            if result.returncode != 0:
+                logger.info("リモートリポジトリが設定されていません")
+                return None
+
+            remote_url = result.stdout.strip()
+            # URLからリポジトリ名を抽出
+            # 例: https://github.com/user/repo.git → repo
+            # 例: git@github.com:user/repo.git → repo
+            if remote_url:
+                # .gitを削除
+                if remote_url.endswith('.git'):
+                    remote_url = remote_url[:-4]
+                # 最後のスラッシュ以降を取得
+                repo_name = remote_url.split('/')[-1]
+                logger.info(f"リポジトリ名: {repo_name}")
+                return repo_name
+
+            return None
+        except Exception as e:
+            log_exception(logger, "リポジトリ名取得エラー", e)
+            return None
 
     def commit_changes(self, message=None):
         """

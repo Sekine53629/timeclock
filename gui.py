@@ -166,12 +166,15 @@ class TimeClockGUI:
         self.account_combo.grid(row=0, column=1, padx=5, pady=5)
         self.account_combo.bind('<<ComboboxSelected>>', self.on_account_selected)
 
-        # プロジェクト選択
+        # プロジェクト選択（自由入力可能）
         ttk.Label(start_group, text="プロジェクト:").grid(row=1, column=0, sticky=tk.W, padx=5, pady=5)
         self.project_var = tk.StringVar()
         self.project_combo = ttk.Combobox(start_group, textvariable=self.project_var, width=30)
         self.project_combo.grid(row=1, column=1, padx=5, pady=5)
         self.project_combo.bind('<<ComboboxSelected>>', self.on_project_selected)
+
+        # プロジェクトリフレッシュボタン（GitHubリポジトリ名を検出）
+        ttk.Button(start_group, text="Git検出", command=self.detect_git_project).grid(row=1, column=2, padx=5)
 
         # 作業内容コメント入力
         ttk.Label(start_group, text="作業内容:").grid(row=2, column=0, sticky=tk.W, padx=5, pady=5)
@@ -672,7 +675,7 @@ class TimeClockGUI:
         project_list_frame = ttk.Frame(project_settings_group)
         project_list_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        columns = ('project', 'is_main_job')
+        columns = ('project', 'is_main_job', 'git_repo_path')
         self.project_settings_tree = ttk.Treeview(
             project_list_frame,
             columns=columns,
@@ -682,9 +685,11 @@ class TimeClockGUI:
 
         self.project_settings_tree.heading('project', text='プロジェクト名')
         self.project_settings_tree.heading('is_main_job', text='本職に含める')
+        self.project_settings_tree.heading('git_repo_path', text='Gitリポジトリパス')
 
-        self.project_settings_tree.column('project', width=200)
+        self.project_settings_tree.column('project', width=150)
         self.project_settings_tree.column('is_main_job', width=100)
+        self.project_settings_tree.column('git_repo_path', width=250)
 
         # スクロールバー
         project_scrollbar = ttk.Scrollbar(
@@ -697,8 +702,11 @@ class TimeClockGUI:
         self.project_settings_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         project_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-        # ダブルクリックで設定切り替え
+        # ダブルクリックで設定切り替え（本職フラグ）
         self.project_settings_tree.bind('<Double-1>', self.toggle_project_main_job_flag)
+
+        # 右クリックでGitリポジトリパス編集
+        self.project_settings_tree.bind('<Button-3>', self.edit_project_git_path)
 
         # 初期化
         self.refresh_user_list()
@@ -735,6 +743,29 @@ class TimeClockGUI:
         """プロジェクト選択時の処理"""
         # プロジェクト変更時にボタン状態を更新
         self.update_status()
+
+    def detect_git_project(self):
+        """GitHubリポジトリ名を検出してプロジェクトに設定"""
+        try:
+            repo_name = self.git_sync.get_repo_name()
+            if repo_name:
+                # プロジェクト候補に追加
+                account = self.account_var.get()
+                if account:
+                    current_projects = list(self.project_combo['values'])
+                    if repo_name not in current_projects:
+                        current_projects.insert(0, repo_name)
+                        self.project_combo['values'] = current_projects
+
+                # プロジェクト名を設定
+                self.project_var.set(repo_name)
+                messagebox.showinfo("Git検出", f"リポジトリ名を検出しました:\n{repo_name}")
+                logger.info(f"Gitリポジトリ名を検出: {repo_name}")
+            else:
+                messagebox.showwarning("Git検出", "Gitリポジトリが見つかりませんでした。\n\nこのディレクトリはGitリポジトリではないか、\nリモートが設定されていない可能性があります。")
+        except Exception as e:
+            log_exception(logger, "Git検出エラー", e)
+            messagebox.showerror("エラー", f"Git検出中にエラーが発生しました:\n{str(e)}")
 
     def refresh_report_accounts(self):
         """レポート用アカウント一覧を更新"""
@@ -2243,10 +2274,11 @@ class TimeClockGUI:
         # 各プロジェクトの設定を表示
         for project in projects:
             is_main_job = self.tc.storage.get_project_main_job_flag(account, project)
+            git_repo_path = self.tc.storage.get_project_git_repo_path(account, project)
             self.project_settings_tree.insert(
                 '',
                 'end',
-                values=(project, "はい" if is_main_job else "いいえ")
+                values=(project, "はい" if is_main_job else "いいえ", git_repo_path or "（未設定）")
             )
 
     def toggle_project_main_job_flag(self, event=None):
@@ -2265,6 +2297,7 @@ class TimeClockGUI:
         values = self.project_settings_tree.item(item, 'values')
         project = values[0]
         current_is_main_job = values[1] == "はい"
+        git_repo_path = values[2] if len(values) > 2 else "（未設定）"
 
         # フラグを反転
         new_is_main_job = not current_is_main_job
@@ -2275,7 +2308,7 @@ class TimeClockGUI:
         # 表示を更新
         self.project_settings_tree.item(
             item,
-            values=(project, "はい" if new_is_main_job else "いいえ")
+            values=(project, "はい" if new_is_main_job else "いいえ", git_repo_path)
         )
 
         # メッセージを表示
@@ -2284,6 +2317,78 @@ class TimeClockGUI:
             "設定を保存しました",
             f"プロジェクト「{project}」を {status_text} に設定しました"
         )
+
+    def edit_project_git_path(self, event=None):
+        """プロジェクトのGitリポジトリパスを編集"""
+        from tkinter import filedialog
+
+        selection = self.project_settings_tree.selection()
+        if not selection:
+            return
+
+        account = self.project_settings_account_var.get()
+        if not account:
+            messagebox.showerror("エラー", "アカウントを選択してください")
+            return
+
+        # 選択された行の情報を取得
+        item = selection[0]
+        values = self.project_settings_tree.item(item, 'values')
+        project = values[0]
+        is_main_job_text = values[1]
+        current_path = values[2] if len(values) > 2 and values[2] != "（未設定）" else ""
+
+        # ダイアログで選択肢を提示
+        dialog_result = messagebox.askquestion(
+            "Gitリポジトリパスの設定",
+            f"プロジェクト「{project}」のGitリポジトリパスを設定します。\n\n"
+            f"現在のパス: {current_path or '（未設定）'}\n\n"
+            f"ディレクトリを選択しますか？\n"
+            f"「いいえ」を選択すると手動でパスを入力できます。",
+            icon='question'
+        )
+
+        new_path = None
+        if dialog_result == 'yes':
+            # ディレクトリ選択ダイアログ
+            new_path = filedialog.askdirectory(
+                title=f"「{project}」のGitリポジトリディレクトリを選択",
+                initialdir=current_path or str(Path.home())
+            )
+        else:
+            # 手動入力
+            new_path = simpledialog.askstring(
+                "Gitリポジトリパスの入力",
+                f"プロジェクト「{project}」のGitリポジトリパスを入力してください:\n"
+                f"（空欄にすると設定を削除します）",
+                initialvalue=current_path
+            )
+
+        if new_path is not None:  # キャンセルされていない
+            # 空文字列の場合はNoneに変換
+            if new_path.strip() == "":
+                new_path = None
+
+            # 保存
+            self.tc.storage.set_project_git_repo_path(account, project, new_path)
+
+            # 表示を更新
+            self.project_settings_tree.item(
+                item,
+                values=(project, is_main_job_text, new_path or "（未設定）")
+            )
+
+            # メッセージを表示
+            if new_path:
+                messagebox.showinfo(
+                    "設定を保存しました",
+                    f"プロジェクト「{project}」のGitリポジトリパスを設定しました:\n{new_path}"
+                )
+            else:
+                messagebox.showinfo(
+                    "設定を削除しました",
+                    f"プロジェクト「{project}」のGitリポジトリパス設定を削除しました"
+                )
 
     def show_shift_hours_report(self, account):
         """シフト総労働時間管理レポートを表示"""
