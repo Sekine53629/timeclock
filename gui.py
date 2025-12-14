@@ -1289,8 +1289,14 @@ class TimeClockGUI:
             messagebox.showinfo("作業終了", msg)
             self.update_status()
 
-            # Git自動同期を別スレッドで実行
-            self.perform_git_sync_async(f"作業終了: {session['project']} - {session['comment'][:50] if session.get('comment') else ''}")
+            # プロジェクトのGitリポジトリパスを取得してGit自動同期
+            project = session['project']
+            git_repo_path = self.tc.storage.get_project_git_repo_path(account, project)
+            if git_repo_path:
+                commit_msg = f"作業終了: {project} - {session['comment'][:50] if session.get('comment') else ''}"
+                self.perform_git_sync_async(commit_msg, git_repo_path)
+            else:
+                logger.info(f"プロジェクト '{project}' にGitリポジトリが設定されていません（同期スキップ）")
 
         except ValueError as e:
             messagebox.showerror("エラー", str(e))
@@ -1985,8 +1991,15 @@ class TimeClockGUI:
                     self.tc.start_break(account)
                     logger.info(f"{account} の自動休憩を開始しました")
 
-                    # Git自動同期を別スレッドで実行
-                    self.perform_git_sync_async(f"自動休憩: {account} - アイドル時間 {idle_minutes:.1f}分")
+                    # プロジェクトのGitリポジトリパスを取得してGit自動同期
+                    project = session.get('project')
+                    if project:
+                        git_repo_path = self.tc.storage.get_project_git_repo_path(account, project)
+                        if git_repo_path:
+                            commit_msg = f"自動休憩: {project} - アイドル時間 {idle_minutes:.1f}分"
+                            self.perform_git_sync_async(commit_msg, git_repo_path)
+                        else:
+                            logger.info(f"プロジェクト '{project}' にGitリポジトリが設定されていません（同期スキップ）")
 
                     # GUIに通知（メインスレッドで実行）
                     self.root.after(0, lambda a=account, m=idle_minutes: self.show_auto_break_notification(a, m))
@@ -2077,17 +2090,25 @@ class TimeClockGUI:
             log_exception(logger, "自動休憩設定の保存エラー", e)
             messagebox.showerror("エラー", f"設定の保存に失敗しました: {str(e)}")
 
-    def perform_git_sync_async(self, commit_message=None):
+    def perform_git_sync_async(self, commit_message=None, repo_path=None):
         """
         Git自動同期を非同期で実行
 
         Args:
             commit_message: コミットメッセージ（Noneの場合は自動生成）
+            repo_path: Gitリポジトリのパス（Noneの場合は現在のディレクトリ）
         """
         def git_sync_thread():
             try:
-                logger.info(f"Git自動同期開始（非同期）: {commit_message}")
-                success, message = self.git_sync.auto_sync(commit_message)
+                logger.info(f"Git自動同期開始（非同期）: {commit_message}, repo_path={repo_path}")
+
+                # リポジトリパスが指定されている場合は一時的に変更
+                if repo_path:
+                    git_sync = GitAutoSync(repo_path)
+                else:
+                    git_sync = self.git_sync
+
+                success, message = git_sync.auto_sync(commit_message)
 
                 # 結果をメインスレッドで通知
                 def show_result():
