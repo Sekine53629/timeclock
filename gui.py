@@ -919,9 +919,15 @@ class TimeClockGUI:
             )
 
             if selected_dir:
+                # デバッグ: 選択されたパスを確認
+                logger.info(f"フォルダ選択ダイアログで選択されたパス: {selected_dir}")
+                logger.info(f"パスの型: {type(selected_dir)}")
+                logger.info(f"パスの存在確認: {os.path.exists(selected_dir)}")
+
                 # 選択されたディレクトリがGitリポジトリか確認
                 git_sync = GitAutoSync(selected_dir)
                 repo_name = git_sync.get_repo_name()
+                logger.info(f"検出されたリポジトリ名: {repo_name}")
 
                 if repo_name:
                     # パスを正規化
