@@ -180,15 +180,24 @@ class TimeClockGUI:
         self.project_combo.grid(row=2, column=1, padx=5, pady=5)
         self.project_combo.bind('<<ComboboxSelected>>', self.on_project_selected)
 
-        # プロジェクトリフレッシュボタン（GitHubリポジトリ名を検出）
-        ttk.Button(start_group, text="Git検出", command=self.detect_git_project).grid(row=2, column=2, padx=5)
+        # Gitリポジトリパス入力
+        ttk.Label(start_group, text="Gitパス:").grid(row=3, column=0, sticky=tk.W, padx=5, pady=5)
+        self.git_path_var = tk.StringVar()
+        git_path_entry = ttk.Entry(start_group, textvariable=self.git_path_var, width=30)
+        git_path_entry.grid(row=3, column=1, padx=5, pady=5)
+
+        # Git検出ボタンと参照ボタン
+        git_btn_frame = ttk.Frame(start_group)
+        git_btn_frame.grid(row=3, column=2, sticky=tk.W, padx=5)
+        ttk.Button(git_btn_frame, text="検出", command=self.detect_git_path, width=6).pack(side=tk.LEFT, padx=(0, 2))
+        ttk.Button(git_btn_frame, text="参照", command=self.browse_git_path, width=6).pack(side=tk.LEFT)
 
         # 作業内容コメント入力
-        ttk.Label(start_group, text="作業内容:").grid(row=3, column=0, sticky=tk.W, padx=5, pady=5)
+        ttk.Label(start_group, text="作業内容:").grid(row=4, column=0, sticky=tk.W, padx=5, pady=5)
         self.comment_var = tk.StringVar()
         comment_entry = ttk.Entry(start_group, textvariable=self.comment_var, width=32)
-        comment_entry.grid(row=3, column=1, padx=5, pady=5)
-        ttk.Label(start_group, text="(20字以内)").grid(row=3, column=2, sticky=tk.W, padx=5)
+        comment_entry.grid(row=4, column=1, padx=5, pady=5)
+        ttk.Label(start_group, text="(20字以内)").grid(row=4, column=2, sticky=tk.W, padx=5)
 
         # リフレッシュボタン
         ttk.Button(start_group, text="更新", command=self.refresh_accounts).grid(row=0, column=2, padx=5)
@@ -829,6 +838,83 @@ class TimeClockGUI:
         # プロジェクト変更時にボタン状態を更新
         self.update_status()
 
+        # 選択されたプロジェクトのGitパスを読み込んで表示
+        account = self.account_var.get()
+        project = self.project_var.get()
+        if account and project:
+            git_path = self.tc.storage.get_project_git_repo_path(account, project)
+            if git_path:
+                self.git_path_var.set(git_path)
+            else:
+                self.git_path_var.set("")
+
+    def detect_git_path(self):
+        """現在のディレクトリのGitリポジトリパスを検出"""
+        try:
+            current_dir = os.getcwd()
+            # 現在のディレクトリがGitリポジトリか確認
+            git_sync = GitAutoSync(current_dir)
+            repo_name = git_sync.get_repo_name()
+
+            if repo_name:
+                self.git_path_var.set(current_dir)
+                messagebox.showinfo("Git検出", f"Gitリポジトリを検出しました:\n{current_dir}\n\nリポジトリ名: {repo_name}")
+                logger.info(f"Gitリポジトリパスを検出: {current_dir}")
+
+                # 選択されているプロジェクトに保存
+                account = self.account_var.get()
+                project = self.project_var.get()
+                if account and project:
+                    self.tc.storage.set_project_git_repo_path(account, project, current_dir)
+            else:
+                messagebox.showwarning("Git検出", f"現在のディレクトリはGitリポジトリではありません:\n{current_dir}\n\n参照ボタンから手動で選択してください。")
+        except Exception as e:
+            log_exception(logger, "Gitパス検出エラー", e)
+            messagebox.showerror("エラー", f"Gitパス検出中にエラーが発生しました:\n{str(e)}")
+
+    def browse_git_path(self):
+        """フォルダ選択ダイアログでGitリポジトリパスを選択"""
+        try:
+            # 初期ディレクトリを設定
+            initial_dir = self.git_path_var.get() or os.getcwd()
+
+            # フォルダ選択ダイアログを表示
+            selected_dir = filedialog.askdirectory(
+                title="Gitリポジトリフォルダを選択",
+                initialdir=initial_dir
+            )
+
+            if selected_dir:
+                # 選択されたディレクトリがGitリポジトリか確認
+                git_sync = GitAutoSync(selected_dir)
+                repo_name = git_sync.get_repo_name()
+
+                if repo_name:
+                    self.git_path_var.set(selected_dir)
+                    messagebox.showinfo("選択完了", f"Gitリポジトリを選択しました:\n{selected_dir}\n\nリポジトリ名: {repo_name}")
+                    logger.info(f"Gitリポジトリパスを選択: {selected_dir}")
+
+                    # 選択されているプロジェクトに保存
+                    account = self.account_var.get()
+                    project = self.project_var.get()
+                    if account and project:
+                        self.tc.storage.set_project_git_repo_path(account, project, selected_dir)
+                else:
+                    # Gitリポジトリではないが、パスは設定できるようにする
+                    result = messagebox.askyesno(
+                        "確認",
+                        f"選択されたフォルダはGitリポジトリではありません:\n{selected_dir}\n\nそれでもこのパスを設定しますか？"
+                    )
+                    if result:
+                        self.git_path_var.set(selected_dir)
+                        account = self.account_var.get()
+                        project = self.project_var.get()
+                        if account and project:
+                            self.tc.storage.set_project_git_repo_path(account, project, selected_dir)
+        except Exception as e:
+            log_exception(logger, "フォルダ選択エラー", e)
+            messagebox.showerror("エラー", f"フォルダ選択中にエラーが発生しました:\n{str(e)}")
+
     def detect_git_project(self):
         """GitHubリポジトリ名を検出してプロジェクトに設定"""
         try:
@@ -1199,12 +1285,18 @@ class TimeClockGUI:
         account = self.account_var.get()
         project = self.project_var.get()
         comment = self.comment_var.get()
+        git_path = self.git_path_var.get()
 
         if not account or not project:
             messagebox.showerror("エラー", "アカウントとプロジェクトを選択してください")
             return
 
         try:
+            # Gitパスが入力されている場合は保存
+            if git_path:
+                self.tc.storage.set_project_git_repo_path(account, project, git_path)
+                logger.info(f"Gitリポジトリパスを保存: {project} -> {git_path}")
+
             session = self.tc.start_work(account, project, comment)
             messagebox.showinfo("作業開始", f"作業を開始しました\n{account} - {project}")
             self.comment_var.set("")  # コメントをクリア
