@@ -838,10 +838,18 @@ class TimeClockGUI:
         # プロジェクト変更時にボタン状態を更新
         self.update_status()
 
-        # 選択されたプロジェクトのGitパスを読み込んで表示
+        # 選択されたプロジェクトの会社名とGitパスを読み込んで表示
         account = self.account_var.get()
         project = self.project_var.get()
         if account and project:
+            # 会社名を読み込み
+            company = self.tc.storage.get_project_company(account, project)
+            if company:
+                self.company_var.set(company)
+            else:
+                self.company_var.set("（会社未設定）")
+
+            # Gitパスを読み込み
             git_path = self.tc.storage.get_project_git_repo_path(account, project)
             if git_path:
                 self.git_path_var.set(git_path)
@@ -864,7 +872,12 @@ class TimeClockGUI:
                 # 選択されているプロジェクトに保存
                 account = self.account_var.get()
                 project = self.project_var.get()
+                company = self.company_var.get()
                 if account and project:
+                    # 会社名を保存（「（会社未設定）」は保存しない）
+                    if company and company != "（会社未設定）":
+                        self.tc.storage.set_project_company(account, project, company)
+                    # Gitパスを保存
                     self.tc.storage.set_project_git_repo_path(account, project, current_dir)
             else:
                 messagebox.showwarning("Git検出", f"現在のディレクトリはGitリポジトリではありません:\n{current_dir}\n\n参照ボタンから手動で選択してください。")
@@ -897,7 +910,12 @@ class TimeClockGUI:
                     # 選択されているプロジェクトに保存
                     account = self.account_var.get()
                     project = self.project_var.get()
+                    company = self.company_var.get()
                     if account and project:
+                        # 会社名を保存（「（会社未設定）」は保存しない）
+                        if company and company != "（会社未設定）":
+                            self.tc.storage.set_project_company(account, project, company)
+                        # Gitパスを保存
                         self.tc.storage.set_project_git_repo_path(account, project, selected_dir)
                 else:
                     # Gitリポジトリではないが、パスは設定できるようにする
@@ -909,7 +927,12 @@ class TimeClockGUI:
                         self.git_path_var.set(selected_dir)
                         account = self.account_var.get()
                         project = self.project_var.get()
+                        company = self.company_var.get()
                         if account and project:
+                            # 会社名を保存（「（会社未設定）」は保存しない）
+                            if company and company != "（会社未設定）":
+                                self.tc.storage.set_project_company(account, project, company)
+                            # Gitパスを保存
                             self.tc.storage.set_project_git_repo_path(account, project, selected_dir)
         except Exception as e:
             log_exception(logger, "フォルダ選択エラー", e)
@@ -1284,6 +1307,7 @@ class TimeClockGUI:
         """作業開始"""
         account = self.account_var.get()
         project = self.project_var.get()
+        company = self.company_var.get()
         comment = self.comment_var.get()
         git_path = self.git_path_var.get()
 
@@ -1292,6 +1316,11 @@ class TimeClockGUI:
             return
 
         try:
+            # 会社/クライアント名を保存（「（会社未設定）」は保存しない）
+            if company and company != "（会社未設定）":
+                self.tc.storage.set_project_company(account, project, company)
+                logger.info(f"会社/クライアントを保存: {project} -> {company}")
+
             # Gitパスが入力されている場合は保存
             if git_path:
                 self.tc.storage.set_project_git_repo_path(account, project, git_path)
