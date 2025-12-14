@@ -944,6 +944,62 @@
           "night_work_minutes": 0,
           "is_holiday": false,
           "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-11-25",
+          "start_time": "2025-11-25T22:35:59.432466",
+          "breaks": [
+            {
+              "start": "2025-11-25T23:49:39.718753",
+              "end": "2025-12-11T08:06:23.655454"
+            }
+          ],
+          "end_time": "2025-12-11T08:06:28.649933",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 73,
+          "night_work_minutes": 74,
+          "is_holiday": false,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-13",
+          "start_time": "2025-12-13T14:28:18.408387",
+          "breaks": [],
+          "end_time": "2025-12-13T14:28:48.484744",
+          "status": "completed",
+          "comment": "保険請求管理アプリテスト",
+          "total_minutes": 0,
+          "night_work_minutes": 0,
+          "is_holiday": false,
+          "is_legal_holiday": false
+        },
+        {
+          "account": "0053629",
+          "project": "tsuruha",
+          "date": "2025-12-13",
+          "start_time": "2025-12-13T14:57:05.485570",
+          "breaks": [
+            {
+              "start": "2025-12-13T17:23:43.534331",
+              "end": "2025-12-13T19:25:44.969312"
+            },
+            {
+              "start": "2025-12-13T20:55:19.819845",
+              "end": "2025-12-14T08:26:05.598062"
+            }
+          ],
+          "end_time": "2025-12-14T08:26:09.993502",
+          "status": "completed",
+          "comment": "",
+          "total_minutes": 236,
+          "night_work_minutes": 0,
+          "is_holiday": false,
+          "is_legal_holiday": false
         }
       ]
     },
@@ -967,21 +1023,5 @@
       "records": []
     }
   },
-  "current_sessions": {
-    "0053629": {
-      "account": "0053629",
-      "project": "tsuruha",
-      "date": "2025-11-25",
-      "start_time": "2025-11-25T22:35:59.432466",
-      "breaks": [
-        {
-          "start": "2025-11-25T23:49:39.718753",
-          "end": null
-        }
-      ],
-      "end_time": null,
-      "status": "on_break",
-      "comment": ""
-    }
-  }
+  "current_sessions": {}
 }
