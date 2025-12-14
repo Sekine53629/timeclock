@@ -15,7 +15,7 @@ if platform.system() == 'Darwin':
         pass
 
 import tkinter as tk
-from tkinter import ttk, messagebox, scrolledtext, simpledialog
+from tkinter import ttk, messagebox, scrolledtext, simpledialog, filedialog
 from datetime import datetime
 from pathlib import Path
 from timeclock import TimeClock
