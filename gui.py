@@ -207,6 +207,50 @@ class TimeClockGUI:
 
         ttk.Button(button_frame, text="状態更新", command=self.update_status).pack(side=tk.RIGHT, padx=5)
 
+        # イミディエイトウィンドウエリア
+        immediate_group = ttk.LabelFrame(main_frame, text="コマンド実行・ログ", padding=10)
+        immediate_group.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+        # コマンド入力エリア
+        cmd_input_frame = ttk.Frame(immediate_group)
+        cmd_input_frame.pack(fill=tk.X, pady=(0, 5))
+
+        ttk.Label(cmd_input_frame, text=">>>").pack(side=tk.LEFT, padx=(0, 5))
+        self.immediate_cmd_var = tk.StringVar()
+        self.immediate_cmd_entry = ttk.Entry(cmd_input_frame, textvariable=self.immediate_cmd_var)
+        self.immediate_cmd_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 5))
+        self.immediate_cmd_entry.bind('<Return>', self.execute_immediate_command)
+
+        ttk.Button(cmd_input_frame, text="実行", command=self.execute_immediate_command).pack(side=tk.LEFT, padx=(0, 5))
+        ttk.Button(cmd_input_frame, text="クリア", command=self.clear_immediate_output).pack(side=tk.LEFT)
+
+        # 出力エリア
+        output_frame = ttk.Frame(immediate_group)
+        output_frame.pack(fill=tk.BOTH, expand=True)
+
+        self.immediate_output = scrolledtext.ScrolledText(
+            output_frame,
+            height=10,
+            width=80,
+            bg='#1e1e1e',  # VS Code風の背景色
+            fg='#d4d4d4',  # VS Code風の文字色
+            font=('Consolas', 9),
+            wrap=tk.WORD
+        )
+        self.immediate_output.pack(fill=tk.BOTH, expand=True)
+        self.immediate_output.config(state=tk.DISABLED)
+
+        # タグ設定（色分け用）
+        self.immediate_output.tag_config('command', foreground='#4ec9b0')  # コマンド（青緑）
+        self.immediate_output.tag_config('output', foreground='#d4d4d4')   # 通常出力（白）
+        self.immediate_output.tag_config('error', foreground='#f48771')    # エラー（赤）
+        self.immediate_output.tag_config('success', foreground='#b5cea8')  # 成功（緑）
+
+        # ウェルカムメッセージ
+        self.append_immediate_output("=== タイムクロック イミディエイトウィンドウ ===\n", 'success')
+        self.append_immediate_output("Pythonコマンド、Gitコマンドなどをここで実行できます\n", 'output')
+        self.append_immediate_output("例: git status, git log -3, python --version\n\n", 'output')
+
     def create_report_tab(self):
         """レポートタブの作成"""
         report_frame = ttk.Frame(self.notebook)
@@ -766,6 +810,110 @@ class TimeClockGUI:
         except Exception as e:
             log_exception(logger, "Git検出エラー", e)
             messagebox.showerror("エラー", f"Git検出中にエラーが発生しました:\n{str(e)}")
+
+    def append_immediate_output(self, text, tag='output'):
+        """イミディエイトウィンドウに出力を追加"""
+        self.immediate_output.config(state=tk.NORMAL)
+        self.immediate_output.insert(tk.END, text, tag)
+        self.immediate_output.see(tk.END)
+        self.immediate_output.config(state=tk.DISABLED)
+
+    def clear_immediate_output(self):
+        """イミディエイトウィンドウの出力をクリア"""
+        self.immediate_output.config(state=tk.NORMAL)
+        self.immediate_output.delete(1.0, tk.END)
+        self.immediate_output.config(state=tk.DISABLED)
+
+    def execute_immediate_command(self, event=None):
+        """イミディエイトウィンドウでコマンドを実行"""
+        import subprocess
+        import shlex
+
+        command = self.immediate_cmd_var.get().strip()
+        if not command:
+            return
+
+        # コマンドを表示
+        self.append_immediate_output(f">>> {command}\n", 'command')
+
+        # コマンド履歴をクリア
+        self.immediate_cmd_var.set("")
+
+        try:
+            # 特殊コマンド処理
+            if command.lower() in ['clear', 'cls']:
+                self.clear_immediate_output()
+                return
+            elif command.lower() == 'help':
+                help_text = """
+利用可能なコマンド:
+  - Gitコマンド: git status, git log, git diff など
+  - Pythonコマンド: python --version, python -c "print('hello')" など
+  - システムコマンド: ls, dir, pwd など
+  - 特殊コマンド:
+    - clear/cls: 画面をクリア
+    - help: このヘルプを表示
+    - git-sync: Git自動同期を実行
+    - detect-repo: リポジトリ名を検出
+
+"""
+                self.append_immediate_output(help_text, 'success')
+                return
+            elif command.lower() == 'git-sync':
+                self.append_immediate_output("Git自動同期を実行中...\n", 'output')
+                success, message = self.git_sync.auto_sync(f"手動同期: {datetime.now()}")
+                if success:
+                    self.append_immediate_output(f"✓ {message}\n\n", 'success')
+                else:
+                    self.append_immediate_output(f"✗ {message}\n\n", 'error')
+                return
+            elif command.lower() == 'detect-repo':
+                repo_name = self.git_sync.get_repo_name()
+                if repo_name:
+                    self.append_immediate_output(f"リポジトリ名: {repo_name}\n\n", 'success')
+                else:
+                    self.append_immediate_output("リポジトリが見つかりません\n\n", 'error')
+                return
+
+            # シェルコマンドとして実行
+            # Windowsの場合はshell=Trueを使う
+            if sys.platform == 'win32':
+                result = subprocess.run(
+                    command,
+                    shell=True,
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                    encoding='utf-8',
+                    errors='replace'
+                )
+            else:
+                # Unix系の場合はshlexで分割
+                cmd_parts = shlex.split(command)
+                result = subprocess.run(
+                    cmd_parts,
+                    capture_output=True,
+                    text=True,
+                    timeout=30
+                )
+
+            # 出力を表示
+            if result.stdout:
+                self.append_immediate_output(result.stdout, 'output')
+            if result.stderr:
+                self.append_immediate_output(result.stderr, 'error')
+
+            # リターンコードを表示
+            if result.returncode != 0:
+                self.append_immediate_output(f"\n[終了コード: {result.returncode}]\n\n", 'error')
+            else:
+                self.append_immediate_output("\n", 'output')
+
+        except subprocess.TimeoutExpired:
+            self.append_immediate_output("エラー: コマンドがタイムアウトしました（30秒）\n\n", 'error')
+        except Exception as e:
+            self.append_immediate_output(f"エラー: {str(e)}\n\n", 'error')
+            log_exception(logger, "イミディエイトコマンド実行エラー", e)
 
     def refresh_report_accounts(self):
         """レポート用アカウント一覧を更新"""
