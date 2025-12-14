@@ -857,17 +857,25 @@ class TimeClockGUI:
                 self.git_path_var.set("")
 
     def detect_git_path(self):
-        """現在のディレクトリのGitリポジトリパスを検出"""
+        """Gitパス欄に入力されているパスのGitリポジトリを検証・検出"""
         try:
-            current_dir = os.getcwd()
-            # 現在のディレクトリがGitリポジトリか確認
-            git_sync = GitAutoSync(current_dir)
+            # Gitパス欄の値を取得
+            input_path = self.git_path_var.get()
+
+            # 入力がない場合は現在のディレクトリを使用
+            if not input_path:
+                input_path = os.getcwd()
+
+            # 入力されたパスがGitリポジトリか確認
+            git_sync = GitAutoSync(input_path)
             repo_name = git_sync.get_repo_name()
 
             if repo_name:
-                self.git_path_var.set(current_dir)
-                messagebox.showinfo("Git検出", f"Gitリポジトリを検出しました:\n{current_dir}\n\nリポジトリ名: {repo_name}")
-                logger.info(f"Gitリポジトリパスを検出: {current_dir}")
+                # パスを正規化して設定
+                normalized_path = str(Path(input_path).resolve())
+                self.git_path_var.set(normalized_path)
+                messagebox.showinfo("Git検出", f"Gitリポジトリを検出しました:\n{normalized_path}\n\nリポジトリ名: {repo_name}")
+                logger.info(f"Gitリポジトリパスを検出: {normalized_path}")
 
                 # 選択されているプロジェクトに保存
                 account = self.account_var.get()
@@ -878,9 +886,9 @@ class TimeClockGUI:
                     if company and company != "（会社未設定）":
                         self.tc.storage.set_project_company(account, project, company)
                     # Gitパスを保存
-                    self.tc.storage.set_project_git_repo_path(account, project, current_dir)
+                    self.tc.storage.set_project_git_repo_path(account, project, normalized_path)
             else:
-                messagebox.showwarning("Git検出", f"現在のディレクトリはGitリポジトリではありません:\n{current_dir}\n\n参照ボタンから手動で選択してください。")
+                messagebox.showwarning("Git検出", f"指定されたパスはGitリポジトリではありません:\n{input_path}\n\n参照ボタンから手動で選択してください。")
         except Exception as e:
             log_exception(logger, "Gitパス検出エラー", e)
             messagebox.showerror("エラー", f"Gitパス検出中にエラーが発生しました:\n{str(e)}")
@@ -889,7 +897,20 @@ class TimeClockGUI:
         """フォルダ選択ダイアログでGitリポジトリパスを選択"""
         try:
             # 初期ディレクトリを設定
-            initial_dir = self.git_path_var.get() or os.getcwd()
+            # 1. Gitパス欄に入力があればそれを使用
+            # 2. なければ、C:/Users/{user}/Documents/GitHub を使用
+            # 3. それもなければ現在のディレクトリ
+            input_path = self.git_path_var.get()
+            if input_path and os.path.exists(input_path):
+                initial_dir = input_path
+            else:
+                # GitHubのデフォルトパスを推測
+                user_home = Path.home()
+                github_dir = user_home / "Documents" / "GitHub"
+                if github_dir.exists():
+                    initial_dir = str(github_dir)
+                else:
+                    initial_dir = str(user_home)
 
             # フォルダ選択ダイアログを表示
             selected_dir = filedialog.askdirectory(
@@ -903,9 +924,11 @@ class TimeClockGUI:
                 repo_name = git_sync.get_repo_name()
 
                 if repo_name:
-                    self.git_path_var.set(selected_dir)
-                    messagebox.showinfo("選択完了", f"Gitリポジトリを選択しました:\n{selected_dir}\n\nリポジトリ名: {repo_name}")
-                    logger.info(f"Gitリポジトリパスを選択: {selected_dir}")
+                    # パスを正規化
+                    normalized_path = str(Path(selected_dir).resolve())
+                    self.git_path_var.set(normalized_path)
+                    messagebox.showinfo("選択完了", f"Gitリポジトリを選択しました:\n{normalized_path}\n\nリポジトリ名: {repo_name}")
+                    logger.info(f"Gitリポジトリパスを選択: {normalized_path}")
 
                     # 選択されているプロジェクトに保存
                     account = self.account_var.get()
@@ -916,7 +939,7 @@ class TimeClockGUI:
                         if company and company != "（会社未設定）":
                             self.tc.storage.set_project_company(account, project, company)
                         # Gitパスを保存
-                        self.tc.storage.set_project_git_repo_path(account, project, selected_dir)
+                        self.tc.storage.set_project_git_repo_path(account, project, normalized_path)
                 else:
                     # Gitリポジトリではないが、パスは設定できるようにする
                     result = messagebox.askyesno(
@@ -924,7 +947,9 @@ class TimeClockGUI:
                         f"選択されたフォルダはGitリポジトリではありません:\n{selected_dir}\n\nそれでもこのパスを設定しますか？"
                     )
                     if result:
-                        self.git_path_var.set(selected_dir)
+                        # パスを正規化
+                        normalized_path = str(Path(selected_dir).resolve())
+                        self.git_path_var.set(normalized_path)
                         account = self.account_var.get()
                         project = self.project_var.get()
                         company = self.company_var.get()
@@ -933,7 +958,7 @@ class TimeClockGUI:
                             if company and company != "（会社未設定）":
                                 self.tc.storage.set_project_company(account, project, company)
                             # Gitパスを保存
-                            self.tc.storage.set_project_git_repo_path(account, project, selected_dir)
+                            self.tc.storage.set_project_git_repo_path(account, project, normalized_path)
         except Exception as e:
             log_exception(logger, "フォルダ選択エラー", e)
             messagebox.showerror("エラー", f"フォルダ選択中にエラーが発生しました:\n{str(e)}")
