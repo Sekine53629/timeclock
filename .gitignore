@@ -69,3 +69,6 @@ all_projects_work_history.json
 # Backup files
 *.backup_*
 json/*.backup_*
+
+# Windows command redirect artifacts
+nul
