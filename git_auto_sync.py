@@ -47,13 +47,21 @@ class GitAutoSync:
             CompletedProcess: コマンド実行結果
         """
         try:
+            # Windowsでコンソールウィンドウを非表示にする
+            startupinfo = None
+            if os.name == 'nt':  # Windows
+                startupinfo = subprocess.STARTUPINFO()
+                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+                startupinfo.wShowWindow = subprocess.SW_HIDE
+
             result = subprocess.run(
                 command,
                 cwd=self.repo_path,
                 capture_output=True,
                 text=True,
                 encoding='utf-8',
-                check=check
+                check=check,
+                startupinfo=startupinfo
             )
             logger.debug(f"Git command: {' '.join(command)}")
             logger.debug(f"Output: {result.stdout}")
